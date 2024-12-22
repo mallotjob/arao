@@ -29,16 +29,28 @@
         #footer
       >
         <!-- {{ t('emptyResults') }} -->
-        tsy misy
+        {{ t('emptyResults') }}
+        {{ t('test') }}
       </template>
     </DataTable>
   </div>
 </template>
 <script setup>
 import { ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 
+const { t } = useI18n();
 const products = ref([]);
 </script>
 <style lang="">
 
 </style>
+
+<i18n lang="yaml">
+en:
+  test: test texx
+fr:
+  test: essaye
+mg:
+  test: andrana
+</i18n>

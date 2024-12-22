@@ -24,17 +24,20 @@
     ]
   },
   "dependencies": {
+    "@intlify/unplugin-vue-i18n": "^6.0.2",
     "@primevue/themes": "^4.2.5",
     "@vitejs/plugin-vue": "^5.2.0",
+    "path": "^0.12.7",
     "primevue": "^4.2.5",
     "vite": "^5.0.0",
     "vue": "^3.5.13",
-    "vue-i18n": "^11.0.0-rc.1",
+    "vue-i18n": "^10.0.5",
     "vue-router": "^4.5.0"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
     "@eslint/js": "^9.15.0",
+    "@types/node": "^22.10.2",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.15.0",
     "eslint-plugin-sort-imports-es6-autofix": "^0.6.0",
@@ -44,6 +47,7 @@
     "lint-staged": "^15.2.10",
     "postcss": "^8.4.49",
     "tailwindcss": "^3.4.17",
+    "typescript": "^5.7.2",
     "vite-plugin-ruby": "^5.1.0"
   }
 }
