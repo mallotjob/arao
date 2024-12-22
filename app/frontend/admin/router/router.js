@@ -9,7 +9,7 @@ export const routes = [
     component: Home
   },
   {
-    path: '/shippingtype',
+    path: '/shipping-type',
     name: 'shippingType',
     component: ShippingType
   },
