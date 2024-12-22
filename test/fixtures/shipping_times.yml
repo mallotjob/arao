@@ -1,0 +1,33 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  given_date: 2024-12-11
+  company: one
+  type: one
+
+two:
+  given_date: 2024-12-11
+  company: two
+  type: two
+
+# == Schema Information
+#
+# Table name: shipping_times
+#
+#  id         :uuid             not null, primary key
+#  given_date :date
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
+#  company_id :uuid             not null
+#  type_id    :uuid             not null
+#
+# Indexes
+#
+#  index_shipping_times_on_company_id  (company_id)
+#  index_shipping_times_on_type_id     (type_id)
+#
+# Foreign Keys
+#
+#  fk_rails_...  (company_id => companies.id)
+#  fk_rails_...  (type_id => types.id)
+#
