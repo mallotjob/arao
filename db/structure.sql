@@ -28,27 +28,6 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: admins; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.admins (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    first_name character varying,
-    last_name character varying,
-    phone_number character varying,
-    email character varying,
-    username character varying,
-    company_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
-    reset_password_token character varying,
-    reset_password_sent_at timestamp(6) without time zone,
-    remember_created_at timestamp(6) without time zone
-);
-
-
---
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -78,6 +57,19 @@ CREATE TABLE public.balances (
 
 
 --
+-- Name: beneficiaries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.beneficiaries (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    shipping_mark character varying,
+    company_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: companies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -97,7 +89,7 @@ CREATE TABLE public.products (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     shipping_time_id uuid NOT NULL,
     type_config_id uuid NOT NULL,
-    shipping_id uuid NOT NULL,
+    beneficiary_id uuid NOT NULL,
     quantity integer,
     length double precision,
     width double precision,
@@ -136,19 +128,6 @@ CREATE TABLE public.shipping_times (
 
 
 --
--- Name: shippings; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.shippings (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    mark character varying,
-    company_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: type_configs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -159,7 +138,9 @@ CREATE TABLE public.type_configs (
     unit_id uuid NOT NULL,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    from_date timestamp(6) without time zone DEFAULT CURRENT_DATE NOT NULL,
+    datetime date
 );
 
 
@@ -216,14 +197,6 @@ CREATE TABLE public.users (
 
 
 --
--- Name: admins admins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.admins
-    ADD CONSTRAINT admins_pkey PRIMARY KEY (id);
-
-
---
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -237,6 +210,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 ALTER TABLE ONLY public.balances
     ADD CONSTRAINT balances_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: beneficiaries beneficiaries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.beneficiaries
+    ADD CONSTRAINT beneficiaries_pkey PRIMARY KEY (id);
 
 
 --
@@ -272,14 +253,6 @@ ALTER TABLE ONLY public.shipping_times
 
 
 --
--- Name: shippings shippings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.shippings
-    ADD CONSTRAINT shippings_pkey PRIMARY KEY (id);
-
-
---
 -- Name: type_configs type_configs_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -312,38 +285,17 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: index_admins_on_company_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_admins_on_company_id ON public.admins USING btree (company_id);
-
-
---
--- Name: index_admins_on_email; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_admins_on_email ON public.admins USING btree (email);
-
-
---
--- Name: index_admins_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_admins_on_reset_password_token ON public.admins USING btree (reset_password_token);
-
-
---
--- Name: index_admins_on_username; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_admins_on_username ON public.admins USING btree (username);
-
-
---
 -- Name: index_balances_on_companies_id; Type: INDEX; Schema: public; Owner: -
 --
 
 CREATE INDEX index_balances_on_companies_id ON public.balances USING btree (companies_id);
+
+
+--
+-- Name: index_beneficiaries_on_company_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_beneficiaries_on_company_id ON public.beneficiaries USING btree (company_id);
 
 
 --
@@ -354,10 +306,10 @@ CREATE INDEX index_products_on_balance_id ON public.products USING btree (balanc
 
 
 --
--- Name: index_products_on_shipping_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_products_on_beneficiary_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_products_on_shipping_id ON public.products USING btree (shipping_id);
+CREATE INDEX index_products_on_beneficiary_id ON public.products USING btree (beneficiary_id);
 
 
 --
@@ -386,13 +338,6 @@ CREATE INDEX index_shipping_times_on_company_id ON public.shipping_times USING b
 --
 
 CREATE INDEX index_shipping_times_on_type_id ON public.shipping_times USING btree (type_id);
-
-
---
--- Name: index_shippings_on_company_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_shippings_on_company_id ON public.shippings USING btree (company_id);
 
 
 --
@@ -485,6 +430,14 @@ ALTER TABLE ONLY public.balances
 
 
 --
+-- Name: beneficiaries fk_rails_3143e992c5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.beneficiaries
+    ADD CONSTRAINT fk_rails_3143e992c5 FOREIGN KEY (company_id) REFERENCES public.companies(id);
+
+
+--
 -- Name: products fk_rails_415b55c1ba; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -525,27 +478,11 @@ ALTER TABLE ONLY public.type_configs
 
 
 --
--- Name: shippings fk_rails_c1d191effb; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.shippings
-    ADD CONSTRAINT fk_rails_c1d191effb FOREIGN KEY (company_id) REFERENCES public.companies(id);
-
-
---
--- Name: admins fk_rails_e493fcc5fa; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.admins
-    ADD CONSTRAINT fk_rails_e493fcc5fa FOREIGN KEY (company_id) REFERENCES public.companies(id);
-
-
---
--- Name: products fk_rails_ea52b43f2a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: products fk_rails_e24ff8a48b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.products
-    ADD CONSTRAINT fk_rails_ea52b43f2a FOREIGN KEY (shipping_id) REFERENCES public.shippings(id);
+    ADD CONSTRAINT fk_rails_e24ff8a48b FOREIGN KEY (beneficiary_id) REFERENCES public.beneficiaries(id);
 
 
 --
@@ -557,9 +494,7 @@ SET search_path TO "$user", public;
 INSERT INTO "schema_migrations" (version) VALUES
 ('20241226180832'),
 ('20241226180253'),
-('20241226173943'),
 ('20241226173359'),
-('20241217075348'),
 ('20241216054613'),
 ('20241211173125'),
 ('20241211163416'),
@@ -571,8 +506,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241210162321'),
 ('20241209135629'),
 ('20241209135524'),
-('20241209102142'),
-('20241209101716'),
 ('20241209101446'),
 ('20241209101143');
 

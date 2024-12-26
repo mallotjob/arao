@@ -8,6 +8,8 @@ end
 # Table name: type_configs
 #
 #  id         :uuid             not null, primary key
+#  datetime   :date
+#  from_date  :datetime         not null
 #  name       :string
 #  price      :integer
 #  created_at :datetime         not null
