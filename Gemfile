@@ -6,6 +6,7 @@ gem "vite_rails"
 gem "rails-i18n"
 gem "devise"
 gem "aasm"
+gem "importmap-rails"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
