@@ -1,5 +1,7 @@
 class Type < ApplicationRecord
   belongs_to :company
+
+  has_many :type_configs
 end
 
 # == Schema Information

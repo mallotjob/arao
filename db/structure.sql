@@ -61,6 +61,23 @@ CREATE TABLE public.ar_internal_metadata (
 
 
 --
+-- Name: balances; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.balances (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    companies_id uuid NOT NULL,
+    currency character varying,
+    beneficiary_currency character varying,
+    diff double precision,
+    from_date timestamp(6) without time zone DEFAULT CURRENT_DATE NOT NULL,
+    to_date timestamp(6) without time zone,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: companies; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -90,7 +107,8 @@ CREATE TABLE public.products (
     tracking_number character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    aasm_state character varying
+    aasm_state character varying,
+    balance_id uuid
 );
 
 
@@ -214,6 +232,14 @@ ALTER TABLE ONLY public.ar_internal_metadata
 
 
 --
+-- Name: balances balances_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.balances
+    ADD CONSTRAINT balances_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: companies companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -311,6 +337,20 @@ CREATE UNIQUE INDEX index_admins_on_reset_password_token ON public.admins USING 
 --
 
 CREATE UNIQUE INDEX index_admins_on_username ON public.admins USING btree (username);
+
+
+--
+-- Name: index_balances_on_companies_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_balances_on_companies_id ON public.balances USING btree (companies_id);
+
+
+--
+-- Name: index_products_on_balance_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_products_on_balance_id ON public.products USING btree (balance_id);
 
 
 --
@@ -421,11 +461,27 @@ ALTER TABLE ONLY public.type_configs
 
 
 --
+-- Name: products fk_rails_02956797cb; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.products
+    ADD CONSTRAINT fk_rails_02956797cb FOREIGN KEY (balance_id) REFERENCES public.balances(id);
+
+
+--
 -- Name: types fk_rails_07fd3a2f43; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.types
     ADD CONSTRAINT fk_rails_07fd3a2f43 FOREIGN KEY (company_id) REFERENCES public.companies(id);
+
+
+--
+-- Name: balances fk_rails_162a922efa; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.balances
+    ADD CONSTRAINT fk_rails_162a922efa FOREIGN KEY (companies_id) REFERENCES public.companies(id);
 
 
 --
@@ -499,6 +555,10 @@ ALTER TABLE ONLY public.products
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20241226180832'),
+('20241226180253'),
+('20241226173943'),
+('20241226173359'),
 ('20241217075348'),
 ('20241216054613'),
 ('20241211173125'),
