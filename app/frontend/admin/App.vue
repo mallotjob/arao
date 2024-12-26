@@ -12,6 +12,9 @@
           shipped Type
         </router-link>
       </li>
+      <li>
+        Config
+      </li>
       <li>shipping date</li>
     </ul>
     <router-view />

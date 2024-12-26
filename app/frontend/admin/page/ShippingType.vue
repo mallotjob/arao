@@ -9,28 +9,54 @@
       table-style="min-width: 50rem"
     >
       <Column
-        field="code"
-        header="Code"
+        field="type"
+        :header="t('type')"
       />
       <Column
-        field="name"
-        header="Name"
-      />
+        field=""
+        :header="t('category')"
+      >
+        <template #body="slotProps">
+          <div
+            v-for="(config, index) in slotProps.data.configs"
+            :key="index"
+          >
+            {{ config.category }}
+          </div>
+        </template>
+      </Column>
       <Column
-        field="category"
-        header="Category"
-      />
+        field="null"
+        :header="t('price')"
+      >
+        <template #body="slotProps">
+          <div
+            v-for="(config, index) in slotProps.data.configs"
+            :key="index"
+          >
+            {{ config.price }}
+          </div>
+        </template>
+      </Column>
       <Column
-        field="quantity"
-        header="Quantity"
-      />
+        field="null"
+        :header="t('unit')"
+      >
+        <template #body="slotProps">
+          <div
+            v-for="(config, index) in slotProps.data.configs"
+            :key="index"
+          >
+            {{ config.unit.name }} /
+            {{ config.unit.unit }}
+          </div>
+        </template>
+      </Column>
       <template
         v-if="products.length < 1"
         #footer
       >
-        <!-- {{ t('emptyResults') }} -->
-        {{ t('emptyResults') }}
-        {{ t('test') }}
+        {{ $t('emptyResults') }}
       </template>
     </DataTable>
   </div>
@@ -40,7 +66,54 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 
 const { t } = useI18n();
-const products = ref([]);
+const products = ref([
+  {
+    type: 'bateau',
+    configs: [
+      {
+        category: 'simple',
+        price: '123',
+        currency: '$',
+        unit: {
+          name: 'poid',
+          unit: 'kg'
+        }
+      },
+      {
+        category: 'lourd +500kg',
+        price: '400',
+        currency: '$',
+        unit: {
+          name: 'poid',
+          unit: 'kg'
+        }
+      }
+    ]
+  },
+  {
+    type: 'bateau express',
+    configs: [
+      {
+        category: 'simple',
+        price: '200',
+        currency: '$',
+        unit: {
+          name: 'poid',
+          unit: 'kg'
+        }
+      },
+      {
+        category: 'lourd +500kg',
+        price: '500',
+        currency: '$',
+        unit: {
+          name: 'poid',
+          unit: 'kg'
+        }
+      }
+    ]
+  }
+]);
 </script>
 <style lang="">
 
@@ -48,9 +121,18 @@ const products = ref([]);
 
 <i18n lang="yaml">
 en:
-  test: test texx
+  category: Category
+  type: Shipping type
+  price: Price
+  unit: Unit
 fr:
-  test: essaye
+  category: Catégorie
+  type: Mode d'envoye
+  price: Prix
+  unit: Unité
 mg:
-  test: andrana
+  category: karazany
+  type: Fomba fandefasana
+  price: Vidiny
+  unit: tare-marika
 </i18n>
