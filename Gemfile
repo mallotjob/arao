@@ -41,4 +41,5 @@ group :development, :test do
   gem "annotaterb"
 
   gem "foreman"
+  gem "rspec-rails"
 end
