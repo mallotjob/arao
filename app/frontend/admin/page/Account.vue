@@ -1,10 +1,10 @@
 <template>
   <div>
-    test test be
+    account info
   </div>
 </template>
 <script setup>
 </script>
-<style lang="scss" scoped>
+<style lang="">
 
 </style>

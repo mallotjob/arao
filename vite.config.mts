@@ -16,6 +16,11 @@ export default defineConfig({
       include: [resolve(__dirname, 'app/frontend/i18n/*.json')],
     })
   ],
+  server: {
+    watch: {
+      usePolling: true, // Ensures changes are picked up in Docker or VM environments
+    },
+  },
   css: {
     postcss: {
       plugins: [

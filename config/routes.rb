@@ -20,6 +20,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   constraints(subdomain: "admin") do
     scope module: "admin", as: :admin do
+      namespace :api do
+        get :me, defaults: { format: "json" }
+      end
       root "admin#home"
       get "*path", to: "admin#home", constraints: ->(request) { request.format.html? }
     end
