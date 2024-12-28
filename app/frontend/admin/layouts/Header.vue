@@ -11,13 +11,23 @@
           Account
         </router-link>
       </li>
-      <li>log out</li>
+      <li>
+        <a
+          href="#"
+          @click="handleLogOut"
+        >
+          log out
+        </a>
+      </li>
     </ul>
   </div>
 </template>
-<script>
-export default {
+<script setup>
+import api from '@/admin/api';
 
+const handleLogOut = async () => {
+  await api.logOut();
+  window.location.href = '/users/sign_out';
 };
 </script>
 <style lang="">

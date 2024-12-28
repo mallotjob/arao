@@ -21,7 +21,7 @@
   </div>
 </template>
 <script setup>
-import Header from '/admin/layouts/Header.vue';
+import Header from '@/admin/layouts/Header.vue';
 
 </script>
 <style lang="scss" scoped>

@@ -1,5 +1,5 @@
 import { defineConfig } from 'vite'
-import RubyPlugin from 'vite-plugin-ruby'
+import RubyPlugin, { projectRoot } from 'vite-plugin-ruby'
 import vue from '@vitejs/plugin-vue';
 import tailwindcss from 'tailwindcss';
 import autoprefixer from 'autoprefixer';
@@ -20,6 +20,15 @@ export default defineConfig({
     watch: {
       usePolling: true, // Ensures changes are picked up in Docker or VM environments
     },
+  },
+
+  resolve: {
+    alias: {
+      // scss imports require exlicit link to node_modules
+      '~': resolve(projectRoot, 'node_modules'),
+      '@': resolve(__dirname, 'app/frontend'),
+      root: resolve(projectRoot, './'),
+    }
   },
   css: {
     postcss: {

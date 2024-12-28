@@ -21,7 +21,9 @@ Rails.application.routes.draw do
   constraints(subdomain: "admin") do
     scope module: "admin", as: :admin do
       namespace :api do
-        get :me, defaults: { format: "json" }
+        resources :users, only: %i[index], defaults: { format: "json" } do
+          get :me, on: :collection, defaults: { format: "json" }
+        end
       end
       root "admin#home"
       get "*path", to: "admin#home", constraints: ->(request) { request.format.html? }
