@@ -4,7 +4,7 @@ import js from '@eslint/js';
 import pluginJs from '@eslint/js';
 import pluginVue from 'eslint-plugin-vue';
 import sortImportsEs6Autofix from 'eslint-plugin-sort-imports-es6-autofix';
-
+import vitest from '@vitest/eslint-plugin';
 
 const compat = new FlatCompat({
   recommendedConfig: js.configs.recommended,
@@ -14,15 +14,17 @@ const compat = new FlatCompat({
 export default [
   ...compat.extends('eslint:recommended', 'plugin:vue/vue3-recommended'),
   pluginJs.configs.recommended,
+  vitest.configs.recommended,
   ...pluginVue.configs['flat/essential'],
   {
     files: ['**/*.{js,mjs,cjs,vue}'],
     plugins: {
-      'sort-imports-es6-autofix': sortImportsEs6Autofix
+      'sort-imports-es6-autofix': sortImportsEs6Autofix,
+      vitest
     },
-    languageOptions:
-    { globals:
-      {
+
+    languageOptions: {
+      globals: {
         ...globals.browser,
         describe: 'readonly',
         it: 'readonly',
@@ -30,6 +32,7 @@ export default [
       }
     },
     rules: {
+      'no-undef': 'off',
       camelcase: 0,
       indent: ['error', 2],
       'linebreak-style': ['error', 'unix'],

@@ -13,7 +13,9 @@
         </router-link>
       </li>
       <li>
-        Config
+        <router-link :to="{ name: 'config' }">
+          Config
+        </router-link>
       </li>
       <li>shipping date</li>
     </ul>

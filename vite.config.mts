@@ -6,11 +6,12 @@ import autoprefixer from 'autoprefixer';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 import { resolve } from 'path';
 
+const isTesting = process.env.HISTOIRE || process.env.VITEST;
 
 export default defineConfig({
   plugins: [
     vue(),
-    RubyPlugin(),
+    !isTesting ? RubyPlugin() : null,
     VueI18nPlugin({
       runtimeOnly: true,
       include: [resolve(__dirname, 'app/frontend/i18n/*.json')],
