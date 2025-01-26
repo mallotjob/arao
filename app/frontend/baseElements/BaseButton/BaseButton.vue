@@ -7,7 +7,7 @@
       ['button-' + colorType]: colorType,
       ['size-' + size]: size,
       'round': round,
-      'icon-only': !label && icon,
+      'icon-only': !label && icon
     }"
     :disabled="loading"
     :type="computedType"
@@ -22,6 +22,7 @@
       :class="{
         ['button-icon']: icon,
         ['button-icon-' + iconPosition]: iconPosition,
+        'button-icon-loading': loading,
         'no-wrap': noWrap
       }"
     >
@@ -36,15 +37,11 @@
           v-if="!loading"
           :icon="icon"
         />
-        <span
+        <BaseSpinner
           v-if="loading"
-          class="loading"
-        >
-          <!-- <BaseSpinner
-            v-if="loading"
-            size="sm"
-          /> -->
-        </span>
+          color="light"
+          size="xs"
+        />
       </span>
       {{ label }}
     </span>
@@ -53,7 +50,7 @@
 
 <script setup>
 import { computed, useSlots } from 'vue';
-// import BaseSpinner from '@/baseElements/BaseSpinner/BaseSpinner.vue';
+import BaseSpinner from '@/baseElements/BaseSpinner/BaseSpinner.vue';
 
 const props = defineProps({
   ariaLabel: {
@@ -162,7 +159,7 @@ const handleClick = (e) => {
 
 <style lang="scss" scoped>
 .button {
-  @apply focus:ring-2 font-medium text-center me-2 mb-2 focus:outline-none rounded-lg;
+  @apply focus:ring-2 font-medium text-center m-1 focus:outline-none rounded-lg;
   &-color {
     &-primary {
      @apply text-white bg-blue-700 hover:bg-blue-800 focus:ring-blue-300;
@@ -345,6 +342,13 @@ const handleClick = (e) => {
 
     &-center {
       @apply justify-center;
+    }
+
+    &-loading {
+      @apply flex flex-row-reverse;
+      .icon {
+        @apply ms-2;
+      }
     }
   }
 

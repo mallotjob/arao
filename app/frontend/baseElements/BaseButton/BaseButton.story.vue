@@ -309,6 +309,21 @@
         icon-position="left"
         :icon="['fas', 'check']"
       />
+
+      <BaseButton
+        color="cyan-blue"
+        loading="true"
+        color-type="gradient"
+        label="label"
+        icon-position="left"
+        :icon="['fas', 'check']"
+      />
+
+      <BaseButton
+        color="danger"
+        loading="true"
+        label="label"
+      />
     </Variant>
   </Story>
 </template>

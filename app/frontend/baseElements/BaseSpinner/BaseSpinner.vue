@@ -46,16 +46,39 @@ defineProps({
 </script>
 <style lang="scss" scoped>
 .spinner {
-  @apply w-12 h-12 rounded-full animate-spin
+
+  @apply rounded-full animate-spin
   border border-solid shadow-md;
 
   &.size {
+    &-xs {
+      @apply w-5 h-5;
+    }
 
+    &-sm {
+      @apply w-6 h-6;
+    }
+
+    &-base {
+      @apply w-8 h-8;
+    }
+
+    &-lg {
+      @apply w-12 h-12;
+    }
+
+    &-xl {
+      @apply w-20 h-20;
+    }
+
+    &-xxl {
+      @apply w-28 h-28;
+    }
   }
 
   &.color {
     &-primary {
-     @apply border-blue-700 border-t-transparent;
+      @apply border-blue-700 border-t-transparent;
     }
 
     &-dark {
@@ -67,7 +90,7 @@ defineProps({
     }
 
     &-danger {
-      @apply border-red-700 border-t-transparent;
+      @apply border-red-500 border-t-transparent;
     }
 
     &-light {
@@ -112,7 +135,6 @@ defineProps({
       }
     }
   }
-
 }
 
 </style>
