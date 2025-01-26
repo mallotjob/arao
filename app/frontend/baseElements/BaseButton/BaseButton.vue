@@ -70,7 +70,7 @@ const props = defineProps({
     default: null,
     type: String,
     validator: value => {
-      return [null, 'gradient', 'outline'].includes(value);
+      return [null, 'gradient', 'outline', 'no-border'].includes(value);
     }
   },
   icon: {
@@ -169,6 +169,11 @@ const handleClick = (e) => {
       @apply text-blue-700 hover:text-white border-blue-700;
       @apply dark:border-blue-500 dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500;
      }
+
+     &.button-no-border {
+      @apply text-blue-700 hover:text-white hover:bg-blue-700;
+      @apply dark:text-blue-500 dark:hover:text-white dark:hover:bg-blue-500;
+     }
     }
 
     &-mi-light {
@@ -186,6 +191,11 @@ const handleClick = (e) => {
         @apply  hover:text-white border-gray-800;
         @apply dark:border-gray-600 dark:text-gray-400 dark:hover:text-white;
       }
+
+      &.button-no-border {
+        @apply  hover:text-white hover:bg-gray-800;
+        @apply dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600;
+      }
     }
 
     &-secondary {
@@ -195,6 +205,11 @@ const handleClick = (e) => {
       &.button-outline {
         @apply text-gray-400 hover:text-white border-gray-500;
         @apply dark:text-gray-400 dark:hover:text-white dark:focus:ring-gray-800;
+      }
+
+      &.button-no-border {
+        @apply text-gray-400 hover:text-white hover:bg-gray-500;
+        @apply dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-800;
       }
     }
 
@@ -206,6 +221,11 @@ const handleClick = (e) => {
         @apply text-green-700 hover:text-white border-green-700;
         @apply dark:border-green-500 dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600;
       }
+
+      &.button-no-border {
+        @apply text-green-700 hover:text-white hover:bg-green-700;
+        @apply dark:text-green-500 dark:hover:text-white dark:hover:bg-green-600;
+      }
     }
 
     &-danger {
@@ -216,6 +236,11 @@ const handleClick = (e) => {
         @apply text-red-700 hover:text-white border-red-700;
         @apply dark:border-red-500 dark:text-red-500 dark:hover:text-white;
       }
+
+      &.button-no-border {
+        @apply text-red-700 hover:text-white hover:bg-red-700;
+        @apply dark:hover:bg-red-500 dark:text-red-500 dark:hover:text-white;
+      }
     }
 
     &-warning {
@@ -225,6 +250,11 @@ const handleClick = (e) => {
       &.button-outline {
         @apply text-yellow-400 hover:text-white border-yellow-400;
         @apply dark:border-yellow-300 dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400;
+      }
+
+      &.button-no-border {
+        @apply text-yellow-400 hover:text-white hover:bg-yellow-400;
+        @apply dark:text-yellow-300 dark:hover:text-white dark:hover:bg-yellow-400;
       }
     }
 
@@ -243,9 +273,14 @@ const handleClick = (e) => {
       @apply bg-purple-700 hover:bg-purple-800 focus:ring-purple-300;
       @apply dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-900;
 
-      &,.button-outline {
+      &.button-outline {
         @apply text-purple-700 hover:text-white border-purple-700;
         @apply dark:border-purple-400 dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500;
+      }
+
+      &.button-no-border {
+        @apply text-purple-700 hover:text-white hover:bg-purple-700;
+        @apply dark:text-purple-400 dark:hover:text-white dark:hover:bg-purple-500;
       }
     }
 
@@ -322,6 +357,10 @@ const handleClick = (e) => {
 
   &-outline {
     @apply bg-transparent border;
+  }
+
+  &-no-border {
+    @apply bg-transparent border-none ring-0 focus:ring-0 focus:border-none;
   }
 
   &-icon {

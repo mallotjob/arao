@@ -292,6 +292,66 @@
       />
     </Variant>
 
+    <Variant title="no border">
+      <BaseButton
+        color-type="no-border"
+        icon-position="center"
+        :icon="['fas', 'heart']"
+      />
+
+      <BaseButton
+        color="dark"
+        color-type="no-border"
+        icon-position="center"
+        :icon="['fas', 'heart']"
+      />
+
+      <BaseButton
+        color="secondary"
+        color-type="no-border"
+        icon-position="center"
+        :icon="['fas', 'heart']"
+      />
+
+      <BaseButton
+        color="success"
+        color-type="no-border"
+        icon-position="center"
+        :icon="['fas', 'xmark']"
+      />
+
+      <BaseButton
+        color="danger"
+        color-type="no-border"
+        :round="true"
+        icon-position="center"
+        :icon="['fas', 'xmark']"
+      />
+
+      <BaseButton
+        color="warning"
+        color-type="no-border"
+        :round="true"
+        icon-position="center"
+        :icon="['fas', 'xmark']"
+      />
+
+      <BaseButton
+        color="purple"
+        color-type="no-border"
+        :round="true"
+        icon-position="center"
+        :icon="['fas', 'xmark']"
+      />
+
+      <BaseButton
+        color="purple"
+        color-type="no-border"
+        :round="true"
+        label="label no border"
+      />
+    </Variant>
+
     <Variant title="disabled">
       <BaseButton
         color="purple-blue"
@@ -312,7 +372,7 @@
 
       <BaseButton
         color="cyan-blue"
-        loading="true"
+        :loading="true"
         color-type="gradient"
         label="label"
         icon-position="left"
@@ -321,7 +381,7 @@
 
       <BaseButton
         color="danger"
-        loading="true"
+        :loading="true"
         label="label"
       />
     </Variant>
