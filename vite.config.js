@@ -1,10 +1,10 @@
-import { defineConfig } from 'vite'
-import RubyPlugin, { projectRoot } from 'vite-plugin-ruby'
-import vue from '@vitejs/plugin-vue';
-import tailwindcss from 'tailwindcss';
-import autoprefixer from 'autoprefixer';
-import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
+import { defineConfig } from 'vite';
 import { resolve } from 'path';
+import autoprefixer from 'autoprefixer';
+import RubyPlugin, { projectRoot } from 'vite-plugin-ruby';
+import tailwindcss from 'tailwindcss';
+import vue from '@vitejs/plugin-vue';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
 const isTesting = process.env.HISTOIRE || process.env.VITEST;
 
@@ -19,8 +19,9 @@ export default defineConfig({
   ],
   server: {
     watch: {
-      usePolling: true, // Ensures changes are picked up in Docker or VM environments
+      ignored: ['**/node_modules/**', '**/tmp/**'], // Ignore unnecessary files
     },
+    hmr: true,
   },
 
   resolve: {
@@ -39,4 +40,4 @@ export default defineConfig({
       ],
     },
   },
-})
+});

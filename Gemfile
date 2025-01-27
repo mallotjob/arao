@@ -1,7 +1,7 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.0"
+gem "rails", "~> 8.0.1"
 gem "vite_rails"
 gem "rails-i18n"
 gem "devise"
@@ -38,8 +38,8 @@ group :development, :test do
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
-  gem "annotaterb"
 
+  gem "annotaterb"
   gem "foreman"
   gem "rspec-rails"
 end
