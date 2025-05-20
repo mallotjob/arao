@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import autoprefixer from 'autoprefixer';
+// import autoprefixer from 'autoprefixer';
 import RubyPlugin, { projectRoot } from 'vite-plugin-ruby';
-import tailwindcss from 'tailwindcss';
+// import tailwindcss from 'tailwindcss';
 import vue from '@vitejs/plugin-vue';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
@@ -33,11 +33,13 @@ export default defineConfig({
     }
   },
   css: {
-    postcss: {
-      plugins: [
-        tailwindcss(),
-        autoprefixer(),
-      ],
-    },
-  },
+    // see https://github.com/vitejs/vite/discussions/18388
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+        additionalData: `
+        @use "sass:color";`
+      }
+    }
+  }
 });

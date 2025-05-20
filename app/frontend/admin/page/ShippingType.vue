@@ -1,9 +1,11 @@
 <template>
   <div class="bg-red-400 text-yellow-700">
     List of shipped type
-    <div class="float-right">
-      create type
-    </div>
+    <BaseButton
+      label="create type"
+      class="float-right"
+    />
+
     <DataTable
       :value="products"
       table-style="min-width: 50rem"
@@ -64,6 +66,7 @@
 <script setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 
 const { t } = useI18n();
 const products = ref([
