@@ -84,11 +84,11 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-
+RAILS_ENV: test
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5433
+          DATABASE_URL: postgres://postgres:postgres@localhost:5433/follow_test
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare test
 
