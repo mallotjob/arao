@@ -62,6 +62,7 @@
     "husky": "^8.0.0",
     "lint-staged": "^15.2.10",
     "postcss": "^8.5.1",
+    "sass-embedded": "^1.97.3",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.2",
     "vite-plugin-ruby": "^5.1.0"
