@@ -44,3 +44,5 @@ group :development, :test do
   gem "foreman"
   gem "rspec-rails"
 end
+
+gem "tailwindcss-rails", "~> 4.4"
