@@ -84,7 +84,7 @@ jobs:
         with:
           ruby-version: .ruby-version
           bundler-cache: true
-RAILS_ENV: test
+
       - name: Run tests
         env:
           RAILS_ENV: test
