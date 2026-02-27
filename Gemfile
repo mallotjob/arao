@@ -4,9 +4,10 @@ source "https://rubygems.org"
 gem "rails", "~> 8.0.1"
 gem "vite_rails"
 gem "rails-i18n"
-gem "devise"
+gem "devise", "~> 4.8"
 gem "aasm"
 gem "importmap-rails"
+gem "cancancan"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
@@ -43,3 +44,5 @@ group :development, :test do
   gem "foreman"
   gem "rspec-rails"
 end
+
+gem "tailwindcss-rails", "~> 4.4"

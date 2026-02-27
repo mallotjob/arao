@@ -12,3 +12,4 @@
   p value
   Unit.find_or_create_by!(name: value[:name], unit: value[:unit])
 end
+User.create!(email: 'admin@example.com', password: 'password', password_confirmation: 'password') if Rails.env.development?
