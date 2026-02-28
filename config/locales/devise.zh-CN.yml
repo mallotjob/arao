@@ -1,0 +1,45 @@
+zh-CN:
+  devise:
+    confirmations:
+      confirmed: "您的邮箱已成功验证。"
+      send_instructions: "几分钟内您将收到确认邮箱的说明。"
+    failure:
+      already_authenticated: "您已经登录。"
+      inactive: "您的账户尚未激活。"
+      invalid: "邮箱或密码错误。"
+      locked: "您的账户已被锁定。"
+      not_found_in_database: "邮箱或密码错误。"
+      timeout: "登录已过期，请重新登录。"
+      unauthenticated: "请先登录。"
+    mailer:
+      confirmation_instructions:
+        subject: "确认您的账户"
+      reset_password_instructions:
+        subject: "重置密码说明"
+      unlock_instructions:
+        subject: "解锁账户说明"
+    passwords:
+      no_token: "无法访问此页面。"
+      send_instructions: "几分钟内您将收到重置密码的说明。"
+      updated: "您的密码已成功更新。"
+    registrations:
+      signed_up: "注册成功！"
+      updated: "账户更新成功。"
+      destroyed: "账户已删除。"
+    sessions:
+      signed_in: "登录成功。"
+      signed_out: "您已退出登录。"
+    unlocks:
+      send_instructions: "您将在几分钟内收到解锁账户的电子邮件说明。"
+      send_paranoid_instructions: "如果您的账户存在，您将在几分钟内收到解锁说明邮件。"
+      unlocked: "您的账户已成功解锁。请登录继续。"
+  errors:
+    messages:
+      already_confirmed: "已确认，请尝试登录"
+      confirmation_period_expired: "需要在 %{period} 内确认，请重新申请"
+      expired: "已过期，请重新申请"
+      not_found: "未找到"
+      not_locked: "未被锁定"
+      not_saved:
+        one: "1 个错误导致 %{resource} 无法保存："
+        other: "%{count} 个错误导致 %{resource} 无法保存："

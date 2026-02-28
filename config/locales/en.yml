@@ -29,3 +29,10 @@
 
 en:
   hello: "Hello world"
+  welcome: "Welcome on our application"
+  labels:
+    login: Log in
+    password: Password
+    remember: Remember me
+    username: Username or Email
+  welcome: Welcome on our application
