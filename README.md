@@ -21,7 +21,7 @@ A modern Rails 8 + Vue.js application for managing products, shipping, and multi
 ### Application Structure
 
 ```
-follow/
+arao/
 ├── app/
 │   ├── controllers/          # Rails controllers
 │   │   ├── admin/           # Admin portal controllers
@@ -107,7 +107,7 @@ follow/
 ```bash
 # Clone and setup
 git clone <repository-url>
-cd follow
+cd arao
 
 # Install dependencies (REQUIRED FIRST)
 bundle install
@@ -118,7 +118,7 @@ bin/rails db:create db:migrate db:seed
 foreman start -e /dev/null
 ```
 
-Visit `http://me.follow.local` or `http://admin.follow.local` after setting up hosts.
+Visit `http://me.follow.local:5000` or `http://admin.follow.local:5000` after setting up hosts.
 
 ---
 
