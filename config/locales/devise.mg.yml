@@ -3,7 +3,7 @@ mg:
     confirmations:
       confirmed: "Voamarina soa aman-tsara ny adiresy mailakao."
       send_instructions: "Ho avy tsy ho ela ny mailaka misy torolàlana fanamafisana."
-    failures:
+    failure:
       already_authenticated: "Efa tafiditra ianao."
       inactive: "Tsy mbola mavitrika ny kaontinao."
       invalid: "Diso ny mailaka na tenimiafina."
