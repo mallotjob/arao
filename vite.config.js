@@ -15,13 +15,15 @@ export default defineConfig({
     VueI18nPlugin({
       runtimeOnly: true,
       include: [resolve(__dirname, 'app/frontend/i18n/*.json')],
-    })
+    }),
   ],
   server: {
     watch: {
       ignored: ['**/node_modules/**', '**/tmp/**'], // Ignore unnecessary files
     },
     hmr: true,
+    host: true,
+    port: 5000
   },
 
   resolve: {
@@ -30,7 +32,7 @@ export default defineConfig({
       '~': resolve(projectRoot, 'node_modules'),
       '@': resolve(__dirname, 'app/frontend'),
       root: resolve(projectRoot, './'),
-    }
+    },
   },
   css: {
     // see https://github.com/vitejs/vite/discussions/18388
@@ -38,8 +40,8 @@ export default defineConfig({
       scss: {
         api: 'modern-compiler',
         additionalData: `
-        @use "sass:color";`
-      }
-    }
-  }
+        @use "sass:color";`,
+      },
+    },
+  },
 });
