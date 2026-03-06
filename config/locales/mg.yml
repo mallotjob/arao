@@ -1,9 +1,15 @@
 ---
 mg:
-  hello: Manahoana
   labels:
     login: Midira
     password: Tenimiafina
     remember: Tsarovy aho
     username: Anarana na Mailaka
-  welcome: Tongasoa eto amin'ny rindranasa
+  language:
+    names:
+      en: English
+      fr: French
+      mg: Malagasy
+      zh-CN: Chinese
+  login_subtitle: Midira amin'ny kaontinao hanao famerana
+  welcome: Tonga soa indray

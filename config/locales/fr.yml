@@ -1,9 +1,15 @@
 ---
 fr:
-  hello: Bonjour
   labels:
     login: Se connecter
     password: Mot de passe
     remember: Se souvenir de moi
     username: Nom d'utilisateur ou e-mail
-  welcome: Bienvenue sur notre application
+  language:
+    names:
+      en: English
+      fr: French
+      mg: Malagasy
+      zh-CN: Chinese
+  login_subtitle: Connectez-vous à votre compte pour continuer
+  welcome: Bon retour

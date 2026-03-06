@@ -1,9 +1,15 @@
 ---
 zh-CN:
-  hello: 你好
   labels:
     login: 登录
     password: 密码
     remember: 记住我
     username: 用户名或邮箱
-  welcome: 欢迎使用我们的应用程序
+  language:
+    names:
+      en: English
+      fr: French
+      mg: Malagasy
+      zh-CN: Chinese
+  login_subtitle: 欢迎回来
+  welcome: 登录您的账户以继续
