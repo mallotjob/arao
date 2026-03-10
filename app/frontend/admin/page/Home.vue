@@ -221,7 +221,7 @@
           <span class="text-sm font-medium text-slate-700">Manage Companies</span>
         </router-link>
 
-        <router-link
+        <!-- <router-link
           :to="{ name: 'users' }"
           class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
         >
@@ -240,7 +240,7 @@
             />
           </svg>
           <span class="text-sm font-medium text-slate-700">Manage Users</span>
-        </router-link>
+        </router-link> -->
 
         <router-link
           :to="{ name: 'products' }"
@@ -262,7 +262,7 @@
           <span class="text-sm font-medium text-slate-700">Manage Products</span>
         </router-link>
 
-        <router-link
+        <!-- <router-link
           :to="{ name: 'settings' }"
           class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
         >
@@ -287,7 +287,7 @@
             />
           </svg>
           <span class="text-sm font-medium text-slate-700">Settings</span>
-        </router-link>
+        </router-link> -->
       </div>
     </div>
   </div>
