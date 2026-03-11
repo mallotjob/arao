@@ -70,6 +70,7 @@ describe('BaseButton', () => {
       try {
         mount(BaseButton, wrapperOptions);
       } catch {
+        // eslint-disable-next-line vitest/no-conditional-expect
         expect(consoleError).toHaveBeenCalled();
         consoleError.mockRestore();
       }
