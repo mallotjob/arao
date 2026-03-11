@@ -5,6 +5,9 @@ class User < ApplicationRecord
 
   belongs_to :company, optional: true
 
+  has_many :user_roles, dependent: :destroy
+  has_many :roles, through: :user_roles
+
   attr_accessor :login
 
   def self.find_for_database_authentication(warden_conditions)
