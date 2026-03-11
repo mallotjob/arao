@@ -1,12 +1,13 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.0"
+gem "rails", "~> 8.0.2"
 gem "vite_rails"
 gem "rails-i18n"
-gem "devise"
+gem "devise", "~> 4.8"
 gem "aasm"
 gem "importmap-rails"
+gem "cancancan"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
@@ -33,12 +34,15 @@ group :development, :test do
   gem "debug", platforms: %i[ mri windows ], require: "debug/prelude"
 
   # Static analysis for security vulnerabilities [https://brakemanscanner.org/]
-  gem "brakeman", require: false
+  gem "brakeman", "~> 8.0.4", require: false
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop", require: false
   gem "rubocop-rails-omakase", require: false
-  gem "annotaterb"
 
+  gem "annotaterb"
   gem "foreman"
+  gem "rspec-rails"
 end
+
+gem "tailwindcss-rails", "~> 4.4"

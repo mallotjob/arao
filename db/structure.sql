@@ -28,27 +28,6 @@ SET default_tablespace = '';
 SET default_table_access_method = heap;
 
 --
--- Name: admins; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.admins (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    first_name character varying,
-    last_name character varying,
-    phone_number character varying,
-    email character varying,
-    username character varying,
-    company_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL,
-    encrypted_password character varying DEFAULT ''::character varying NOT NULL,
-    reset_password_token character varying,
-    reset_password_sent_at timestamp(6) without time zone,
-    remember_created_at timestamp(6) without time zone
-);
-
-
---
 -- Name: ar_internal_metadata; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -78,12 +57,40 @@ CREATE TABLE public.balances (
 
 
 --
+-- Name: beneficiaries; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.beneficiaries (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    shipping_mark character varying,
+    company_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: companies; Type: TABLE; Schema: public; Owner: -
 --
 
 CREATE TABLE public.companies (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    status character varying,
+    deleted_at timestamp(6) without time zone
+);
+
+
+--
+-- Name: permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.permissions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    action character varying,
+    subject character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -97,7 +104,7 @@ CREATE TABLE public.products (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     shipping_time_id uuid NOT NULL,
     type_config_id uuid NOT NULL,
-    shipping_id uuid NOT NULL,
+    beneficiary_id uuid NOT NULL,
     quantity integer,
     length double precision,
     width double precision,
@@ -109,6 +116,32 @@ CREATE TABLE public.products (
     updated_at timestamp(6) without time zone NOT NULL,
     aasm_state character varying,
     balance_id uuid
+);
+
+
+--
+-- Name: role_permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.role_permissions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    role_id uuid NOT NULL,
+    permission_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: roles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.roles (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    name character varying,
+    description text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -136,19 +169,6 @@ CREATE TABLE public.shipping_times (
 
 
 --
--- Name: shippings; Type: TABLE; Schema: public; Owner: -
---
-
-CREATE TABLE public.shippings (
-    id uuid DEFAULT gen_random_uuid() NOT NULL,
-    mark character varying,
-    company_id uuid NOT NULL,
-    created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
-);
-
-
---
 -- Name: type_configs; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -159,7 +179,9 @@ CREATE TABLE public.type_configs (
     unit_id uuid NOT NULL,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
-    updated_at timestamp(6) without time zone NOT NULL
+    updated_at timestamp(6) without time zone NOT NULL,
+    from_date timestamp(6) without time zone DEFAULT CURRENT_DATE NOT NULL,
+    datetime date
 );
 
 
@@ -184,6 +206,19 @@ CREATE TABLE public.units (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying,
     unit character varying,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_roles (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    role_id uuid NOT NULL,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
@@ -216,14 +251,6 @@ CREATE TABLE public.users (
 
 
 --
--- Name: admins admins_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.admins
-    ADD CONSTRAINT admins_pkey PRIMARY KEY (id);
-
-
---
 -- Name: ar_internal_metadata ar_internal_metadata_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -240,6 +267,14 @@ ALTER TABLE ONLY public.balances
 
 
 --
+-- Name: beneficiaries beneficiaries_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.beneficiaries
+    ADD CONSTRAINT beneficiaries_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: companies companies_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -248,11 +283,35 @@ ALTER TABLE ONLY public.companies
 
 
 --
+-- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.permissions
+    ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.products
     ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: role_permissions role_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.role_permissions
+    ADD CONSTRAINT role_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
 
 
 --
@@ -269,14 +328,6 @@ ALTER TABLE ONLY public.schema_migrations
 
 ALTER TABLE ONLY public.shipping_times
     ADD CONSTRAINT shipping_times_pkey PRIMARY KEY (id);
-
-
---
--- Name: shippings shippings_pkey; Type: CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.shippings
-    ADD CONSTRAINT shippings_pkey PRIMARY KEY (id);
 
 
 --
@@ -304,39 +355,19 @@ ALTER TABLE ONLY public.units
 
 
 --
+-- Name: user_roles user_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT user_roles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.users
     ADD CONSTRAINT users_pkey PRIMARY KEY (id);
-
-
---
--- Name: index_admins_on_company_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_admins_on_company_id ON public.admins USING btree (company_id);
-
-
---
--- Name: index_admins_on_email; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_admins_on_email ON public.admins USING btree (email);
-
-
---
--- Name: index_admins_on_reset_password_token; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_admins_on_reset_password_token ON public.admins USING btree (reset_password_token);
-
-
---
--- Name: index_admins_on_username; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE UNIQUE INDEX index_admins_on_username ON public.admins USING btree (username);
 
 
 --
@@ -347,6 +378,20 @@ CREATE INDEX index_balances_on_companies_id ON public.balances USING btree (comp
 
 
 --
+-- Name: index_beneficiaries_on_company_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_beneficiaries_on_company_id ON public.beneficiaries USING btree (company_id);
+
+
+--
+-- Name: index_companies_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_companies_on_deleted_at ON public.companies USING btree (deleted_at);
+
+
+--
 -- Name: index_products_on_balance_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -354,10 +399,10 @@ CREATE INDEX index_products_on_balance_id ON public.products USING btree (balanc
 
 
 --
--- Name: index_products_on_shipping_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_products_on_beneficiary_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_products_on_shipping_id ON public.products USING btree (shipping_id);
+CREATE INDEX index_products_on_beneficiary_id ON public.products USING btree (beneficiary_id);
 
 
 --
@@ -375,6 +420,20 @@ CREATE INDEX index_products_on_type_config_id ON public.products USING btree (ty
 
 
 --
+-- Name: index_role_permissions_on_permission_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_role_permissions_on_permission_id ON public.role_permissions USING btree (permission_id);
+
+
+--
+-- Name: index_role_permissions_on_role_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_role_permissions_on_role_id ON public.role_permissions USING btree (role_id);
+
+
+--
 -- Name: index_shipping_times_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -386,13 +445,6 @@ CREATE INDEX index_shipping_times_on_company_id ON public.shipping_times USING b
 --
 
 CREATE INDEX index_shipping_times_on_type_id ON public.shipping_times USING btree (type_id);
-
-
---
--- Name: index_shippings_on_company_id; Type: INDEX; Schema: public; Owner: -
---
-
-CREATE INDEX index_shippings_on_company_id ON public.shippings USING btree (company_id);
 
 
 --
@@ -414,6 +466,20 @@ CREATE INDEX index_type_configs_on_unit_id ON public.type_configs USING btree (u
 --
 
 CREATE INDEX index_types_on_company_id ON public.types USING btree (company_id);
+
+
+--
+-- Name: index_user_roles_on_role_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_roles_on_role_id ON public.user_roles USING btree (role_id);
+
+
+--
+-- Name: index_user_roles_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_roles_on_user_id ON public.user_roles USING btree (user_id);
 
 
 --
@@ -485,11 +551,51 @@ ALTER TABLE ONLY public.balances
 
 
 --
+-- Name: beneficiaries fk_rails_3143e992c5; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.beneficiaries
+    ADD CONSTRAINT fk_rails_3143e992c5 FOREIGN KEY (company_id) REFERENCES public.companies(id);
+
+
+--
+-- Name: user_roles fk_rails_318345354e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT fk_rails_318345354e FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: user_roles fk_rails_3369e0d5fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT fk_rails_3369e0d5fc FOREIGN KEY (role_id) REFERENCES public.roles(id);
+
+
+--
 -- Name: products fk_rails_415b55c1ba; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.products
     ADD CONSTRAINT fk_rails_415b55c1ba FOREIGN KEY (shipping_time_id) REFERENCES public.shipping_times(id);
+
+
+--
+-- Name: role_permissions fk_rails_439e640a3f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.role_permissions
+    ADD CONSTRAINT fk_rails_439e640a3f FOREIGN KEY (permission_id) REFERENCES public.permissions(id);
+
+
+--
+-- Name: role_permissions fk_rails_60126080bd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.role_permissions
+    ADD CONSTRAINT fk_rails_60126080bd FOREIGN KEY (role_id) REFERENCES public.roles(id);
 
 
 --
@@ -525,27 +631,11 @@ ALTER TABLE ONLY public.type_configs
 
 
 --
--- Name: shippings fk_rails_c1d191effb; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.shippings
-    ADD CONSTRAINT fk_rails_c1d191effb FOREIGN KEY (company_id) REFERENCES public.companies(id);
-
-
---
--- Name: admins fk_rails_e493fcc5fa; Type: FK CONSTRAINT; Schema: public; Owner: -
---
-
-ALTER TABLE ONLY public.admins
-    ADD CONSTRAINT fk_rails_e493fcc5fa FOREIGN KEY (company_id) REFERENCES public.companies(id);
-
-
---
--- Name: products fk_rails_ea52b43f2a; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: products fk_rails_e24ff8a48b; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.products
-    ADD CONSTRAINT fk_rails_ea52b43f2a FOREIGN KEY (shipping_id) REFERENCES public.shippings(id);
+    ADD CONSTRAINT fk_rails_e24ff8a48b FOREIGN KEY (beneficiary_id) REFERENCES public.beneficiaries(id);
 
 
 --
@@ -555,11 +645,15 @@ ALTER TABLE ONLY public.products
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260306153052'),
+('20260306153034'),
+('20260305124128'),
+('20260305124120'),
+('20260305113801'),
+('20260305113734'),
 ('20241226180832'),
 ('20241226180253'),
-('20241226173943'),
 ('20241226173359'),
-('20241217075348'),
 ('20241216054613'),
 ('20241211173125'),
 ('20241211163416'),
@@ -571,8 +665,6 @@ INSERT INTO "schema_migrations" (version) VALUES
 ('20241210162321'),
 ('20241209135629'),
 ('20241209135524'),
-('20241209102142'),
-('20241209101716'),
 ('20241209101446'),
 ('20241209101143');
 

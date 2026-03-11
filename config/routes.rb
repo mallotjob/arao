@@ -1,5 +1,17 @@
 Rails.application.routes.draw do
-  devise_for :users
+  namespace :admin do
+    namespace :api do
+      get "products/index"
+      get "products/create"
+      get "products/update"
+      get "products/destroy"
+      get "roles/index"
+    end
+  end
+  scope "(:locale)", locale: /en|fr|zh-CN|mg/ do
+    devise_for :users
+  end
+
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
   # Reveal health status on /up that returns 200 if the app boots with no exceptions, otherwise 500.
@@ -20,6 +32,18 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   constraints(subdomain: "admin") do
     scope module: "admin", as: :admin do
+      namespace :api do
+        resources :users, only: %i[index create update destroy], defaults: { format: "json" } do
+          get :me, on: :collection, defaults: { format: "json" }
+          post :roles, on: :member, defaults: { format: "json" }
+          delete :roles, on: :member, defaults: { format: "json" }
+        end
+        resources :companies, defaults: { format: "json" }
+        resources :products, only: %i[index create update destroy], defaults: { format: "json" } do
+          patch :status, on: :member, defaults: { format: "json" }
+        end
+        resources :roles, only: [:index], defaults: { format: "json" }
+      end
       root "admin#home"
       get "*path", to: "admin#home", constraints: ->(request) { request.format.html? }
     end
