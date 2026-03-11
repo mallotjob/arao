@@ -30,7 +30,7 @@
       <!-- Navigation -->
       <nav class="mt-6 px-3">
         <div class="space-y-1">
-          <!-- <router-link
+          <router-link
             v-for="item in navigation"
             :key="item.name"
             :to="{ name: item.route }"
@@ -41,9 +41,12 @@
                 : 'text-slate-300 hover:bg-slate-700 hover:text-white'
             ]"
           >
-            <component :is="item.icon" class="mr-3 h-5 w-5" />
+            <FontAwesomeIcon
+              :icon="['fas', item.icon]"
+              class="mr-3 h-5 w-5"
+            />
             {{ item.name }}
-          </router-link> -->
+          </router-link>
         </div>
 
         <!-- Management Section -->
@@ -56,8 +59,8 @@
             :key="item.name"
             class="mt-3 space-y-1"
           >
-            {{ item.route }}
-            <!-- <router-link
+            <router-link
+              v-if="canAccess(item.permission)"
               :to="{ name: item.route }"
               class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors"
               :class="[
@@ -65,11 +68,13 @@
                   ? 'bg-slate-800 text-white'
                   : 'text-slate-300 hover:bg-slate-700 hover:text-white'
               ]"
-              v-if="canAccess(item.permission)"
             >
-              <component :is="item.icon" class="mr-3 h-5 w-5" />
+              <!-- <component
+                :is="item.icon"
+                class="mr-3 h-5 w-5"
+              /> -->
               {{ item.name }}
-            </router-link> -->
+            </router-link>
           </div>
         </div>
       </nav>
@@ -101,21 +106,19 @@ import Header from '@/admin/layouts/Header.vue';
 // const router = useRouter()
 const sidebarOpen = ref(false);
 
-// User data (this would come from your auth state)
-
 // Navigation items
-// const navigation = [
-//   { name: 'Dashboard', route: 'home', icon: HomeIcon },
-//   { name: 'Account', route: 'account', icon: UserIcon },
-// ];
+const navigation = [
+  { name: 'Dashboard', route: 'home', icon: 'house' },
+  { name: 'Account', route: 'account', icon: 'user' },
+];
 
 const managementNav = [
   { name: 'Companies', route: 'companies', permission: 'manage_companies' },
-  { name: 'Users', route: 'users', permission: 'manage_users' },
-  { name: 'Products', route: 'products', permission: 'manage_products' },
-  { name: 'Shipping', route: 'shipping', permission: 'manage_shipping' },
-  { name: 'Reports', route: 'reports', permission: 'view_reports' },
-  { name: 'Settings', route: 'settings', permission: 'manage_settings' },
+  { name: 'Users', route: 'companies', permission: 'manage_users' },
+  { name: 'Products', route: 'companies', permission: 'manage_products' },
+  { name: 'Shipping', route: 'companies', permission: 'manage_shipping' },
+  { name: 'Reports', route: 'companies', permission: 'view_reports' },
+  { name: 'Settings', route: 'companies', permission: 'manage_settings' },
 ];
 
 // Methods
@@ -123,9 +126,9 @@ const toggleSidebar = () => {
   sidebarOpen.value = !sidebarOpen.value;
 };
 
-// const canAccess = (permission) => {
-//   // This would integrate with your CASL permissions
-//   // For now, return true (admin has all permissions)
-//   return true;
-// };
+const canAccess = () => {
+  // This would integrate with your CASL permissions
+  // For now, return true (admin has all permissions)
+  return true;
+};
 </script>
