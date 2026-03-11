@@ -32,7 +32,7 @@
               :icon="['fas', 'globe']"
               class="size-5 mr-0"
             />
-            <span class="hidden sm:block text-sm font-medium">{{ currentLanguage }}</span>
+            <span class="hidden sm:block text-sm font-medium">{{ currentLanguage() }}</span>
             <FontAwesomeIcon :icon="['fas', 'chevron-down']" />
           </button>
 
@@ -82,7 +82,7 @@
                 class="block w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
                 @click="handleLogout"
               >
-                Sign Out
+                {{ t('sign_out') }}
               </button>
             </div>
           </div>
@@ -93,8 +93,10 @@
 </template>
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { useI18n } from 'vue-i18n';
 import api from '@/admin/api';
 
+const { t, locale } = useI18n();
 const emit = defineEmits(['toggle-sidebar']);
 
 const currentUser = ref({
@@ -106,10 +108,9 @@ const showUserMenu = ref(false);
 const isDark = ref(false);
 const showLanguageMenu = ref(false);
 
-const changeLanguage = (locale) => {
-  localStorage.setItem('locale', locale);
-  // Reload the page with new locale
-  window.location.href = `/${locale}${window.location.pathname}`;
+const changeLanguage = (newLocale) => {
+  locale.value = newLocale;
+  localStorage.setItem('locale', newLocale);
   showLanguageMenu.value = false;
 };
 
@@ -125,15 +126,16 @@ const languages = [
   { code: 'zh-CN', name: '中文', flag: '🇨🇳' },
 ];
 
-const currentLanguage = computed(() => {
-  const lang = languages.find(l => l.code === (localStorage.getItem('locale') || 'en'));
-  return lang ? lang.name : 'English';
-});
 
 const userInitials = computed(() => {
   const user = currentUser.value;
   return `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase();
 });
+
+const currentLanguage = () => {
+  const lang = languages.find(l => l.code === (localStorage.getItem('locale') || 'en'));
+  return lang ? lang.name : 'English';
+};
 
 const toggleTheme = () => {
   isDark.value = !isDark.value;
@@ -174,6 +176,13 @@ onUnmounted(() => {
   document.removeEventListener('click', handleClickOutside);
 });
 </script>
-<style lang="">
-
-</style>
+<i18n lang="yaml">
+  en:
+    sign_out: Sign Out
+  fr:
+    sign_out: Se déconnecter
+  mg:
+    sign_out: Hiala
+  zh-CN:
+    sign_out: 退出登录
+</i18n>
