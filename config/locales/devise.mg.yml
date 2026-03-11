@@ -1,0 +1,45 @@
+mg:
+  devise:
+    confirmations:
+      confirmed: "Voamarina soa aman-tsara ny adiresy mailakao."
+      send_instructions: "Ho avy tsy ho ela ny mailaka misy torolàlana fanamafisana."
+    failure:
+      already_authenticated: "Efa tafiditra ianao."
+      inactive: "Tsy mbola mavitrika ny kaontinao."
+      invalid: "Diso ny mailaka na tenimiafina."
+      locked: "Voasakana ny kaontinao."
+      not_found_in_database: "Diso ny mailaka na tenimiafina."
+      timeout: "Lany daty ny fidiranao, azafady miverena miditra."
+      unauthenticated: "Tsy maintsy miditra aloha ianao."
+    mailer:
+      confirmation_instructions:
+        subject: "Torolàlana fanamafisana"
+      reset_password_instructions:
+        subject: "Torolàlana fanarenana tenimiafina"
+      unlock_instructions:
+        subject: "Torolàlana fanokafana kaonty"
+    passwords:
+      no_token: "Tsy afaka miditra amin'ity pejy ity ianao."
+      send_instructions: "Ho avy tsy ho ela ny mailaka misy torolàlana fanarenana tenimiafina."
+      updated: "Nohavaozina soa aman-tsara ny tenimiafinao."
+    registrations:
+      signed_up: "Tonga soa! Vita ny fisoratana anarana."
+      updated: "Nohavaozina ny kaontinao."
+      destroyed: "Voafafa ny kaontinao."
+    sessions:
+      signed_in: "Tafiditra soa aman-tsara."
+      signed_out: "Nivoaka soa aman-tsara."
+    unlocks:
+      send_instructions: "Ho avy tsy ho ela ny mailaka misy torolàlana fanokafana ny kaontinao."
+      send_paranoid_instructions: "Raha misy ny kaontinao, dia ho avy tsy ho ela ny mailaka misy torolàlana fanokafana azy."
+      unlocked: "Vita soa aman-tsara ny fanokafana ny kaontinao. Azafady midira mba hanohy."
+  errors:
+    messages:
+      already_confirmed: "efa voamarina, azafady miezaha miditra"
+      confirmation_period_expired: "tsy maintsy voamarina ao anatin'ny %{period}, azafady mangataha vaovao"
+      expired: "lasa daty, azafady mangataha vaovao"
+      not_found: "tsy hita"
+      not_locked: "tsy voasakana"
+      not_saved:
+        one: "1 hadisoana no nanakana ny %{resource} tsy ho voatahiry:"
+        other: "%{count} hadisoana no nanakana ny %{resource} tsy ho voatahiry:"

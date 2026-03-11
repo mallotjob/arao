@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import autoprefixer from 'autoprefixer';
+// import autoprefixer from 'autoprefixer';
 import RubyPlugin, { projectRoot } from 'vite-plugin-ruby';
-import tailwindcss from 'tailwindcss';
+// import tailwindcss from 'tailwindcss';
 import vue from '@vitejs/plugin-vue';
 import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
@@ -15,13 +15,15 @@ export default defineConfig({
     VueI18nPlugin({
       runtimeOnly: true,
       include: [resolve(__dirname, 'app/frontend/i18n/*.json')],
-    })
+    }),
   ],
   server: {
     watch: {
       ignored: ['**/node_modules/**', '**/tmp/**'], // Ignore unnecessary files
     },
     hmr: true,
+    host: true,
+    port: 5000
   },
 
   resolve: {
@@ -30,14 +32,16 @@ export default defineConfig({
       '~': resolve(projectRoot, 'node_modules'),
       '@': resolve(__dirname, 'app/frontend'),
       root: resolve(projectRoot, './'),
-    }
+    },
   },
   css: {
-    postcss: {
-      plugins: [
-        tailwindcss(),
-        autoprefixer(),
-      ],
+    // see https://github.com/vitejs/vite/discussions/18388
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler',
+        additionalData: `
+        @use "sass:color";`,
+      },
     },
   },
 });

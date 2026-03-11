@@ -5,9 +5,10 @@
   >
     <Variant title="default">
       <BaseButton label="primary" />
-      <BaseButton color="mi-light">
-        Alternative
-      </BaseButton>
+      <BaseButton
+        color="mi-light"
+        label="Alternative"
+      />
       <BaseButton color="dark">
         Dark
       </BaseButton>

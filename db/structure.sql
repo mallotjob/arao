@@ -77,6 +77,21 @@ CREATE TABLE public.companies (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL,
+    status character varying,
+    deleted_at timestamp(6) without time zone
+);
+
+
+--
+-- Name: permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.permissions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    action character varying,
+    subject character varying,
+    created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL
 );
 
@@ -101,6 +116,32 @@ CREATE TABLE public.products (
     updated_at timestamp(6) without time zone NOT NULL,
     aasm_state character varying,
     balance_id uuid
+);
+
+
+--
+-- Name: role_permissions; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.role_permissions (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    role_id uuid NOT NULL,
+    permission_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
+-- Name: roles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.roles (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    name character varying,
+    description text,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
 );
 
 
@@ -171,6 +212,19 @@ CREATE TABLE public.units (
 
 
 --
+-- Name: user_roles; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE public.user_roles (
+    id uuid DEFAULT gen_random_uuid() NOT NULL,
+    user_id uuid NOT NULL,
+    role_id uuid NOT NULL,
+    created_at timestamp(6) without time zone NOT NULL,
+    updated_at timestamp(6) without time zone NOT NULL
+);
+
+
+--
 -- Name: users; Type: TABLE; Schema: public; Owner: -
 --
 
@@ -229,11 +283,35 @@ ALTER TABLE ONLY public.companies
 
 
 --
+-- Name: permissions permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.permissions
+    ADD CONSTRAINT permissions_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: products products_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.products
     ADD CONSTRAINT products_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: role_permissions role_permissions_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.role_permissions
+    ADD CONSTRAINT role_permissions_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: roles roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.roles
+    ADD CONSTRAINT roles_pkey PRIMARY KEY (id);
 
 
 --
@@ -277,6 +355,14 @@ ALTER TABLE ONLY public.units
 
 
 --
+-- Name: user_roles user_roles_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT user_roles_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: users users_pkey; Type: CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -296,6 +382,13 @@ CREATE INDEX index_balances_on_companies_id ON public.balances USING btree (comp
 --
 
 CREATE INDEX index_beneficiaries_on_company_id ON public.beneficiaries USING btree (company_id);
+
+
+--
+-- Name: index_companies_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_companies_on_deleted_at ON public.companies USING btree (deleted_at);
 
 
 --
@@ -324,6 +417,20 @@ CREATE INDEX index_products_on_shipping_time_id ON public.products USING btree (
 --
 
 CREATE INDEX index_products_on_type_config_id ON public.products USING btree (type_config_id);
+
+
+--
+-- Name: index_role_permissions_on_permission_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_role_permissions_on_permission_id ON public.role_permissions USING btree (permission_id);
+
+
+--
+-- Name: index_role_permissions_on_role_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_role_permissions_on_role_id ON public.role_permissions USING btree (role_id);
 
 
 --
@@ -359,6 +466,20 @@ CREATE INDEX index_type_configs_on_unit_id ON public.type_configs USING btree (u
 --
 
 CREATE INDEX index_types_on_company_id ON public.types USING btree (company_id);
+
+
+--
+-- Name: index_user_roles_on_role_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_roles_on_role_id ON public.user_roles USING btree (role_id);
+
+
+--
+-- Name: index_user_roles_on_user_id; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_user_roles_on_user_id ON public.user_roles USING btree (user_id);
 
 
 --
@@ -438,11 +559,43 @@ ALTER TABLE ONLY public.beneficiaries
 
 
 --
+-- Name: user_roles fk_rails_318345354e; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT fk_rails_318345354e FOREIGN KEY (user_id) REFERENCES public.users(id);
+
+
+--
+-- Name: user_roles fk_rails_3369e0d5fc; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.user_roles
+    ADD CONSTRAINT fk_rails_3369e0d5fc FOREIGN KEY (role_id) REFERENCES public.roles(id);
+
+
+--
 -- Name: products fk_rails_415b55c1ba; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.products
     ADD CONSTRAINT fk_rails_415b55c1ba FOREIGN KEY (shipping_time_id) REFERENCES public.shipping_times(id);
+
+
+--
+-- Name: role_permissions fk_rails_439e640a3f; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.role_permissions
+    ADD CONSTRAINT fk_rails_439e640a3f FOREIGN KEY (permission_id) REFERENCES public.permissions(id);
+
+
+--
+-- Name: role_permissions fk_rails_60126080bd; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.role_permissions
+    ADD CONSTRAINT fk_rails_60126080bd FOREIGN KEY (role_id) REFERENCES public.roles(id);
 
 
 --
@@ -492,6 +645,12 @@ ALTER TABLE ONLY public.products
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260306153052'),
+('20260306153034'),
+('20260305124128'),
+('20260305124120'),
+('20260305113801'),
+('20260305113734'),
 ('20241226180832'),
 ('20241226180253'),
 ('20241226173359'),
