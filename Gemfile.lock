@@ -401,7 +401,7 @@ DEPENDENCIES
   pg (~> 1.1)
   propshaft
   puma (>= 5.0)
-  rails (~> 8.0.1)
+  rails (~> 8.0.2)
   rails-i18n
   rspec-rails
   rubocop
