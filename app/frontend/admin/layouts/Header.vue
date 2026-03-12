@@ -76,7 +76,7 @@
                 :to="{ name: 'account' }"
                 class="block px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
               >
-                Account Settings
+                {{ t('account_settings') }}
               </router-link>
               <button
                 class="block w-full text-left px-4 py-2 text-sm text-slate-700 hover:bg-slate-50"
@@ -178,11 +178,15 @@ onUnmounted(() => {
 </script>
 <i18n lang="yaml">
   en:
+    account_settings: Account Settings
     sign_out: Sign Out
   fr:
+    account_settings: Paramètres du compte
     sign_out: Se déconnecter
   mg:
+    account_settings: Kaonty
     sign_out: Hiala
   zh-CN:
+    account_settings: 账户设置
     sign_out: 退出登录
 </i18n>
