@@ -1,18 +1,18 @@
 <template>
   <div class="space-y-6">
     <!-- Welcome Header -->
-    <div class="bg-white rounded-lg shadow border border-slate-200 p-6">
-      <h1 class="text-2xl font-bold text-slate-900 mb-2">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
+      <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">
         Welcome back, {{ currentUser?.first_name || 'Admin' }}!
       </h1>
-      <p class="text-slate-600">
+      <p class="text-slate-600 dark:text-slate-300">
         Here's what's happening with your application today.
       </p>
     </div>
 
     <!-- Stats Grid -->
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      <div class="bg-white rounded-lg shadow border border-slate-200 p-6">
+      <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
           <div class="p-3 bg-blue-500 rounded-lg">
             <svg
@@ -32,17 +32,17 @@
             </svg>
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-slate-600">
+            <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
               Total Companies
             </p>
-            <p class="text-2xl font-semibold text-slate-900">
+            <p class="text-2xl font-semibold text-slate-900 dark:text-white">
               {{ stats.companies }}
             </p>
           </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow border border-slate-200 p-6">
+      <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
           <div class="p-3 bg-green-500 rounded-lg">
             <svg
@@ -61,17 +61,17 @@
             </svg>
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-slate-600">
+            <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
               Total Users
             </p>
-            <p class="text-2xl font-semibold text-slate-900">
+            <p class="text-2xl font-semibold text-slate-900 dark:text-white">
               {{ stats.users }}
             </p>
           </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow border border-slate-200 p-6">
+      <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
           <div class="p-3 bg-purple-500 rounded-lg">
             <svg
@@ -89,17 +89,17 @@
             </svg>
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-slate-600">
+            <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
               Total Products
             </p>
-            <p class="text-2xl font-semibold text-slate-900">
+            <p class="text-2xl font-semibold text-slate-900 dark:text-white">
               {{ stats.products }}
             </p>
           </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-lg shadow border border-slate-200 p-6">
+      <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
           <div class="p-3 bg-yellow-500 rounded-lg">
             <svg
@@ -117,10 +117,10 @@
             </svg>
           </div>
           <div class="ml-4">
-            <p class="text-sm font-medium text-slate-600">
+            <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
               Pending Orders
             </p>
-            <p class="text-2xl font-semibold text-slate-900">
+            <p class="text-2xl font-semibold text-slate-900 dark:text-white">
               {{ stats.pendingProducts }}
             </p>
           </div>
@@ -131,9 +131,9 @@
     <!-- Recent Activity -->
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
       <!-- Recent Users -->
-      <div class="bg-white rounded-lg shadow border border-slate-200">
-        <div class="px-6 py-4 border-b border-slate-200">
-          <h3 class="text-lg font-medium text-slate-900">
+      <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700">
+        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+          <h3 class="text-lg font-medium text-slate-900 dark:text-white">
             Recent Users
           </h3>
         </div>
@@ -148,10 +148,10 @@
                 <span class="text-sm font-medium text-white">{{ userInitials(user) }}</span>
               </div>
               <div class="ml-3">
-                <p class="text-sm font-medium text-slate-900">
+                <p class="text-sm font-medium text-slate-900 dark:text-white">
                   {{ user.first_name }} {{ user.last_name }}
                 </p>
-                <p class="text-sm text-slate-500">
+                <p class="text-sm text-slate-500 dark:text-slate-300">
                   {{ user.email }}
                 </p>
               </div>
@@ -161,9 +161,9 @@
       </div>
 
       <!-- Recent Products -->
-      <div class="bg-white rounded-lg shadow border border-slate-200">
-        <div class="px-6 py-4 border-b border-slate-200">
-          <h3 class="text-lg font-medium text-slate-900">
+      <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700">
+        <div class="px-6 py-4 border-b border-slate-200 dark:border-slate-700">
+          <h3 class="text-lg font-medium text-slate-900 dark:text-white">
             Recent Products
           </h3>
         </div>
@@ -175,10 +175,10 @@
               class="flex items-center justify-between"
             >
               <div>
-                <p class="text-sm font-medium text-slate-900">
+                <p class="text-sm font-medium text-slate-900 dark:text-white">
                   {{ product.commodity }}
                 </p>
-                <p class="text-sm text-slate-500">
+                <p class="text-sm text-slate-500 dark:text-slate-300">
                   {{ formatDate(product.created_at) }}
                 </p>
               </div>
@@ -195,17 +195,18 @@
     </div>
 
     <!-- Quick Actions -->
-    <div class="bg-white rounded-lg shadow border border-slate-200 p-6">
-      <h3 class="text-lg font-medium text-slate-900 mb-4">
+    <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
+      <h3 class="text-lg font-medium text-slate-900 dark:text-white mb-4">
         Quick Actions
       </h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <router-link
           :to="{ name: 'companies' }"
-          class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+          class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50
+           dark:hover:bg-slate-700 transition-colors"
         >
           <svg
-            class="w-6 h-6 text-slate-600 mr-3"
+            class="w-6 h-6 text-slate-600 dark:text-slate-300 mr-3"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -218,7 +219,7 @@
               10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
             />
           </svg>
-          <span class="text-sm font-medium text-slate-700">Manage Companies</span>
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Manage Companies</span>
         </router-link>
 
         <!-- <router-link
@@ -244,10 +245,11 @@
 
         <router-link
           :to="{ name: 'products' }"
-          class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+          class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50
+           dark:hover:bg-slate-700 transition-colors"
         >
           <svg
-            class="w-6 h-6 text-slate-600 mr-3"
+            class="w-6 h-6 text-slate-600 dark:text-slate-300 mr-3"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
@@ -259,7 +261,7 @@
               d="M20 7l-8-4-8 4m16 0l-8 4m8-5v4l-8 2m0-4l-8-2m8 4v10m-4-4h4"
             />
           </svg>
-          <span class="text-sm font-medium text-slate-700">Manage Products</span>
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Manage Products</span>
         </router-link>
 
         <!-- <router-link
