@@ -1,20 +1,22 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+require 'rails_helper'
 
-one:
-  first_name: MyString
-  last_name: MyString
-  phone_number: MyString
-  email: MyString
-  username: MyString
-  company: one
+RSpec.describe User, type: :model do
+  subject { user }
 
-two:
-  first_name: MyString
-  last_name: MyString
-  phone_number: MyString
-  email: MyString
-  username: MyString
-  company: two
+  let(:user) { build(:user) }
+
+  it { is_expected.to act_as_paranoid }
+
+  it "has default all_access as false" do
+    expect(user.all_access).to eq(false)
+  end
+
+  describe '#associations' do
+    it { is_expected.to belong_to(:company).optional }
+    it { is_expected.to have_many(:user_roles) }
+    it { is_expected.to have_many(:roles).through(:user_roles) }
+  end
+end
 
 # == Schema Information
 #
@@ -24,6 +26,7 @@ two:
 #  all_access             :boolean          default(FALSE), not null
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
+#  deleted_at             :datetime
 #  email                  :string
 #  encrypted_password     :string           default(""), not null
 #  first_name             :string
@@ -43,6 +46,7 @@ two:
 # Indexes
 #
 #  index_users_on_company_id            (company_id)
+#  index_users_on_deleted_at            (deleted_at)
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_username              (username) UNIQUE

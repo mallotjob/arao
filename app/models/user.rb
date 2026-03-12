@@ -1,4 +1,6 @@
 class User < ApplicationRecord
+  acts_as_paranoid
+
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   include Devisable
@@ -15,6 +17,10 @@ class User < ApplicationRecord
     login = conditions.delete(:login)
     where(conditions).where(["lower(username) = :value OR lower(email) = :value", { value: login.downcase }]).first
   end
+
+  def all_access?
+    all_access
+  end
 end
 
 # == Schema Information
@@ -25,6 +31,7 @@ end
 #  all_access             :boolean          default(FALSE), not null
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
+#  deleted_at             :datetime
 #  email                  :string
 #  encrypted_password     :string           default(""), not null
 #  first_name             :string
@@ -44,6 +51,7 @@ end
 # Indexes
 #
 #  index_users_on_company_id            (company_id)
+#  index_users_on_deleted_at            (deleted_at)
 #  index_users_on_email                 (email) UNIQUE
 #  index_users_on_reset_password_token  (reset_password_token) UNIQUE
 #  index_users_on_username              (username) UNIQUE

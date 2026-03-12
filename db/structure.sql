@@ -78,7 +78,6 @@ CREATE TABLE public.companies (
     name character varying,
     created_at timestamp(6) without time zone NOT NULL,
     updated_at timestamp(6) without time zone NOT NULL,
-    status character varying,
     deleted_at timestamp(6) without time zone
 );
 
@@ -247,7 +246,8 @@ CREATE TABLE public.users (
     last_sign_in_at timestamp(6) without time zone,
     current_sign_in_ip character varying,
     last_sign_in_ip character varying,
-    all_access boolean DEFAULT false NOT NULL
+    all_access boolean DEFAULT false NOT NULL,
+    deleted_at timestamp(6) without time zone
 );
 
 
@@ -491,6 +491,13 @@ CREATE INDEX index_users_on_company_id ON public.users USING btree (company_id);
 
 
 --
+-- Name: index_users_on_deleted_at; Type: INDEX; Schema: public; Owner: -
+--
+
+CREATE INDEX index_users_on_deleted_at ON public.users USING btree (deleted_at);
+
+
+--
 -- Name: index_users_on_email; Type: INDEX; Schema: public; Owner: -
 --
 
@@ -646,11 +653,11 @@ ALTER TABLE ONLY public.products
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260312161937'),
 ('20260312144731'),
 ('20260306153052'),
 ('20260306153034'),
 ('20260305124128'),
-('20260305124120'),
 ('20260305113801'),
 ('20260305113734'),
 ('20241226180832'),

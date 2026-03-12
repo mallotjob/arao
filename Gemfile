@@ -8,6 +8,7 @@ gem "devise", "~> 4.8"
 gem "aasm"
 gem "importmap-rails"
 gem "cancancan"
+gem "paranoia", "~> 3.0.1"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
@@ -43,6 +44,8 @@ group :development, :test do
   gem "annotaterb"
   gem "foreman"
   gem "rspec-rails"
+  gem "factory_bot_rails", "~> 6.5.1"
+  gem "shoulda-matchers", "~> 6.2"
 end
 
 gem "tailwindcss-rails", "~> 4.4"
