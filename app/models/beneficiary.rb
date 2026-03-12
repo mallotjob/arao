@@ -1,5 +1,9 @@
 class Beneficiary < ApplicationRecord
+  include CompanyScoped
+
   belongs_to :company_id
+
+  has_many :products, dependent: :restrict_with_error
 end
 
 # == Schema Information

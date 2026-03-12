@@ -1,4 +1,6 @@
 class Type < ApplicationRecord
+  include CompanyScoped
+
   belongs_to :company
 
   has_many :type_configs

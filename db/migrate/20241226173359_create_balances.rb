@@ -1,7 +1,7 @@
 class CreateBalances < ActiveRecord::Migration[8.0]
   def change
     create_table :balances, id: :uuid do |t|
-      t.references :companies, null: false, foreign_key: true, type: :uuid
+      t.references :company, null: false, foreign_key: true, type: :uuid
       t.string :currency
       t.string :beneficiary_currency
       t.float :diff

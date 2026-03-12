@@ -1,4 +1,7 @@
 class Balance < ApplicationRecord
+  include CompanyScoped
+
+  belongs_to :company
 end
 
 # == Schema Information
@@ -13,13 +16,13 @@ end
 #  to_date              :datetime
 #  created_at           :datetime         not null
 #  updated_at           :datetime         not null
-#  companies_id         :uuid             not null
+#  company_id           :uuid             not null
 #
 # Indexes
 #
-#  index_balances_on_companies_id  (companies_id)
+#  index_balances_on_company_id  (company_id)
 #
 # Foreign Keys
 #
-#  fk_rails_...  (companies_id => companies.id)
+#  fk_rails_...  (company_id => companies.id)
 #

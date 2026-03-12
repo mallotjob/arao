@@ -45,7 +45,7 @@ CREATE TABLE public.ar_internal_metadata (
 
 CREATE TABLE public.balances (
     id uuid DEFAULT gen_random_uuid() NOT NULL,
-    companies_id uuid NOT NULL,
+    company_id uuid NOT NULL,
     currency character varying,
     beneficiary_currency character varying,
     diff double precision,
@@ -372,10 +372,10 @@ ALTER TABLE ONLY public.users
 
 
 --
--- Name: index_balances_on_companies_id; Type: INDEX; Schema: public; Owner: -
+-- Name: index_balances_on_company_id; Type: INDEX; Schema: public; Owner: -
 --
 
-CREATE INDEX index_balances_on_companies_id ON public.balances USING btree (companies_id);
+CREATE INDEX index_balances_on_company_id ON public.balances USING btree (company_id);
 
 
 --
@@ -551,11 +551,11 @@ ALTER TABLE ONLY public.types
 
 
 --
--- Name: balances fk_rails_162a922efa; Type: FK CONSTRAINT; Schema: public; Owner: -
+-- Name: balances fk_rails_0eb57b0011; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY public.balances
-    ADD CONSTRAINT fk_rails_162a922efa FOREIGN KEY (companies_id) REFERENCES public.companies(id);
+    ADD CONSTRAINT fk_rails_0eb57b0011 FOREIGN KEY (company_id) REFERENCES public.companies(id);
 
 
 --

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  include CompanyScoped
   acts_as_paranoid
 
   # Include default devise modules. Others available are:
