@@ -22,6 +22,7 @@ end
 # Table name: users
 #
 #  id                     :uuid             not null, primary key
+#  all_access             :boolean          default(FALSE), not null
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
 #  email                  :string

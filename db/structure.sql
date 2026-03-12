@@ -246,7 +246,8 @@ CREATE TABLE public.users (
     current_sign_in_at timestamp(6) without time zone,
     last_sign_in_at timestamp(6) without time zone,
     current_sign_in_ip character varying,
-    last_sign_in_ip character varying
+    last_sign_in_ip character varying,
+    all_access boolean DEFAULT false NOT NULL
 );
 
 
@@ -645,6 +646,7 @@ ALTER TABLE ONLY public.products
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260312144731'),
 ('20260306153052'),
 ('20260306153034'),
 ('20260305124128'),
