@@ -1,5 +1,5 @@
 class Beneficiary < ApplicationRecord
-  include CompanyScoped
+  include ::CompanyScoped
 
   belongs_to :company_id
 

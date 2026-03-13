@@ -1,5 +1,5 @@
 class ShippingTime < ApplicationRecord
-  include CompanyScoped
+  include ::CompanyScoped
 
   belongs_to :company
   belongs_to :type

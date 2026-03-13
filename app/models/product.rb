@@ -1,6 +1,6 @@
 class Product < ApplicationRecord
   include AASM
-  include CompanyScoped
+  include ::CompanyScoped
 
   aasm do
     state :pending, initial: true

@@ -1,5 +1,5 @@
 class Company < ApplicationRecord
-  include CompanyScoped
+  include ::CompanyScoped
   acts_as_paranoid
 
   has_many :users, dependent: :restrict_with_error

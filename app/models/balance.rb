@@ -1,5 +1,5 @@
 class Balance < ApplicationRecord
-  include CompanyScoped
+  include ::CompanyScoped
 
   belongs_to :company
 end
