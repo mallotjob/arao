@@ -16,6 +16,31 @@ RSpec.describe User, type: :model do
     it { is_expected.to have_many(:user_roles) }
     it { is_expected.to have_many(:roles).through(:user_roles) }
   end
+
+  describe ".for_actor scoped" do
+    let(:company1) { create(:company) }
+    let(:company2) { create(:company) }
+
+    let(:user1) { create(:user, company: company1) }
+    let(:user2) { create(:user, company: company2) }
+
+    context "when user has all_access" do
+      let(:user) { create(:user, all_access: true) }
+
+      it "returns all users" do
+        expect(User.for_actor(user)).to include(user1, user2)
+      end
+    end
+
+    context "when user has limited access" do
+      let(:user) { create(:user, company: create(:company)) }
+
+      it "returns only company products" do
+        expect(User.for_actor(user).count).to eq(1)
+        expect(User.for_actor(user).first).to eq(user)
+      end
+    end
+  end
 end
 
 # == Schema Information

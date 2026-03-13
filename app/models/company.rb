@@ -9,7 +9,6 @@ class Company < ApplicationRecord
   has_many :products, through: :balances
 
   validates :name, presence: true, uniqueness: true
-  validates :status, presence: true, inclusion: { in: %w[active inactive] }
 
   # Default scope to exclude deleted records
   default_scope -> { where(deleted_at: nil) }
