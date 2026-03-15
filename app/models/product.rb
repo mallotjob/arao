@@ -29,6 +29,7 @@ class Product < ApplicationRecord
   belongs_to :shipping_time
   belongs_to :type_config
   belongs_to :beneficiary
+  belongs_to :balance
 
   def volume
   end
@@ -52,7 +53,7 @@ end
 #  width            :float
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
-#  balance_id       :uuid
+#  balance_id       :uuid             not null
 #  beneficiary_id   :uuid             not null
 #  shipping_time_id :uuid             not null
 #  type_config_id   :uuid             not null

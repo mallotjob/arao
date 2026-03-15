@@ -4,7 +4,6 @@ class Company < ApplicationRecord
 
   has_many :users, dependent: :restrict_with_error
   has_many :beneficiaries, dependent: :restrict_with_error
-  has_many :type_configs, dependent: :restrict_with_error
   has_many :balances, dependent: :restrict_with_error
   has_many :products, through: :balances
 

@@ -2,6 +2,8 @@ class Balance < ApplicationRecord
   include ::CompanyScoped
 
   belongs_to :company
+
+  has_many :products
 end
 
 # == Schema Information
