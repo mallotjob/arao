@@ -1,5 +1,4 @@
 class Company < ApplicationRecord
-  include ::CompanyScoped
   acts_as_paranoid
 
   has_many :users, dependent: :restrict_with_error
@@ -13,6 +12,10 @@ class Company < ApplicationRecord
   default_scope -> { where(deleted_at: nil) }
 
   # Scopes
+  scope :for_actor, ->(user) {
+    return all if user&.all_access?
+    where(id: user&.company_id)
+  }
   scope :active, -> { where(deleted_at: nil) }
   scope :inactive, -> { where.not(deleted_at: nil) }
 
