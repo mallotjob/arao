@@ -11,6 +11,11 @@ class Admin::Api::CompaniesController < ApplicationController
     }
   end
 
+  # GET /admin/api/companies/:id
+  def show
+    render json: @company.as_json(include: :users).merge(user_count: @company.users.count)
+  end
+
   # POST /admin/api/companies
   def create
     @company = Company.new(company_params)

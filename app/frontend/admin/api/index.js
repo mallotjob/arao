@@ -6,5 +6,8 @@ axiosApiInstance.interceptors.request.use(snakifyRequestInterceptor);
 
 export default {
   getWhoAmI: () => axiosApiInstance.get('/api/users/me'),
-  logOut: () =>axiosApiInstance.delete('/users/sign_out')
+  getCompanies: () => axiosApiInstance.get('/api/companies'),
+  getProducts: () => axiosApiInstance.get('/api/products'),
+  getUsers: () => axiosApiInstance.get('/api/users'),
+  logOut: () => axiosApiInstance.delete('/users/sign_out')
 };

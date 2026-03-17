@@ -9,6 +9,11 @@ class Admin::Api::ProductsController < AdminController
     render json: @products
   end
 
+  # GET /admin/api/products/:id
+  def show
+    render json: @product
+  end
+
   # POST /admin/api/products
   def create
     @product = Product.new(product_params)

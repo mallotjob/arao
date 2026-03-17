@@ -1,13 +1,4 @@
 Rails.application.routes.draw do
-  namespace :admin do
-    namespace :api do
-      get "products/index"
-      get "products/create"
-      get "products/update"
-      get "products/destroy"
-      get "roles/index"
-    end
-  end
   scope "(:locale)", locale: /en|fr|zh-CN|mg/ do
     devise_for :users
   end
@@ -39,7 +30,7 @@ Rails.application.routes.draw do
           delete :roles, on: :member, defaults: { format: "json" }
         end
         resources :companies, defaults: { format: "json" }
-        resources :products, only: %i[index create update destroy], defaults: { format: "json" } do
+        resources :products, only: %i[index show create update destroy], defaults: { format: "json" } do
           patch :status, on: :member, defaults: { format: "json" }
         end
         resources :roles, only: [:index], defaults: { format: "json" }
