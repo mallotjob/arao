@@ -1,5 +1,5 @@
 import '/style.scss';
-import { abilitiesPlugin } from '@casl/vue';
+import { abilitiesPlugin, Can } from '@casl/vue';
 import { ability } from '@/admin/services/ability';
 import { createApp } from 'vue';
 import { fab } from '@fortawesome/free-brands-svg-icons';
@@ -31,6 +31,7 @@ app.directive('tooltip', Tooltip);
 // config user ability
 app.use(abilitiesPlugin, ability);
 app.provide('ability', ability);
+app.component('Can', Can);
 
 
 app.use(i18n);
