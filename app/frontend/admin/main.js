@@ -1,4 +1,6 @@
 import '/style.scss';
+import { abilitiesPlugin } from '@casl/vue';
+import { ability } from '@/admin/services/ability';
 import { createApp } from 'vue';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
@@ -26,6 +28,11 @@ app.component('FontAwesomeIcon', FontAwesomeIcon);
 
 app.directive('tooltip', Tooltip);
 
+// config user ability
+app.use(abilitiesPlugin, ability);
+app.provide('ability', ability);
+
+
 app.use(i18n);
 app.use(router);
 app.use(PrimeVue, {
@@ -33,3 +40,5 @@ app.use(PrimeVue, {
 });
 
 app.mount('#app');
+
+

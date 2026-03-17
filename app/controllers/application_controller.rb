@@ -4,6 +4,12 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_locale
 
+  def current_ability
+    return (@current_ability ||= Ability.new(current_user)) if user_signed_in?
+
+    raise NotImplementedError
+  end
+
   private
 
   def configure_permitted_parameters

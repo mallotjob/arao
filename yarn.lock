@@ -42,6 +42,18 @@
   resolved "https://registry.yarnpkg.com/@bufbuild/protobuf/-/protobuf-2.11.0.tgz#3ec3985c9074b23aea337957225fe15a0e845f8e"
   integrity sha512-sBXGT13cpmPR5BMgHE6UEEfEaShh5Ror6rfN3yEK5si7QVrtZg8LEPQb0VVhiLRUslD2yLnXtnRzG035J/mZXQ==
 
+"@casl/ability@^6.8.0":
+  version "6.8.0"
+  resolved "https://registry.yarnpkg.com/@casl/ability/-/ability-6.8.0.tgz#db878b28339e275b6cb019a887b882b76a8abe3e"
+  integrity sha512-Ipt4mzI4gSgnomFdaPjaLgY2MWuXqAEZLrU6qqWBB7khGiBBuuEp6ytYDnq09bRXqcjaeeHiaCvCGFbBA2SpvA==
+  dependencies:
+    "@ucast/mongo2js" "^1.3.0"
+
+"@casl/vue@^2.2.6":
+  version "2.2.6"
+  resolved "https://registry.yarnpkg.com/@casl/vue/-/vue-2.2.6.tgz#caeb80c88b53dde5b51e7a157d0029117f2999c3"
+  integrity sha512-2OofMpdFWHPx99oqAYo4/Ym3P5vSUwUJA/XGvlqichiCLvo7GMu0R7yszxMYm80v9VkQ4ETMG1r4GdDDS+rFYg==
+
 "@codemirror/commands@^6.3.0":
   version "6.10.2"
   resolved "https://registry.yarnpkg.com/@codemirror/commands/-/commands-6.10.2.tgz#338bf53ab146de7bb26da4a1d32c6a6ff4d36b39"
@@ -1737,6 +1749,34 @@
   dependencies:
     "@typescript-eslint/types" "8.56.0"
     eslint-visitor-keys "^5.0.0"
+
+"@ucast/core@1.10.2", "@ucast/core@^1.4.1":
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/@ucast/core/-/core-1.10.2.tgz#30b6b893479823265368e528b61b042f752f2c92"
+  integrity sha512-ons5CwXZ/51wrUPfoduC+cO7AS1/wRb0ybpQJ9RrssossDxVy4t49QxWoWgfBDvVKsz9VXzBk9z0wqTdZ+Cq8g==
+
+"@ucast/js@3.1.0":
+  version "3.1.0"
+  resolved "https://registry.yarnpkg.com/@ucast/js/-/js-3.1.0.tgz#2f965afd1fcf0b9c5ba720f79a21fbed3be6d59f"
+  integrity sha512-eJ7yQeYtMK85UZjxoxBEbTWx6UMxEXKbjVyp+NlzrT5oMKV5Gpo/9bjTl3r7msaXTVC8iD9NJacqJ8yp7joX+Q==
+  dependencies:
+    "@ucast/core" "1.10.2"
+
+"@ucast/mongo2js@^1.3.0":
+  version "1.4.1"
+  resolved "https://registry.yarnpkg.com/@ucast/mongo2js/-/mongo2js-1.4.1.tgz#2d8193212e2a79375d083e706cf5012f5d9cad7e"
+  integrity sha512-9aeg5cmqwRQnKCXHN6I17wk83Rcm487bHelaG8T4vfpWneAI469wSI3Srnbu+PuZ5znWRbnwtVq9RgPL+bN6CA==
+  dependencies:
+    "@ucast/core" "1.10.2"
+    "@ucast/js" "3.1.0"
+    "@ucast/mongo" "2.4.3"
+
+"@ucast/mongo@2.4.3":
+  version "2.4.3"
+  resolved "https://registry.yarnpkg.com/@ucast/mongo/-/mongo-2.4.3.tgz#92b1dd7c0ab06a907f2ab1422aa3027518ccc05e"
+  integrity sha512-XcI8LclrHWP83H+7H2anGCEeDq0n+12FU2mXCTz6/Tva9/9ddK/iacvvhCyW6cijAAOILmt0tWplRyRhVyZLsA==
+  dependencies:
+    "@ucast/core" "^1.4.1"
 
 "@vitejs/plugin-vue@^5.2.0":
   version "5.2.4"
