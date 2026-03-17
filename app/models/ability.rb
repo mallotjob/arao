@@ -4,19 +4,24 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    return unless user
+    @user = user
+    return unless @user
 
-    # return true if user.all_access?
+    if @user.all_access?
+      can :manage, :all
+      return
+    end
 
-    user.roles.includes(:permissions).each do |role|
-      role.permissions.each do |permission|
-        can permission.action.to_sym, permission.subject.constantize
-      end
+    permissions.each do |permission|
+      subject = safe_constantize(permission.subject)
+      next unless subject
+
+      can permission.action.to_sym, subject
     end
   end
 
   def to_list
-    permissions = rules.each_with_object({}) do |rule, hash|
+    rules.each_with_object({}) do |rule, hash|
       rule.subjects.each do |subject|
         key = subject.to_s
 
@@ -24,7 +29,20 @@ class Ability
         hash[key] += rule.actions.map(&:to_s)
       end
     end
+  end
 
-    permissions.transform_values(&:uniq)
+  private
+
+  def permissions
+    @permissions ||= Permission
+      .joins(:roles)
+      .where(roles: { id: @user.role_ids })
+      .distinct
+  end
+
+  def safe_constantize(name)
+    name.constantize
+  rescue NameError
+    nil
   end
 end
