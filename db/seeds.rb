@@ -1,3 +1,14 @@
+puts "Creating admin all access user ..."
+
+admin_user = User.find_or_create_by!(email: "admin@example.com") do |user|
+  user.password = "password"
+  user.password_confirmation = "password"
+  user.first_name = "Admin"
+  user.last_name = "User"
+  user.username = "admin"
+end
+admin_user.update!(all_access: true)
+
 if Rails.env.development?
   # ===============================
   # ROLES
@@ -24,26 +35,9 @@ if Rails.env.development?
 
   puts "Creating permissions..."
 
-  permissions = [
-    { action: "read", subject: "User" },
-    { action: "create", subject: "User" },
-    { action: "update", subject: "User" },
-    { action: "destroy", subject: "User" },
+  Rails.application.eager_load!
 
-    { action: "read", subject: "Role" },
-    { action: "create", subject: "Role" },
-    { action: "update", subject: "Role" },
-    { action: "destroy", subject: "Role" },
-
-    { action: "read", subject: "Company" },
-    { action: "update", subject: "Company" }
-  ]
-
-  permissions.each do |perm|
-    Permission.find_or_create_by!(action: perm[:action], subject: perm[:subject])
-    puts "Permission: #{perm[:action]} #{perm[:subject]}"
-  end
-
+  Permission.generate_for_models
 
   # ===============================
   # ROLE PERMISSIONS
@@ -104,17 +98,6 @@ if Rails.env.development?
   # DEVELOPMENT ADMIN USER
   # ===============================
 
-
-  puts "Creating development admin..."
-
-  admin_user = User.find_or_create_by!(email: "admin@example.com") do |user|
-    user.password = "password"
-    user.password_confirmation = "password"
-    user.first_name = "Admin"
-    user.last_name = "User"
-    user.username = "admin"
-  end
-
   admin_role = Role.find_by!(name: "admin")
 
   UserRole.find_or_create_by!(user: admin_user, role: admin_role)
@@ -131,7 +114,6 @@ if Rails.env.development?
   admin_user.update!(company: company)
 
   puts "Company created: #{company.name}"
-
 end
 
 

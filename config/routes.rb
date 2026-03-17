@@ -33,7 +33,7 @@ Rails.application.routes.draw do
   constraints(subdomain: "admin") do
     scope module: "admin", as: :admin do
       namespace :api do
-        resources :users, only: %i[index create update destroy], defaults: { format: "json" } do
+        resources :users, only: %i[index show create update destroy], defaults: { format: "json" } do
           get :me, on: :collection, defaults: { format: "json" }
           post :roles, on: :member, defaults: { format: "json" }
           delete :roles, on: :member, defaults: { format: "json" }

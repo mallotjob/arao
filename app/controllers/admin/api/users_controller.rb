@@ -16,6 +16,11 @@ module Admin
         render json: current_user.as_json(include: :roles)
       end
 
+      # GET /admin/api/users/:id
+      def show
+        render json: @user
+      end
+
       # POST /admin/api/users
       def create
         @user = User.new(user_params)
