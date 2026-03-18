@@ -47,7 +47,7 @@ group :development, :test do
   gem "foreman"
   gem "rspec-rails"
   gem "factory_bot_rails", "~> 6.5.1"
-  gem "shoulda-matchers", "~> 6.2"
+  gem "shoulda-matchers", "~> 7.0"
 end
 
 gem "tailwindcss-rails", "~> 4.4"
