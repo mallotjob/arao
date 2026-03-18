@@ -2,6 +2,7 @@ import '/style.scss';
 import { abilitiesPlugin, Can } from '@casl/vue';
 import { ability } from '@/admin/services/ability';
 import { createApp } from 'vue';
+import { createPinia } from 'pinia';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
@@ -13,6 +14,7 @@ import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import i18n from '../i18n';
 import Lara from '@primevue/themes/lara';
+import piniaPersistedstate from 'pinia-plugin-persistedstate';
 import PrimeVue from 'primevue/config';
 import router from './router';
 import Tooltip from 'primevue/tooltip';
@@ -33,7 +35,10 @@ app.use(abilitiesPlugin, ability);
 app.provide('ability', ability);
 app.component('Can', Can);
 
+const pinia = createPinia();
+pinia.use(piniaPersistedstate);
 
+app.use(pinia);
 app.use(i18n);
 app.use(router);
 app.use(PrimeVue, {

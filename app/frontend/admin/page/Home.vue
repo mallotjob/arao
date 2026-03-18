@@ -3,7 +3,7 @@
     <!-- Welcome Header -->
     <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
       <h1 class="text-2xl font-bold text-slate-900 dark:text-white mb-2">
-        Welcome back, {{ currentUser?.first_name || 'Admin' }}!
+        Welcome back, {{ currentUser?.firstName || 'Admin' }}!
       </h1>
       <p class="text-slate-600 dark:text-slate-300">
         Here's what's happening with your application today.
@@ -149,7 +149,7 @@
               </div>
               <div class="ml-3">
                 <p class="text-sm font-medium text-slate-900 dark:text-white">
-                  {{ user.first_name }} {{ user.last_name }}
+                  {{ user.firstName }} {{ user.lastName }}
                 </p>
                 <p class="text-sm text-slate-500 dark:text-slate-300">
                   {{ user.email }}
@@ -297,7 +297,10 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import { useUserStore } from '@/admin/stores/user';
 import api from '@/admin/api';
+
+const { currentUser } = useUserStore();
 
 const stats = ref({
   companies: 0,
@@ -308,11 +311,6 @@ const stats = ref({
 
 const recentUsers = ref([]);
 const recentProducts = ref([]);
-
-const currentUser = ref({
-  first_name: 'Admin',
-  last_name: 'User'
-});
 
 const loadDashboardData = async () => {
   try {
@@ -339,7 +337,7 @@ const loadDashboardData = async () => {
 };
 
 const userInitials = (user) => {
-  return `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase();
+  return `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase();
 };
 
 const getStatusClass = (status) => {
