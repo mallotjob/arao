@@ -1,14 +1,14 @@
 source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
-gem "rails", "~> 8.0.2"
+gem "rails", "~> 8.1.2"
 gem "vite_rails"
 gem "rails-i18n"
 gem "devise", "~> 5.0"
 gem "aasm"
 gem "importmap-rails"
 gem "cancancan"
-gem "paranoia", "~> 3.0.1"
+gem "paranoia", "~> 3.1.0"
 gem "faker", "~> 3.6.1", require: false
 
 
