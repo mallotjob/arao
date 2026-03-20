@@ -50,14 +50,14 @@
             :icon="['fas', item.icon]"
             class="mr-3 h-5 w-5"
           />
-          {{ item.name }}
+          {{ t(item.name) }}
         </router-link>
       </div>
 
       <!-- Management Section -->
       <div class="mt-8">
         <h3 class="px-3 text-xs font-semibold text-slate-500 dark:text-slate-400 uppercase tracking-wider">
-          Management
+          {{ t('management') }}
         </h3>
 
         <div
@@ -76,7 +76,7 @@
                   + 'dark:hover:bg-slate-700 dark:hover:text-white'
             ]"
           >
-            {{ item.name }}
+            {{ t(item.name) }}
           </router-link>
         </div>
       </div>
@@ -84,6 +84,8 @@
   </div>
 </template>
 <script setup>
+import { useI18n } from 'vue-i18n';
+
 defineProps({
   sidebarOpen: {
     type: Boolean,
@@ -91,18 +93,21 @@ defineProps({
   }
 });
 
+const { t } = useI18n();
+
+
 const navigation = [
-  { name: 'Dashboard', route: 'home', icon: 'house' },
-  { name: 'Account', route: 'account', icon: 'user' },
+  { name: 'dashboard', route: 'home', icon: 'house' },
+  { name: 'account', route: 'account', icon: 'user' },
 ];
 
 const managementNav = [
-  { name: 'Companies', route: 'companies', permission: 'manage_companies' },
-  { name: 'Users', route: 'companies', permission: 'manage_users' },
-  { name: 'Products', route: 'companies', permission: 'manage_products' },
-  { name: 'Shipping', route: 'companies', permission: 'manage_shipping' },
-  { name: 'Reports', route: 'companies', permission: 'view_reports' },
-  { name: 'Settings', route: 'companies', permission: 'manage_settings' },
+  { name: 'companies', route: 'companies', permission: 'manage_companies' },
+  { name: 'users', route: 'companies', permission: 'manage_users' },
+  { name: 'products', route: 'companies', permission: 'manage_products' },
+  { name: 'shipping', route: 'companies', permission: 'manage_shipping' },
+  { name: 'reports', route: 'companies', permission: 'view_reports' },
+  { name: 'settings', route: 'companies', permission: 'manage_settings' },
 ];
 
 const canAccess = () => {
@@ -111,3 +116,46 @@ const canAccess = () => {
   return true;
 };
 </script>
+
+<i18n lang="yaml">
+  en:
+    management: Management
+    dashboard: Dashboard
+    account: Account
+    companies: Companies
+    users: Users
+    products: Products
+    shipping: Shipping
+    reports: Reports
+    settings: Settings
+  fr:
+    management: Gestion
+    dashboard: Tableau de bord
+    account: Compte
+    companies: Entreprises
+    users: Utilisateurs
+    products: Produits
+    shipping: Livraison
+    reports: Rapports
+    settings: Paramètres
+  mg:
+    management: Fikirana
+    dashboard: Sehatra
+    account: Kaonty
+    companies: Fikandrana
+    users: Mpampiasa
+    products: Zavatra
+    shipping: Fandefasana
+    reports: Raporty
+    settings: Fikirana
+  zh-CN:
+    management: 管理
+    dashboard: 仪表板
+    account: 账户
+    companies: 公司
+    users: 用户
+    products: 产品
+    shipping: 配送
+    reports: 报表
+    settings: 设置
+</i18n>

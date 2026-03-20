@@ -45,7 +45,7 @@
           >
             <div class="py-1">
               <button
-                v-for="lang in languages"
+                v-for="lang in LANGUAGES"
                 :key="lang.code"
                 class="flex items-center w-full px-4 py-2 text-sm text-slate-700 dark:text-slate-300
               hover:bg-slate-50 dark:hover:bg-slate-700"
@@ -98,17 +98,15 @@
 </template>
 <script setup>
 import { computed, onMounted, onUnmounted, ref } from 'vue';
+import { LANGUAGES } from '@/shared/constants/languages';
 import { useI18n } from 'vue-i18n';
+import { useUserStore } from '@/admin/stores/user';
 import api from '@/admin/api';
 
-const { t, locale } = useI18n();
 const emit = defineEmits(['toggle-sidebar']);
+const { currentUser } = useUserStore();
+const { t, locale } = useI18n({ useScope: 'global' });
 
-const currentUser = ref({
-  email: 'admin@example.com',
-  first_name: 'Admin',
-  last_name: 'User'
-});
 const showUserMenu = ref(false);
 const isDark = ref(false);
 const showLanguageMenu = ref(false);
@@ -124,21 +122,12 @@ const handleLogout = async () => {
   window.location.href = '/users/sign_out';
 };
 
-const languages = [
-  { code: 'en', name: 'English', flag: '🇺🇸' },
-  { code: 'fr', name: 'Français', flag: '🇫🇷' },
-  { code: 'mg', name: 'Malagasy', flag: '🇲🇬' },
-  { code: 'zh-CN', name: '中文', flag: '🇨🇳' },
-];
-
-
 const userInitials = computed(() => {
-  const user = currentUser.value;
-  return `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase();
+  return `${currentUser.firstName?.[0] || ''}${currentUser.lastName?.[0] || ''}`.toUpperCase();
 });
 
 const currentLanguage = () => {
-  const lang = languages.find(l => l.code === (localStorage.getItem('locale') || 'en'));
+  const lang = LANGUAGES.find(l => l.code === (localStorage.getItem('locale') || 'en'));
   return lang ? lang.name : 'English';
 };
 
