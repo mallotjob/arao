@@ -38,7 +38,7 @@
           v-for="item in navigation"
           :key="item.name"
           :to="{ name: item.route }"
-          class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors"
+          class="flex items-end px-3 py-2 text-sm font-medium rounded-md transition-colors"
           :class="[
             $route.name === item.route
               ? 'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white'
@@ -68,7 +68,7 @@
           <router-link
             v-if="canAccess(item.permission)"
             :to="{ name: item.route }"
-            class="group flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors"
+            class="flex items-center px-3 py-2 text-sm font-medium rounded-md transition-colors"
             :class="[
               $route.name === item.route
                 ? 'bg-slate-100 text-slate-900 dark:bg-slate-800 dark:text-white'
@@ -76,6 +76,10 @@
                   + 'dark:hover:bg-slate-700 dark:hover:text-white'
             ]"
           >
+            <FontAwesomeIcon
+              :icon="['fas', item.icon]"
+              class="mr-3 h-5 w-5"
+            />
             {{ t(item.name) }}
           </router-link>
         </div>
@@ -102,17 +106,16 @@ const navigation = [
 ];
 
 const managementNav = [
-  { name: 'companies', route: 'companies', permission: 'manage_companies' },
-  { name: 'users', route: 'companies', permission: 'manage_users' },
-  { name: 'products', route: 'companies', permission: 'manage_products' },
-  { name: 'shipping', route: 'companies', permission: 'manage_shipping' },
-  { name: 'reports', route: 'companies', permission: 'view_reports' },
-  { name: 'settings', route: 'companies', permission: 'manage_settings' },
+  { name: 'companies', route: 'companies', icon: 'building', permission: { action: 'manage', subject: 'Company' } },
+  { name: 'users', route: 'companies', icon: 'users', permission: { action: 'read', subject: 'User' } },
+  { name: 'products', route: 'companies', icon: 'box', permission: { action: 'read', subject: 'Product' } },
+  { name: 'shipping', route: 'companies', icon: 'truck', permission: { action: 'read', subject: 'Shipping' } },
+  { name: 'reports', route: 'companies', icon: 'chart-bar', permission: { action: 'read', subject: 'Report' } },
+  { name: 'settings', route: 'companies', icon: 'cog', permission: { action: 'read', subject: 'Settings' } },
 ];
 
 const canAccess = () => {
-  // This would integrate with your CASL permissions
-  // For now, return true (admin has all permissions)
+
   return true;
 };
 </script>

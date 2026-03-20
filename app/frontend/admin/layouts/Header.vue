@@ -105,7 +105,8 @@ import api from '@/admin/api';
 
 const emit = defineEmits(['toggle-sidebar']);
 const { currentUser } = useUserStore();
-const { t, locale } = useI18n({ useScope: 'global' });
+const { locale } = useI18n({ useScope: 'global' });
+const { t } = useI18n();
 
 const showUserMenu = ref(false);
 const isDark = ref(false);

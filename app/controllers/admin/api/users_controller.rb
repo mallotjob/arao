@@ -2,7 +2,8 @@ module Admin
   module Api
     class UsersController < AdminController
       before_action :authenticate_user!
-      before_action :authorize_user!
+      before_action :authorize_read_user!
+      before_action :authorize_user!, only: [:update, :destroy]
       before_action :set_user, only: [:show, :update, :destroy]
 
       # GET /admin/api/users
@@ -72,6 +73,10 @@ module Admin
 
       def authorize_user!
         authorize! :manage, User
+      end
+
+      def authorize_read_user!
+        authorize! :read, User
       end
     end
   end
