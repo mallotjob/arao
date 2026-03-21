@@ -35,7 +35,7 @@
     <nav class="mt-6 px-3">
       <div class="space-y-1">
         <router-link
-          v-for="item in navigation"
+          v-for="item in mainNav"
           :key="item.name"
           :to="{ name: item.route }"
           class="flex items-end px-3 py-2 text-sm font-medium rounded-md transition-colors"
@@ -88,6 +88,7 @@
   </div>
 </template>
 <script setup>
+import { mainNav, managementNav } from '@/admin/config/navigation';
 import { useI18n } from 'vue-i18n';
 
 defineProps({
@@ -98,21 +99,6 @@ defineProps({
 });
 
 const { t } = useI18n();
-
-
-const navigation = [
-  { name: 'dashboard', route: 'home', icon: 'house' },
-  { name: 'account', route: 'account', icon: 'user' },
-];
-
-const managementNav = [
-  { name: 'companies', route: 'companies', icon: 'building', permission: { action: 'manage', subject: 'Company' } },
-  { name: 'users', route: 'companies', icon: 'users', permission: { action: 'read', subject: 'User' } },
-  { name: 'products', route: 'companies', icon: 'box', permission: { action: 'read', subject: 'Product' } },
-  { name: 'shipping', route: 'companies', icon: 'truck', permission: { action: 'read', subject: 'Shipping' } },
-  { name: 'reports', route: 'companies', icon: 'chart-bar', permission: { action: 'read', subject: 'Report' } },
-  { name: 'settings', route: 'companies', icon: 'cog', permission: { action: 'read', subject: 'Settings' } },
-];
 
 const canAccess = () => {
 
