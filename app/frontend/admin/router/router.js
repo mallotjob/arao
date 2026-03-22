@@ -1,10 +1,10 @@
-// import HelloWorld from '/admin/component/HelloWorld.vue';
 import Account from '@/admin/page/Account.vue';
 import Companies from '@/admin/page/Companies.vue';
 import Config from '@/admin/page/Config.vue';
 import Home from '@/admin/page/Home.vue';
 import Products from '@/admin/page/Products.vue';
 import ShippingType from '@/admin/page/ShippingType.vue';
+import Users from '@/admin/page/Users.vue';
 
 export const routes = [
   {
@@ -16,6 +16,11 @@ export const routes = [
     path: '/account',
     name: 'account',
     component: Account
+  },
+  {
+    path: '/users',
+    name: 'users',
+    component: Users
   },
   {
     path: '/companies',

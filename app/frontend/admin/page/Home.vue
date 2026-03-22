@@ -15,21 +15,10 @@
       <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
           <div class="p-3 bg-blue-500 rounded-lg">
-            <svg
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2a3 3 0 00-5.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7
-                 20v-2c0-1.657 2.421-3 5.356-3m0 6h10a3 3 0 003-3v-2c0-1.657-2.421-3-5.356-3m-10 6a3 3 0 01-3 3v2a3 3 0
-                 003 3m0-6V5a3 3 0 013-3h2a3 3 0 013 3v2"
-              />
-            </svg>
+            <FontAwesomeIcon
+              :icon="['fas', 'briefcase']"
+              class="w-5 h-5"
+            />
           </div>
           <div class="ml-4">
             <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
@@ -45,20 +34,10 @@
       <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
           <div class="p-3 bg-green-500 rounded-lg">
-            <svg
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5
-                0 2.5 2.5 0 015 0z"
-              />
-            </svg>
+            <FontAwesomeIcon
+              :icon="['fas', 'people-group']"
+              class="w-5 h-5"
+            />
           </div>
           <div class="ml-4">
             <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
@@ -74,19 +53,10 @@
       <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
           <div class="p-3 bg-purple-500 rounded-lg">
-            <svg
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M20 7l-8-4-8 4m16 0l-8 4m8-5v4l-8 2m0-4l-8-2m8 4v10m-4-4h4"
-              />
-            </svg>
+            <FontAwesomeIcon
+              :icon="['fas', 'truck']"
+              class="w-5 h-5"
+            />
           </div>
           <div class="ml-4">
             <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
@@ -102,19 +72,10 @@
       <div class="bg-white dark:bg-slate-800 rounded-lg shadow border border-slate-200 dark:border-slate-700 p-6">
         <div class="flex items-center">
           <div class="p-3 bg-yellow-500 rounded-lg">
-            <svg
-              class="w-6 h-6 text-white"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-              />
-            </svg>
+            <FontAwesomeIcon
+              :icon="['fas', 'clock']"
+              class="w-5 h-5"
+            />
           </div>
           <div class="ml-4">
             <p class="text-sm font-medium text-slate-600 dark:text-slate-300">
@@ -205,91 +166,48 @@
           class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50
            dark:hover:bg-slate-700 transition-colors"
         >
-          <svg
-            class="w-6 h-6 text-slate-600 dark:text-slate-300 mr-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5
-              10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"
-            />
-          </svg>
+          <FontAwesomeIcon
+            :icon="['fas', 'fa-building']"
+            class="w-5 h-5 text-slate-600 dark:text-slate-300 mr-3"
+          />
           <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Manage Companies</span>
         </router-link>
 
-        <!-- <router-link
+        <router-link
           :to="{ name: 'users' }"
-          class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+          class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50
+           dark:hover:bg-slate-700 transition-colors"
         >
-          <svg
-            class="w-6 h-6 text-slate-600 mr-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0
-              2.5 2.5 0 015 0z"
-            />
-          </svg>
-          <span class="text-sm font-medium text-slate-700">Manage Users</span>
-        </router-link> -->
+          <FontAwesomeIcon
+            :icon="['fas', 'fa-users']"
+            class="w-5 h-5 text-slate-600 dark:text-slate-300 mr-3"
+          />
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Manage Users</span>
+        </router-link>
 
         <router-link
           :to="{ name: 'products' }"
           class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50
            dark:hover:bg-slate-700 transition-colors"
         >
-          <svg
-            class="w-6 h-6 text-slate-600 dark:text-slate-300 mr-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M20 7l-8-4-8 4m16 0l-8 4m8-5v4l-8 2m0-4l-8-2m8 4v10m-4-4h4"
-            />
-          </svg>
+          <FontAwesomeIcon
+            :icon="['fas', 'fa-box']"
+            class="w-5 h-5 text-slate-600 dark:text-slate-300 mr-3"
+          />
           <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Manage Products</span>
         </router-link>
 
-        <!-- <router-link
-          :to="{ name: 'settings' }"
-          class="flex items-center p-4 border border-slate-200 rounded-lg hover:bg-slate-50 transition-colors"
+        <router-link
+          :to="{ name: 'config' }"
+          class="flex items-center p-4 border border-slate-200 dark:border-slate-700 rounded-lg hover:bg-slate-50
+           dark:hover:bg-slate-700 transition-colors"
         >
-          <svg
-            class="w-6 h-6 text-slate-600 mr-3"
-            fill="none"
-            stroke="currentColor"
-            viewBox="0 0 24 24"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37
-              2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c-.94
-              1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724
-              0 00-2.573 1.066c-.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-1.065 2.572C8.66 8.749 8.66 7.192 9.085
-              5.842c-.426-1.756-2.924-1.756-3.35 0a1.724 1.724 0 00-2.573 1.066c-.94 1.543-.826 3.31-2.37 2.37a1.724
-              1.724 0 00-1.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 002.573-1.066c1.543-.94 3.31-.826
-              2.37-2.37a1.724 1.724 0 001.065-2.572c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573-1.066c1.543.94
-              3.31.826 2.37 2.37.001.724 0 001.065-2.572z"
-            />
-          </svg>
-          <span class="text-sm font-medium text-slate-700">Settings</span>
-        </router-link> -->
+          <FontAwesomeIcon
+            :icon="['fas', 'fa-gear']"
+            class="w-5 h-5 text-slate-600 dark:text-slate-300 mr-3"
+          />
+          <span class="text-sm font-medium text-slate-700 dark:text-slate-300">Settings</span>
+        </router-link>
       </div>
     </div>
   </div>
