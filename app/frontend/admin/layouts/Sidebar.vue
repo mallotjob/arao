@@ -89,6 +89,7 @@
 </template>
 <script setup>
 import { mainNav, managementNav } from '@/admin/config/navigation';
+import { useAbility } from '@casl/vue';
 import { useI18n } from 'vue-i18n';
 
 defineProps({
@@ -99,10 +100,10 @@ defineProps({
 });
 
 const { t } = useI18n();
+const { can } = useAbility();
 
-const canAccess = () => {
-
-  return true;
+const canAccess = (permission) => {
+  return can(permission.action, permission.subject);
 };
 </script>
 
