@@ -336,10 +336,10 @@ can :manage, User, company_id: user.company_id
 
 ```javascript
 // Directive
-v-if="$can('read', 'company')"
+v-if="$can('read', 'user')"
 
 // Component
-<Can i="read" a="company">
+<Can do="read" on="user">
   Protected content
 </Can>
 ```

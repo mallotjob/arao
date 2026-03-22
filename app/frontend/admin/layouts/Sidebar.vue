@@ -132,7 +132,7 @@ const canAccess = (permission) => {
     management: Fikirana
     dashboard: Sehatra
     account: Kaonty
-    companies: Fikandrana
+    companies: Orinasa
     users: Mpampiasa
     products: Zavatra
     shipping: Fandefasana
