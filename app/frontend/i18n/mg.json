@@ -1,3 +1,12 @@
 {
-  "emptyResults": "Tsy misy valiny hita"
+  "empty_results": "Tsy misy valiny hita",
+  "first_name": "Fanampin'ny anarana",
+  "last_name": "Anarana",
+  "email": "Email",
+  "phone": "Telefaonina",
+  "role": "Andraikitra",
+  "username": "Anarana fampiasa",
+  "status": "Famaranana",
+  "created_at": "Nanamorina",
+  "updated_at": "Nohavaozina"
 }

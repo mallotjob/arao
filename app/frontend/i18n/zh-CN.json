@@ -1,3 +1,12 @@
 {
-  "emptyResults": "没有找到结果"
+  "empty_results": "没有找到结果",
+  "first_name": "名字",
+  "last_name": "姓氏",
+  "email": "邮箱",
+  "phone": "电话",
+  "role": "角色",
+  "username": "用户名",
+  "status": "状态",
+  "created_at": "创建时间",
+  "updated_at": "更新时间"
 }

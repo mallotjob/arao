@@ -1,3 +1,12 @@
 {
-  "emptyResults": "No results found"
+  "empty_results": "No results found",
+  "first_name": "First Name",
+  "last_name": "Last Name",
+  "email": "Email",
+  "phone": "Phone",
+  "role": "Role",
+  "username": "Username",
+  "status": "Status",
+  "created_at": "Created At",
+  "updated_at": "Updated At"
 }
