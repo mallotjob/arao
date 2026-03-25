@@ -13,10 +13,10 @@
 <script setup>
 defineProps({
   color: {
-    default: 'primary',
+    default: 'slate',
     type: String,
     validator: value => {
-      return ['primary', 'success', 'danger', 'warning', 'light', 'dark'].includes(value);
+      return ['slate', 'primary', 'success', 'danger', 'warning', 'light', 'dark'].includes(value);
     }
   },
   size: {
@@ -77,28 +77,39 @@ defineProps({
   }
 
   &.color {
+    &-slate {
+      @apply border-slate-600 border-t-transparent;
+      @apply dark:border-slate-400 dark:border-t-transparent;
+    }
+
     &-primary {
-      @apply border-blue-700 border-t-transparent;
+      @apply border-slate-600 border-t-transparent;
+      @apply dark:border-slate-400 dark:border-t-transparent;
     }
 
     &-dark {
-      @apply border-gray-800 border-t-transparent;
+      @apply border-slate-800 border-t-transparent;
+      @apply dark:border-slate-300 dark:border-t-transparent;
     }
 
     &-success {
       @apply border-green-600 border-t-transparent;
+      @apply dark:border-green-500 dark:border-t-transparent;
     }
 
     &-danger {
-      @apply border-red-500 border-t-transparent;
+      @apply border-red-600 border-t-transparent;
+      @apply dark:border-red-500 dark:border-t-transparent;
     }
 
     &-light {
-      @apply border-white hover:border-gray-100 border-t-transparent;
+      @apply border-white border-t-transparent;
+      @apply dark:border-slate-200 dark:border-t-transparent;
     }
 
     &-warning {
-      @apply border-yellow-400 border-t-transparent;
+      @apply border-yellow-500 border-t-transparent;
+      @apply dark:border-yellow-400 dark:border-t-transparent;
     }
   }
 

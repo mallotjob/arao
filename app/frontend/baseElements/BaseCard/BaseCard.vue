@@ -95,7 +95,7 @@ const headerTag = computed(() => `h${props.headerLevel}`);
     }
   }
   &-header, &-footer {
-    @apply px-6 py-4 border-b border-slate-200;
+    @apply px-6 py-4 border-b border-slate-200 dark:border-slate-600;
   }
   &-action {
     @apply mt-4 p-4;

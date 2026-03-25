@@ -90,13 +90,13 @@ const closeModal = () => {
     }
 
     &-header {
-      @apply p-6 pr-16 md:pr-16 border-b border-gray-300;
-      @apply dark:border-gray-600;
+      @apply p-6 pr-16 md:pr-16 border-b border-slate-200;
+      @apply dark:border-slate-600;
     }
 
     &-content {
-      @apply absolute bg-white rounded-lg text-gray-700 w-11/12 max-w-md;
-      @apply dark:bg-gray-700 dark:text-white;
+      @apply absolute bg-white rounded-lg text-slate-700 w-11/12 max-w-md shadow-lg;
+      @apply dark:bg-slate-800 dark:text-white dark:border dark:border-slate-600;
 
       &,#x-button {
         @apply z-30;
@@ -104,12 +104,12 @@ const closeModal = () => {
     }
 
     &-body {
-      @apply p-4;
+      @apply p-6;
     }
 
     &-footer {
-      @apply p-4 pr-16 md:pr-16 border-t border-gray-300 flex justify-end;
-      @apply dark:border-gray-600;
+      @apply p-4 pr-16 md:pr-16 border-t border-slate-200 flex justify-end;
+      @apply dark:border-slate-600;
     }
 
     &-large {
@@ -122,11 +122,12 @@ const closeModal = () => {
     }
 
     &-body-with-border {
-      @apply p-4 border-8 border-solid border-gray-100;
+      @apply p-4 border-8 border-solid border-slate-100;
+      @apply dark:border-slate-700;
     }
 
     &-backdrop {
-      @apply bg-black/30 w-full h-full;
+      @apply bg-black/50 w-full h-full;
     }
 
     #x-button {
