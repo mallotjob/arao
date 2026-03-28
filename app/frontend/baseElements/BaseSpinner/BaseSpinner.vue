@@ -79,8 +79,8 @@ defineProps({
     }
 
     &-primary {
-      @apply border-slate-200 border-t-slate-600;
-      @apply dark:border-slate-700 dark:border-t-slate-400;
+      @apply border-blue-200 border-t-blue-600;
+      @apply dark:border-blue-700 dark:border-t-blue-500;
     }
 
     &-dark {

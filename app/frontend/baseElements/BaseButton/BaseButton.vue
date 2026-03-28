@@ -164,17 +164,17 @@ const handleClick = (e) => {
 
   &-color {
     &-primary {
-      @apply text-white bg-slate-600 hover:bg-slate-700 focus:ring-slate-300;
-      @apply dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-500;
+      @apply text-white bg-blue-600 hover:bg-blue-700 focus:ring-blue-300;
+      @apply dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-500;
 
       &.button-outline {
-        @apply text-slate-600 bg-transparent border border-slate-600 hover:bg-slate-600 hover:text-white;
-        @apply dark:border-slate-500 dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-white;
+        @apply text-blue-600 bg-transparent border border-blue-600 hover:bg-blue-600 hover:text-white;
+        @apply dark:border-blue-500 dark:text-blue-400 dark:hover:bg-blue-500 dark:hover:text-white;
       }
 
       &.button-no-border {
-        @apply text-slate-600 bg-transparent border-none hover:bg-slate-600 hover:text-white;
-        @apply dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-white;
+        @apply text-blue-600 bg-transparent border-none hover:bg-blue-600 hover:text-white;
+        @apply dark:text-blue-400 dark:hover:bg-blue-500 dark:hover:text-white;
       }
     }
 
