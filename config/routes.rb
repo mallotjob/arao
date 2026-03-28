@@ -26,6 +26,9 @@ Rails.application.routes.draw do
       namespace :api do
         resources :users, only: %i[index show create update destroy], defaults: { format: "json" } do
           get :me, on: :collection, defaults: { format: "json" }
+          get :stats, on: :collection, controller: "users", action: "stats", defaults: { format: "json" }
+          patch :me, on: :collection, controller: "users", action: "update_me", defaults: { format: "json" }
+          patch :password, on: :collection, controller: "users", action: "update_password", defaults: { format: "json" }
           post :roles, on: :member, defaults: { format: "json" }
           delete :roles, on: :member, defaults: { format: "json" }
         end
