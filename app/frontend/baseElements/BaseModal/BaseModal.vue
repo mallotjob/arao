@@ -11,6 +11,7 @@
         color-type="no-border"
         icon-position="center"
         :icon="['fas', 'fa-xmark']"
+        class="absolute top-3 right-3"
         @handle-click="closeModal"
       />
       <div
@@ -23,7 +24,7 @@
           id="modal-text"
           level="h3"
           class="modal-title"
-          :class="{'w-100':centered}"
+          :class="{'w-full':centered}"
         >
           <slot name="title" />
         </BaseTitle>
@@ -81,57 +82,52 @@ const closeModal = () => {
 </script>
 
 <style lang='scss' scoped>
-  .modal {
-    @apply overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-20 flex justify-center items-center w-full
-      md:inset-0 h-full;
+.modal {
+  @apply overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50;
+  @apply flex justify-center items-center w-full md:inset-0 h-full;
 
-    &-title {
-      @apply p-0 !m-0;
-    }
+  &-title {
+    @apply p-0 !m-0;
+  }
 
-    &-header {
-      @apply p-6 pr-16 md:pr-16 border-b border-slate-200;
-      @apply dark:border-slate-600;
-    }
+  &-header {
+    @apply px-6 py-4 border-b border-slate-200 dark:border-slate-600;
+    @apply rounded-t-lg;
+  }
 
-    &-content {
-      @apply absolute bg-white rounded-lg text-slate-700 w-11/12 max-w-md shadow-lg;
-      @apply dark:bg-slate-800 dark:text-white dark:border dark:border-slate-600;
+  &-content {
+    @apply relative bg-white dark:bg-slate-800 rounded-lg;
+    @apply text-slate-700 dark:text-slate-300 w-11/12 max-w-md shadow-lg;
+    @apply dark:border dark:border-slate-600;
 
-      &,#x-button {
-        @apply z-30;
-      }
-    }
-
-    &-body {
-      @apply p-6;
-    }
-
-    &-footer {
-      @apply p-4 pr-16 md:pr-16 border-t border-slate-200 flex justify-end;
-      @apply dark:border-slate-600;
-    }
-
-    &-large {
-      @apply max-w-[80vw];
-      @apply xl:max-w-[1024px];
-    }
-
-    &-body-fixed-scrollable {
-      @apply overflow-y-auto h-[63vh];
-    }
-
-    &-body-with-border {
-      @apply p-4 border-8 border-solid border-slate-100;
-      @apply dark:border-slate-700;
-    }
-
-    &-backdrop {
-      @apply bg-black/50 w-full h-full;
-    }
-
-    #x-button {
-      @apply absolute top-2 right-2;
+    &,#x-button {
+      @apply z-50;
     }
   }
+
+  &-body {
+    @apply p-6;
+  }
+
+  &-footer {
+    @apply p-4 px-6 border-t border-slate-200 dark:border-slate-600;
+    @apply flex justify-end items-center space-x-3 rounded-b-lg;
+  }
+
+  &-large {
+    @apply max-w-[80vw] xl:max-w-[1024px];
+  }
+
+  &-body-fixed-scrollable {
+    @apply overflow-y-auto h-[63vh];
+  }
+
+  &-body-with-border {
+    @apply p-4 border-8 border-solid border-slate-100 dark:border-slate-700;
+  }
+
+  &-backdrop {
+    @apply bg-black/50 w-full h-full fixed inset-0;
+  }
+}
 </style>

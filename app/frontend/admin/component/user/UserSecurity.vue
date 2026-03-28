@@ -7,98 +7,102 @@
       <div class="flex items-center justify-between">
         <div>
           <p class="text-sm font-medium text-slate-700 dark:text-white">
-            Change Password
+            {{ t('change_password') }}
           </p>
           <p class="text-sm text-slate-500 dark:text-slate-300">
-            Update your password to keep your account secure
+            {{ t('update_password') }}
           </p>
         </div>
         <BaseButton
           color-type="outline"
           @click="showPasswordModal = true"
         >
-          Change Password
+          {{ t('change_password') }}
         </BaseButton>
       </div>
     </div>
   </BaseCard>
 
   <!-- Password Change Modal -->
-  <div
+  <BaseModal
     v-if="showPasswordModal"
-    class="fixed -top-6 inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    @on-close="showPasswordModal = false"
   >
-    <div class="bg-white dark:bg-slate-800 rounded-lg p-6 w-full max-w-md">
-      <h3 class="text-xl font-semibold mb-4 text-slate-900 dark:text-white">
-        Change Password
-      </h3>
-      <form @submit.prevent="changePassword">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">Current Password</label>
-            <input
-              v-model="passwordForm.current_password"
-              type="password"
-              required
-              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
-                bg-white dark:bg-slate-700
-                text-slate-900 dark:text-white
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">New Password</label>
-            <input
-              v-model="passwordForm.password"
-              type="password"
-              required
-              minlength="8"
-              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
-                bg-white dark:bg-slate-700
-                text-slate-900 dark:text-white
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">Confirm New Password</label>
-            <input
-              v-model="passwordForm.password_confirmation"
-              type="password"
-              required
-              minlength="8"
-              class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
-                bg-white dark:bg-slate-700
-                text-slate-900 dark:text-white
-                focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-            >
-          </div>
-        </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button
-            type="button"
-            class="px-4 py-2 text-slate-700 dark:text-white border border-slate-300 rounded-lg
-              hover:bg-slate-50 dark:hover:bg-slate-500 transition-colors"
-            @click="showPasswordModal = false"
+    <BaseTitle
+      level="h3"
+      class="mb-4"
+    >
+      {{ t('change_password') }}
+    </BaseTitle>
+    <form @submit.prevent="changePassword">
+      <div class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">{{ t('current_password') }}</label>
+          <input
+            v-model="passwordForm.current_password"
+            type="password"
+            required
+            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
+            bg-white dark:bg-slate-700
+            text-slate-900 dark:text-white
+            focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
           >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            :disabled="isChangingPassword"
-          >
-            {{ isChangingPassword ? 'Changing...' : 'Change Password' }}
-          </button>
         </div>
-      </form>
-    </div>
-  </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">{{ t('new_password') }}</label>
+          <input
+            v-model="passwordForm.password"
+            type="password"
+            required
+            minlength="8"
+            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
+            bg-white dark:bg-slate-700
+            text-slate-900 dark:text-white
+            focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">
+            {{ t('confirm_new_password') }}
+          </label>
+          <input
+            v-model="passwordForm.password_confirmation"
+            type="password"
+            required
+            minlength="8"
+            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
+            bg-white dark:bg-slate-700
+            text-slate-900 dark:text-white
+            focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          >
+        </div>
+      </div>
+      <div class="mt-6 flex justify-end space-x-3">
+        <BaseButton
+          type="button"
+          color="light"
+          @click="showPasswordModal = false"
+        >
+          {{ t('cancel') }}
+        </BaseButton>
+        <BaseButton
+          type="submit"
+          color="primary"
+          :disabled="isChangingPassword"
+        >
+          {{ isChangingPassword ? t('changing') : t('change_password') }}
+        </BaseButton>
+      </div>
+    </form>
+  </BaseModal>
 </template>
 <script setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 import BaseCard from '@/baseElements/BaseCard/BaseCard.vue';
+import BaseModal from '@/baseElements/BaseModal/BaseModal.vue';
+import BaseTitle from '@/baseElements/BaseTitle/BaseTitle.vue';
 
 const { t } = useI18n();
 const showPasswordModal = ref(false);
@@ -112,9 +116,38 @@ const isChangingPassword = ref(false);
 <i18n lang="yaml">
   en:
     security_setting: Security Settings
+    change_password: Change Password
+    current_password: Current Password
+    new_password: New Password
+    confirm_new_password: Confirm New Password
+    cancel: Cancel
+    changing: Changing...
+    update_password: Update Password
   fr:
-    security_setting:
-
-
-
+    security_setting: Paramètres de sécurité
+    change_password: Changer le mot de passe
+    current_password: Mot de passe actuel
+    new_password: Nouveau mot de passe
+    confirm_new_password: Confirmer le nouveau mot de passe
+    cancel: Annuler
+    changing: Changement en cours...
+    update_password: Mettre à jour le mot de passe
+  mg:
+    security_setting: Fikirana ny fiarovana
+    change_password: Ovay ny teny miafina
+    current_password: Teny miafina ankehitriny
+    new_password: Teny miafina vaovao
+    confirm_new_password: Anamafy ny teny miafina vaovao
+    cancel: Fanafoana
+    changing: Ovay...
+    update_password: Ovay ny teny miafina
+  zh-CN:
+    security_setting: 安全设置
+    change_password: 更改密码
+    current_password: 当前密码
+    new_password: 新密码
+    confirm_new_password: 确认新密码
+    cancel: 取消
+    changing: 更改中...
+    update_password: 更新密码
 </i18n>
