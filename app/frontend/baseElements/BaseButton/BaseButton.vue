@@ -159,7 +159,8 @@ const handleClick = (e) => {
 
 <style lang="scss" scoped>
 .button {
-  @apply focus:ring-2 font-medium text-center m-1 focus:outline-none rounded-lg transition-all duration-200;
+  @apply focus:ring-2 font-medium text-center focus:outline-none rounded-md;
+  @apply transition-all duration-200 inline-flex items-center justify-center;
 
   &-color {
     &-primary {
@@ -167,13 +168,13 @@ const handleClick = (e) => {
       @apply dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-500;
 
       &.button-outline {
-        @apply text-slate-600 hover:text-white border-slate-600 hover:bg-slate-600;
-        @apply dark:bg-transparent dark:border-slate-500 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-500;
+        @apply text-slate-600 bg-transparent border border-slate-600 hover:bg-slate-600 hover:text-white;
+        @apply dark:border-slate-500 dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-white;
       }
 
       &.button-no-border {
-        @apply text-slate-600 hover:text-white hover:bg-slate-600;
-        @apply dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-500;
+        @apply text-slate-600 bg-transparent border-none hover:bg-slate-600 hover:text-white;
+        @apply dark:text-slate-400 dark:hover:bg-slate-500 dark:hover:text-white;
       }
     }
 
@@ -185,32 +186,32 @@ const handleClick = (e) => {
     }
 
     &-dark {
-      @apply bg-slate-800 hover:bg-slate-900 focus:ring-slate-300;
+      @apply bg-slate-800 hover:bg-slate-900 focus:ring-slate-300 text-white;
       @apply dark:bg-slate-700 dark:hover:bg-slate-600 dark:focus:ring-slate-500;
 
       &.button-outline {
-        @apply text-slate-800 hover:text-white border-slate-800 hover:bg-slate-800;
-        @apply dark:bg-transparent dark:border-slate-600 dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-600;
+        @apply text-slate-800 bg-transparent border border-slate-800 hover:bg-slate-800 hover:text-white;
+        @apply dark:border-slate-600 dark:text-slate-400 dark:hover:bg-slate-600 dark:hover:text-white;
       }
 
       &.button-no-border {
-        @apply text-slate-800 hover:text-white hover:bg-slate-800;
-        @apply dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-600;
+        @apply text-slate-800 bg-transparent border-none hover:bg-slate-800 hover:text-white;
+        @apply dark:text-slate-400 dark:hover:bg-slate-600 dark:hover:text-white;
       }
     }
 
     &-secondary {
-      @apply bg-slate-500 hover:bg-slate-600 focus:ring-slate-300;
+      @apply text-white bg-slate-500 hover:bg-slate-600 focus:ring-slate-300;
       @apply dark:bg-slate-600 dark:hover:bg-slate-500 dark:focus:ring-slate-400;
 
       &.button-outline {
-        @apply text-slate-500 hover:text-white border-slate-500 hover:bg-slate-500;
-        @apply dark:text-slate-400 dark:hover:text-white dark:border-slate-500 dark:hover:bg-slate-500;
+        @apply text-slate-500 bg-transparent border border-slate-500 hover:bg-slate-500 hover:text-white;
+        @apply dark:text-slate-400 dark:border-slate-500 dark:hover:bg-slate-500 dark:hover:text-white;
       }
 
       &.button-no-border {
-        @apply text-slate-500 hover:text-white hover:bg-slate-500;
-        @apply dark:text-slate-400 dark:hover:text-white dark:hover:bg-slate-600;
+        @apply text-slate-500 bg-transparent border-none hover:bg-slate-500 hover:text-white;
+        @apply dark:text-slate-400 dark:hover:bg-slate-600 dark:hover:text-white;
       }
     }
 
