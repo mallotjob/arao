@@ -7,7 +7,6 @@
       <Ability :current-user="currentUser" />
     </div>
     <Stats :user-stats="userStats" />
-
     <UserSecurity />
   </div>
 </template>

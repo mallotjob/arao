@@ -3,7 +3,7 @@
     :title="t('profile_info')"
     header-level="3"
   >
-    <div class="p-6 flex items-start space-x-6">
+    <div class="flex items-start space-x-6">
       <!-- Avatar -->
       <div class="flex-shrink-0">
         <div

@@ -3,7 +3,7 @@
     :title="t('company_information')"
     header-level="3"
   >
-    <div class="p-6 space-y-4">
+    <div class="space-y-4">
       <BaseCard :card-inside="true">
         <div class="flex items-center mb-2">
           <svg

@@ -3,32 +3,30 @@
     :title="t('account_statistics')"
     header-level="3"
   >
-    <div class="p-6">
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
-          <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">
-            {{ userStats.totalProducts || 0 }}
-          </div>
-          <p class="mt-2 text-sm text-blue-700 dark:text-blue-300 font-medium">
-            {{ t('products_managed') }}
-          </p>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg p-6 border border-blue-200">
+        <div class="text-3xl font-bold text-blue-600 dark:text-blue-400">
+          {{ userStats.totalProducts || 0 }}
         </div>
-        <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
-          <div class="text-3xl font-bold text-green-600 dark:text-green-400">
-            {{ userStats.pendingProducts || 0 }}
-          </div>
-          <p class="mt-2 text-sm text-green-700 dark:text-green-300 font-medium">
-            {{ t('pending_orders') }}
-          </p>
+        <p class="mt-2 text-sm text-blue-700 dark:text-blue-300 font-medium">
+          {{ t('products_managed') }}
+        </p>
+      </div>
+      <div class="bg-gradient-to-br from-green-50 to-green-100 rounded-lg p-6 border border-green-200">
+        <div class="text-3xl font-bold text-green-600 dark:text-green-400">
+          {{ userStats.pendingProducts || 0 }}
         </div>
-        <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
-          <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">
-            {{ userStats.completedProducts || 0 }}
-          </div>
-          <p class="mt-2 text-sm text-purple-700 dark:text-purple-300 font-medium">
-            {{ t('completed_orders') }}
-          </p>
+        <p class="mt-2 text-sm text-green-700 dark:text-green-300 font-medium">
+          {{ t('pending_orders') }}
+        </p>
+      </div>
+      <div class="bg-gradient-to-br from-purple-50 to-purple-100 rounded-lg p-6 border border-purple-200">
+        <div class="text-3xl font-bold text-purple-600 dark:text-purple-400">
+          {{ userStats.completedProducts || 0 }}
         </div>
+        <p class="mt-2 text-sm text-purple-700 dark:text-purple-300 font-medium">
+          {{ t('completed_orders') }}
+        </p>
       </div>
     </div>
   </BaseCard>
