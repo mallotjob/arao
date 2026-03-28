@@ -43,7 +43,6 @@
         <BaseSpinner />
         <BaseSpinner size="lg" />
         <BaseSpinner size="xl" />
-        <BaseSpinner size="xxl" />
       </div>
     </Variant>
   </Story>

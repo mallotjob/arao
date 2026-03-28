@@ -7,6 +7,8 @@
       ['font-' + font]: font,
       ['type-' + type]: type,
     }"
+    role="status"
+    aria-label="Loading"
   />
 </template>
 
@@ -41,79 +43,77 @@ defineProps({
     }
   },
 });
-
-
 </script>
+
 <style lang="scss" scoped>
 .spinner {
-
-  @apply rounded-full animate-spin
-  border border-solid shadow-md;
+  @apply rounded-full animate-spin border border-solid;
+  @apply shadow-sm;
 
   &.size {
     &-xs {
-      @apply w-5 h-5;
+      @apply w-4 h-4;
     }
 
     &-sm {
-      @apply w-6 h-6;
+      @apply w-5 h-5;
     }
 
     &-base {
-      @apply w-8 h-8;
+      @apply w-6 h-6;
     }
 
     &-lg {
-      @apply w-12 h-12;
+      @apply w-8 h-8;
     }
 
     &-xl {
-      @apply w-20 h-20;
-    }
-
-    &-xxl {
-      @apply w-28 h-28;
+      @apply w-12 h-12;
     }
   }
 
   &.color {
     &-slate {
-      @apply border-slate-600 border-t-transparent;
-      @apply dark:border-slate-400 dark:border-t-transparent;
+      @apply border-slate-200 border-t-slate-600;
+      @apply dark:border-slate-700 dark:border-t-slate-400;
     }
 
     &-primary {
-      @apply border-slate-600 border-t-transparent;
-      @apply dark:border-slate-400 dark:border-t-transparent;
+      @apply border-slate-200 border-t-slate-600;
+      @apply dark:border-slate-700 dark:border-t-slate-400;
     }
 
     &-dark {
-      @apply border-slate-800 border-t-transparent;
-      @apply dark:border-slate-300 dark:border-t-transparent;
+      @apply border-slate-300 border-t-slate-800;
+      @apply dark:border-slate-600 dark:border-t-slate-300;
     }
 
     &-success {
-      @apply border-green-600 border-t-transparent;
-      @apply dark:border-green-500 dark:border-t-transparent;
+      @apply border-green-200 border-t-green-600;
+      @apply dark:border-green-700 dark:border-t-green-500;
     }
 
     &-danger {
-      @apply border-red-600 border-t-transparent;
-      @apply dark:border-red-500 dark:border-t-transparent;
+      @apply border-red-200 border-t-red-600;
+      @apply dark:border-red-700 dark:border-t-red-500;
     }
 
     &-light {
-      @apply border-white border-t-transparent;
-      @apply dark:border-slate-200 dark:border-t-transparent;
+      @apply border-white border-t-slate-400;
+      @apply dark:border-slate-700 dark:border-t-slate-300;
     }
 
     &-warning {
-      @apply border-yellow-500 border-t-transparent;
-      @apply dark:border-yellow-400 dark:border-t-transparent;
+      @apply border-yellow-200 border-t-yellow-500;
+      @apply dark:border-yellow-700 dark:border-t-yellow-400;
     }
   }
 
   &.font {
+    &-slim {
+      @apply border-2;
+    }
+
     &-base {
       @apply border-2;
     }
@@ -129,10 +129,10 @@ defineProps({
 
   &.type {
     &-ringY {
-      @apply border-0 border-y;
+      @apply border-0 border-y-2;
 
       &.font {
-        &-base {
+        &-slim, &-base {
           @apply border-y-2;
         }
 
@@ -147,5 +147,4 @@ defineProps({
     }
   }
 }
-
 </style>
