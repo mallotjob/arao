@@ -3,12 +3,12 @@
     :is="tag"
     class="custom-title"
     :class="{
-      'text-2xl': level === 'h1',
-      'text-xl': level === 'h2',
-      'text-lg': level === 'h3',
-      'text-base': level === 'h4',
-      'text-sm': level === 'h5',
-      'text-xs': level === 'h6'
+      'text-3xl': level === 'h1',
+      'text-2xl': level === 'h2',
+      'text-xl': level === 'h3',
+      'text-lg': level === 'h4',
+      'text-base': level === 'h5',
+      'text-sm': level === 'h6'
     }"
   >
     <slot />
@@ -32,6 +32,6 @@ const tag = props.level;
 
 <style lang="scss" scoped>
 .custom-title {
-  @apply font-semibold text-slate-900 dark:text-white;
+  @apply font-semibold text-slate-900 dark:text-white leading-tight;
 }
 </style>
