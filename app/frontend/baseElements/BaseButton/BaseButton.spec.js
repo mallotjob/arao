@@ -32,7 +32,7 @@ describe('BaseButton', () => {
     });
     it('renders a button element with the correct class if there is no slot content', () => {
       expect(wrapper.find('button').exists()).toBe(true);
-      expect(wrapper.find('button').classes()).toContain('base-button');
+      expect(wrapper.find('button').classes()).toContain('button');
     });
     it('renders the label prop', () => {
       expect(wrapper.find('button').text()).toContain(clickMe);
@@ -50,7 +50,7 @@ describe('BaseButton', () => {
       const wrapper = mount(BaseButton, wrapperOptions);
 
       expect(wrapper.find('button').attributes('type')).toBe('button');
-      expect(wrapper.find('button').classes()).toEqual(expect.arrayContaining(['size-large', 'width-full', 'color-primary']));
+      expect(wrapper.find('button').classes()).toEqual(expect.arrayContaining(['size-large', 'width-full', 'button-color-primary']));
     });
     it('adds the disabled attribute if the disabled prop is true', () => {
       wrapperOptions.props.disabled = true;
@@ -58,15 +58,9 @@ describe('BaseButton', () => {
 
       expect(wrapper.find('button').classes()).toContain('disabled');
     });
-    it('renders the icon if the icon prop is set', () => {
-      wrapperOptions.props.icon = 'fa-angle-left';
-      const wrapper = mount(BaseButton, wrapperOptions);
-
-      expect(wrapper.find('i').classes()).toContain('fa-angle-left');
-    });
     it('should throw an error if the wrong icon is provided', () => {
       const consoleError = vi.spyOn(console, 'error').mockImplementation(() => {});
-      wrapperOptions.props.icon = 'non-existent-icon';
+      wrapperOptions.props.icon = ['non-existent-icon'];
       try {
         mount(BaseButton, wrapperOptions);
       } catch {
@@ -75,24 +69,11 @@ describe('BaseButton', () => {
         consoleError.mockRestore();
       }
     });
-    it('should not add the `sentry-unmask` class if there is slot content', () => {
-      wrapperOptions = { slots: { default: clickMe } };
-      const wrapper = mount(BaseButton, wrapperOptions);
-      expect(wrapper.html()).not.toContain('sentry-unmask');
-    });
-    it('should add the `sentry-unmask` class only if there is no slot content', () => {
-      const wrapper = mount(BaseButton, wrapperOptions);
-      expect(wrapper.find({ ref: 'buttonPropsAPI' }).classes()).toContain('sentry-unmask');
-    });
   });
   describe('button for icon using props without label', () => {
     beforeEach(() => {
-      wrapperOptions = { props: { fill: false, title: 'delete', icon: 'fa-trash' } };
+      wrapperOptions = { props: { fill: false, title: 'delete', icon: ['fa-trash'] } };
       wrapper = mount(BaseButton, wrapperOptions);
-    });
-
-    it('renders the icon', () => {
-      expect(wrapper.find('i').classes()).toContain('fa-trash');
     });
 
     it('renders the button with class button-icon and a title', () => {

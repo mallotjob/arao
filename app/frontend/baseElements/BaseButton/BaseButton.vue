@@ -1,15 +1,17 @@
 <template>
   <button
-    v-tooltip.bottom="tooltip"
+    v-tooltip.bottom="tooltip || title || label"
     class="button"
     :class="{
       ['button-color-' + color]: color,
       ['button-' + colorType]: colorType,
       ['size-' + size]: size,
+      ['width-' + width]: width,
       'round': round,
+      'disabled': disabled || loading,
       'icon-only': !label && icon
     }"
-    :disabled="loading"
+    :disabled="disabled || loading"
     :type="computedType"
     :aria-label="ariaLabel || label"
     :title="title || label"
@@ -101,6 +103,9 @@ const props = defineProps({
     type: String
   },
   loading: {
+    type: Boolean
+  },
+  disabled: {
     type: Boolean
   },
   preventDefault: {

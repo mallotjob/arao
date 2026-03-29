@@ -1,5 +1,5 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`BaseSpinner > has a default size 1`] = `"<span class="spinner-border" role="status" aria-hidden="true"></span>"`;
+exports[`BaseSpinner > has a default size 1`] = `"<div data-v-1b7f5bae="" class="spinner size-base color-slate font-base type-base" role="status" aria-label="Loading"></div>"`;
 
-exports[`BaseSpinner > has a small[sm] size  1`] = `"<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>"`;
+exports[`BaseSpinner > should has a small[sm] size 1`] = `"<div data-v-1b7f5bae="" class="spinner size-sm color-slate font-base type-base" role="status" aria-label="Loading"></div>"`;

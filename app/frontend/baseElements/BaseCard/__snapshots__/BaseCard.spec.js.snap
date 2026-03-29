@@ -1,0 +1,34 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`BaseCard > with bg-white class 1`] = `
+"<div data-v-502e9a75="" class="base-card-box">
+  <h5 data-v-a8eccacd="" data-v-502e9a75="" class="custom-title text-base base-card-header flex justify-between items-center !bg-white !text-black"><span data-v-502e9a75="" class="my-auto text-lg font-semibold text-slate-900 dark:text-white">This is the title</span>
+    <!--v-if-->
+  </h5>
+  <div data-v-502e9a75="" class="base-card-body p-6">default slot</div>
+  <!--v-if-->
+  <!--v-if-->
+</div>"
+`;
+
+exports[`BaseCard > with card-body class 1`] = `
+"<div data-v-502e9a75="" class="base-card-box">
+  <h5 data-v-a8eccacd="" data-v-502e9a75="" class="custom-title text-base base-card-header flex justify-between items-center"><span data-v-502e9a75="" class="my-auto text-lg font-semibold text-slate-900 dark:text-white">This is the title</span>
+    <!--v-if-->
+  </h5>
+  <div data-v-502e9a75="" class="base-card-body p-6">default slot</div>
+  <!--v-if-->
+  <!--v-if-->
+</div>"
+`;
+
+exports[`BaseCard > without card-body class 1`] = `
+"<div data-v-502e9a75="" class="base-card-box">
+  <h5 data-v-a8eccacd="" data-v-502e9a75="" class="custom-title text-base base-card-header flex justify-between items-center"><span data-v-502e9a75="" class="my-auto text-lg font-semibold text-slate-900 dark:text-white">This is the title</span>
+    <!--v-if-->
+  </h5>
+  <div data-v-502e9a75="" class="p-6">default slot</div>
+  <!--v-if-->
+  <!--v-if-->
+</div>"
+`;

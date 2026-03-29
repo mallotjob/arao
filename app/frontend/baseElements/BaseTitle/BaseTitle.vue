@@ -16,18 +16,20 @@
 </template>
 
 <script setup>
-const props = defineProps({
+import { computed } from 'vue';
+
+const { level } = defineProps({
   level: {
     type: String,
-    required: true,
-    validator: value => {
-      const validLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
-      return validLevels.includes(value);
-    }
+    required: true
   }
 });
 
-const tag = props.level;
+const tag = computed(() => {
+  const validLevels = ['h1', 'h2', 'h3', 'h4', 'h5', 'h6'];
+  const validLevel = validLevels.includes(level) ? level : 'h1';
+  return validLevel;
+});
 </script>
 
 <style lang="scss" scoped>

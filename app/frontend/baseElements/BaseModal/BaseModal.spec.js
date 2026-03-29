@@ -39,7 +39,7 @@ describe('MyModal.vue', () => {
     await flushPromises();
 
     expect(wrapper.find('.text-center').exists()).toBe(true);
-    expect(wrapper.find('.w-100').exists()).toBe(true);
+    expect(wrapper.find('.w-full').exists()).toBe(true);
   });
 
   it('renders correctly when slot footer exist', async () => {
