@@ -36,46 +36,33 @@
     </BaseTitle>
     <form @submit.prevent="changePassword">
       <div class="space-y-4">
-        <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">{{ t('current_password') }}</label>
-          <input
-            v-model="passwordForm.current_password"
-            type="password"
-            required
-            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
-            bg-white dark:bg-slate-700
-            text-slate-900 dark:text-white
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          >
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">{{ t('new_password') }}</label>
-          <input
-            v-model="passwordForm.password"
-            type="password"
-            required
-            minlength="8"
-            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
-            bg-white dark:bg-slate-700
-            text-slate-900 dark:text-white
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          >
-        </div>
-        <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-white mb-1">
-            {{ t('confirm_new_password') }}
-          </label>
-          <input
-            v-model="passwordForm.password_confirmation"
-            type="password"
-            required
-            minlength="8"
-            class="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg
-            bg-white dark:bg-slate-700
-            text-slate-900 dark:text-white
-            focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-          >
-        </div>
+        <BaseInput
+          v-model="passwordForm.current_password"
+          type="password"
+          :label="t('current_password')"
+          :placeholder="t('current_password')"
+          required
+          autocomplete="current-password"
+        />
+        <BaseInput
+          v-model="passwordForm.password"
+          type="password"
+          :label="t('new_password')"
+          :placeholder="t('new_password')"
+          :minlength="8"
+          autocomplete="new-password"
+          required
+          :help-text="t('password_min_length')"
+        />
+        <BaseInput
+          v-model="passwordForm.password_confirmation"
+          type="password"
+          :label="t('confirm_new_password')"
+          :placeholder="t('confirm_new_password')"
+          :minlength="8"
+          required
+          autocomplete="new-password"
+        />
       </div>
       <div class="mt-6 flex justify-end space-x-3">
         <BaseButton
@@ -87,7 +74,6 @@
         </BaseButton>
         <BaseButton
           type="submit"
-          color="primary"
           :disabled="isChangingPassword"
         >
           {{ isChangingPassword ? t('changing') : t('change_password') }}
@@ -101,6 +87,7 @@ import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 import BaseCard from '@/baseElements/BaseCard/BaseCard.vue';
+import BaseInput from '@/baseElements/BaseInput/BaseInput.vue';
 import BaseModal from '@/baseElements/BaseModal/BaseModal.vue';
 import BaseTitle from '@/baseElements/BaseTitle/BaseTitle.vue';
 
@@ -123,6 +110,7 @@ const isChangingPassword = ref(false);
     cancel: Cancel
     changing: Changing...
     update_password: Update Password
+    password_min_length: Password must be at least 8 characters
   fr:
     security_setting: Paramètres de sécurité
     change_password: Changer le mot de passe
@@ -132,6 +120,7 @@ const isChangingPassword = ref(false);
     cancel: Annuler
     changing: Changement en cours...
     update_password: Mettre à jour le mot de passe
+    password_min_length: Le mot de passe doit contenir au moins 8 caractères
   mg:
     security_setting: Fikirana ny fiarovana
     change_password: Ovay ny teny miafina
@@ -141,6 +130,7 @@ const isChangingPassword = ref(false);
     cancel: Fanafoana
     changing: Ovay...
     update_password: Ovay ny teny miafina
+    password_min_length: Ny teny miafina dia tsy maintsy 8 farany kely
   zh-CN:
     security_setting: 安全设置
     change_password: 更改密码
@@ -150,4 +140,5 @@ const isChangingPassword = ref(false);
     cancel: 取消
     changing: 更改中...
     update_password: 更新密码
+    password_min_length: 密码必须至少8个字符
 </i18n>
