@@ -8,12 +8,12 @@ module Admin
       # GET /admin/api/users
       def index
         @users = User.includes(:roles, :company).all
-        render json: @users
+        render json: @users, each_serializer: UserSerializer
       end
 
       # GET /admin/api/users/me
       def me
-        render json: current_user.as_json(include: [:roles, :company])
+        render json: current_user, serializer: UserSerializer
       end
 
       # GET /admin/api/users/me/stats
@@ -34,7 +34,7 @@ module Admin
       # PATCH/PUT /admin/api/users/me
       def update_me
         if current_user.update(user_params)
-          render json: current_user.as_json(include: [:roles, :company])
+          render json: current_user, serializer: UserSerializer
         else
           render json: { errors: current_user.errors.full_messages }, status: :unprocessable_entity
         end
@@ -55,7 +55,7 @@ module Admin
 
       # GET /admin/api/users/:id
       def show
-        render json: @user
+        render json: @user, serializer: UserSerializer
       end
 
       # POST /admin/api/users
@@ -63,7 +63,7 @@ module Admin
         @user = User.new(user_params)
 
         if @user.save
-          render json: @user, status: :created
+          render json: @user, serializer: UserSerializer, status: :created
         else
           render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end
@@ -72,7 +72,7 @@ module Admin
       # PATCH/PUT /admin/api/users/:id
       def update
         if @user.update(user_params)
-          render json: @user
+          render json: @user, serializer: UserSerializer
         else
           render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
         end

@@ -50,3 +50,4 @@ group :development, :test do
 end
 
 gem "tailwindcss-rails", "~> 4.4"
+gem "active_model_serializers", "~> 0.10"
