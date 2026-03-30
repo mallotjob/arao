@@ -11,5 +11,6 @@ export default {
   getCompanies: () => axiosApiInstance.get('/api/companies'),
   getProducts: () => axiosApiInstance.get('/api/products'),
   getUsers: () => axiosApiInstance.get('/api/users'),
-  logOut: () => axiosApiInstance.delete('/users/sign_out')
+  logOut: () => axiosApiInstance.delete('/users/sign_out'),
+  updatePassword: (id, data) => axiosApiInstance.patch(`/api/users/${id}/password`, data)
 };

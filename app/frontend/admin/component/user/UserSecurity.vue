@@ -75,6 +75,7 @@
         <BaseButton
           type="submit"
           :disabled="isChangingPassword"
+          @click="handleUpdatePassword"
         >
           {{ isChangingPassword ? t('changing') : t('change_password') }}
         </BaseButton>
@@ -85,11 +86,19 @@
 <script setup>
 import { ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import api from '@/admin/api';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 import BaseCard from '@/baseElements/BaseCard/BaseCard.vue';
 import BaseInput from '@/baseElements/BaseInput/BaseInput.vue';
 import BaseModal from '@/baseElements/BaseModal/BaseModal.vue';
 import BaseTitle from '@/baseElements/BaseTitle/BaseTitle.vue';
+
+const { userId } = defineProps({
+  userId: {
+    type: String,
+    required: true
+  }
+});
 
 const { t } = useI18n();
 const showPasswordModal = ref(false);
@@ -99,6 +108,25 @@ const passwordForm = ref({
   password_confirmation: ''
 });
 const isChangingPassword = ref(false);
+
+
+const handleUpdatePassword = async () => {
+  try {
+    isChangingPassword.value = true;
+    await api.updatePassword(userId, { user: passwordForm.value });
+    showPasswordModal.value = false;
+    passwordForm.value = {
+      current_password: '',
+      password: '',
+      password_confirmation: ''
+    };
+  } catch (error) {
+    console.error(error);
+  } finally {
+    isChangingPassword.value = false;
+  }
+};
+
 </script>
 <i18n lang="yaml">
   en:
@@ -110,6 +138,8 @@ const isChangingPassword = ref(false);
     cancel: Cancel
     changing: Changing...
     update_password: Update Password
+    password_updated_successfully: Password updated successfully!
+    password_update_failed: Failed to update password
     password_min_length: Password must be at least 8 characters
   fr:
     security_setting: Paramètres de sécurité
@@ -120,16 +150,20 @@ const isChangingPassword = ref(false);
     cancel: Annuler
     changing: Changement en cours...
     update_password: Mettre à jour le mot de passe
+    password_updated_successfully: Mot de passe mis à jour avec succès!
+    password_update_failed: Échec de la mise à jour du mot de passe
     password_min_length: Le mot de passe doit contenir au moins 8 caractères
   mg:
     security_setting: Fikirana ny fiarovana
     change_password: Ovay ny teny miafina
     current_password: Teny miafina ankehitriny
     new_password: Teny miafina vaovao
-    confirm_new_password: Anamafy ny teny miafina vaovao
+    confirm_new_password: Hamarino ny teny miafina vaovao
     cancel: Fanafoana
     changing: Ovay...
     update_password: Ovay ny teny miafina
+    password_updated_successfully: Tena miafina novaina!
+    password_update_failed: Tsy hadisoana ny fiovana
     password_min_length: Ny teny miafina dia tsy maintsy 8 farany kely
   zh-CN:
     security_setting: 安全设置
@@ -140,5 +174,7 @@ const isChangingPassword = ref(false);
     cancel: 取消
     changing: 更改中...
     update_password: 更新密码
+    password_updated_successfully: 密码更新成功！
+    password_update_failed: 密码更新失败
     password_min_length: 密码必须至少8个字符
 </i18n>

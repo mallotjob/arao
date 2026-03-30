@@ -40,7 +40,7 @@ module Admin
         end
       end
 
-      # PATCH/PUT /admin/api/users/me/password
+      # PATCH/PUT /api/users/password
       def update_password
         if current_user.valid_password?(password_params[:current_password])
           if current_user.update(password_params.except(:current_password))
