@@ -85,6 +85,7 @@
 </template>
 <script setup>
 import { ref } from 'vue';
+import { showErrorToast, showSuccessToast } from '@/composables/useNotificationSystem';
 import { useI18n } from 'vue-i18n';
 import api from '@/admin/api';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
@@ -114,6 +115,7 @@ const handleUpdatePassword = async () => {
   try {
     isChangingPassword.value = true;
     await api.updatePassword(userId, { user: passwordForm.value });
+    showSuccessToast(t('password_updated_successfully'));
     showPasswordModal.value = false;
     passwordForm.value = {
       current_password: '',
@@ -122,6 +124,7 @@ const handleUpdatePassword = async () => {
     };
   } catch (error) {
     console.error(error);
+    showErrorToast(t('password_update_failed'));
   } finally {
     isChangingPassword.value = false;
   }

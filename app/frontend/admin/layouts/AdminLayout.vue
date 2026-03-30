@@ -19,12 +19,16 @@
       class="fixed inset-0 bg-slate-600/75 dark:bg-black/70 z-40 lg:hidden"
       @click="toggleSidebar"
     />
+
+    <!-- Global Notification System -->
+    <NotificationSystem />
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
 import Header from '@/admin/layouts/Header.vue';
+import NotificationSystem from '@/baseElements/NotificationSystem/NotificationSystem.vue';
 import Sidebar from '@/admin/layouts/Sidebar.vue';
 
 const sidebarOpen = ref(false);
