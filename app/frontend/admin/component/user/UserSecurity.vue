@@ -34,7 +34,7 @@
     >
       {{ t('change_password') }}
     </BaseTitle>
-    <form @submit.prevent="changePassword">
+    <form @submit.prevent="handleUpdatePassword">
       <div class="space-y-4">
         <BaseInput
           v-model="passwordForm.current_password"
@@ -75,7 +75,6 @@
         <BaseButton
           type="submit"
           :disabled="isChangingPassword"
-          @click="handleUpdatePassword"
         >
           {{ isChangingPassword ? t('changing') : t('change_password') }}
         </BaseButton>
@@ -122,9 +121,13 @@ const handleUpdatePassword = async () => {
       password: '',
       password_confirmation: ''
     };
-  } catch (error) {
-    console.error(error);
-    showErrorToast(t('password_update_failed'));
+  } catch (e) {
+    console.error(e.error);
+    if (e.error === 'incorrect_current_password') {
+      showErrorToast(t('incorrect_current_password'));
+    } else {
+      showErrorToast(t('password_update_failed'));
+    }
   } finally {
     isChangingPassword.value = false;
   }
@@ -144,6 +147,7 @@ const handleUpdatePassword = async () => {
     password_updated_successfully: Password updated successfully!
     password_update_failed: Failed to update password
     password_min_length: Password must be at least 8 characters
+    incorrect_current_password: Current password is incorrect
   fr:
     security_setting: Paramètres de sécurité
     change_password: Changer le mot de passe
@@ -156,6 +160,7 @@ const handleUpdatePassword = async () => {
     password_updated_successfully: Mot de passe mis à jour avec succès!
     password_update_failed: Échec de la mise à jour du mot de passe
     password_min_length: Le mot de passe doit contenir au moins 8 caractères
+    incorrect_current_password: Le mot de passe actuel est incorrect
   mg:
     security_setting: Fikirana ny fiarovana
     change_password: Ovay ny teny miafina
@@ -168,6 +173,7 @@ const handleUpdatePassword = async () => {
     password_updated_successfully: Tena miafina novaina!
     password_update_failed: Tsy hadisoana ny fiovana
     password_min_length: Ny teny miafina dia tsy maintsy 8 farany kely
+    incorrect_current_password: Diso ny tena miafina ankehitriny
   zh-CN:
     security_setting: 安全设置
     change_password: 更改密码
@@ -180,4 +186,5 @@ const handleUpdatePassword = async () => {
     password_updated_successfully: 密码更新成功！
     password_update_failed: 密码更新失败
     password_min_length: 密码必须至少8个字符
+    incorrect_current_password: 当前密码不正确
 </i18n>
