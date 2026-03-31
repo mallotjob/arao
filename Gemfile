@@ -44,7 +44,7 @@ group :development, :test do
 
   gem "annotaterb", "~> 4.0"
   gem "foreman", "~> 0.88"
-  gem "rspec-rails", "~> 7.0"
+  gem "rspec-rails", "~> 8.0"
   gem "factory_bot_rails", "~> 6.5.1"
   gem "shoulda-matchers", "~> 7.0"
 end
