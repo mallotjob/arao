@@ -404,7 +404,7 @@ DEPENDENCIES
   aasm (~> 5.3)
   active_model_serializers (~> 0.10.16)
   annotaterb (~> 4.0)
-  brakeman (~> 8.0)
+  brakeman (~> 8.0.4)
   cancancan (~> 3.6)
   debug
   devise (~> 5.0)
