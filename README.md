@@ -1,4 +1,4 @@
-# � Follow - Product & Shipping Management Platform
+# 🚚 Follow - Product & Shipping Management Platform
 
 A modern Rails 8 + Vue.js application for managing products, shipping, and multi-tenant operations with comprehensive user management and internationalization support.
 
@@ -11,7 +11,7 @@ A modern Rails 8 + Vue.js application for managing products, shipping, and multi
 - **Modern Frontend** - Vue 3 + PrimeVue + TailwindCSS with Vite build system
 - **Feature Flags** - Dynamic feature toggling for controlled rollouts
 - **Permission System** - Role-based access control with CASL integration
-- **API-First Design** - RESTful APIs with JSON responses
+- **Versioned API** - RESTful APIs with JSON responses and version control
 - **Docker Support** - Containerized deployment with Kamal
 - **Comprehensive Testing** - RSpec for backend, Vitest for frontend
 - **Code Quality** - ESLint, RuboCop, and pre-commit hooks
@@ -25,7 +25,13 @@ arao/
 ├── app/
 │   ├── controllers/          # Rails controllers
 │   │   ├── admin/           # Admin portal controllers
-│   │   ├── me/              # User portal controllers
+│   │   │   └── api/       # Versioned API controllers
+│   │   │       └── v1/    # V1 API namespace
+│   │   │           ├── base_controller.rb
+│   │   │           ├── users_controller.rb
+│   │   │           ├── companies_controller.rb
+│   │   │           ├── products_controller.rb
+│   │   │           └── roles_controller.rb
 │   │   └── concerns/        # Shared controller concerns
 │   ├── models/              # ActiveRecord models
 │   │   ├── concerns/        # Model concerns
@@ -34,6 +40,19 @@ arao/
 │   │   ├── company.rb       # Company management
 │   │   ├── product.rb       # Product lifecycle with AASM
 │   │   └── ...
+│   ├── serializers/         # API serializers
+│   │   ├── application_serializer.rb
+│   │   └── admin/
+│   │       └── api/
+│   │           └── v1/    # V1 serializers namespace
+│   │               ├── user_serializer.rb
+│   │               ├── company_serializer.rb
+│   │               ├── product_serializer.rb
+│   │               ├── role_serializer.rb
+│   │               ├── permission_serializer.rb
+│   │               ├── balance_serializer.rb
+│   │               ├── shipping_time_serializer.rb
+│   │               └── type_config_serializer.rb
 │   ├── frontend/            # Vue.js frontend
 │   │   ├── admin/           # Admin portal Vue components
 │   │   ├── me/              # User portal Vue components
@@ -43,7 +62,7 @@ arao/
 │   │   └── entrypoints/    # Vite entry points
 │   └── views/              # Rails ERB templates
 ├── config/                 # Rails configuration
-│   ├── routes.rb           # Multi-tenant routing
+│   ├── routes.rb           # Multi-tenant routing with API versioning
 │   ├── locales/           # I18n translation files
 │   └── environments/      # Environment-specific configs
 ├── db/                    # Database migrations and seeds
@@ -59,6 +78,7 @@ arao/
 - **Authentication**: Devise with custom login (email/username)
 - **State Management**: AASM for product workflows
 - **Permissions**: CanCanCan for authorization
+- **API Versioning**: Namespaced V1 API controllers and serializers
 - **Caching**: Solid Cache and Solid Queue
 - **Deployment**: Kamal with Docker support
 
@@ -75,7 +95,7 @@ arao/
 
 - **Admin Portal** (`admin.follow.local`) - Administrative interface
 - **User Portal** (`me.follow.local`) - User-facing application
-- **Shared APIs** - RESTful endpoints for both interfaces
+- **Versioned APIs** - RESTful endpoints under `/admin/api/v1/*`
 
 ---
 
@@ -91,13 +111,14 @@ arao/
   - [Backend Tests](#backend-tests)
   - [Frontend Tests](#frontend-tests)
   - [E2E Tests](#e2e-tests)
-- [� Development Practices](#-development-practices)
+- [🔧 Development Practices](#-development-practices)
   - [Feature Flags](#feature-flags)
   - [Permission System](#permission-system)
+  - [API Versioning](#api-versioning)
   - [Code Quality](#code-quality)
   - [Model Annotations](#model-annotations)
 - [📚 API Documentation](#-api-documentation)
-- [� Deployment](#-deployment)
+- [🚀 Deployment](#-deployment)
 - [🛠️ Troubleshooting](#️-troubleshooting)
 
 ---
@@ -276,7 +297,7 @@ echo "RSPEC_RETRY_DISABLED=true" >> .env.test.local
 
 ---
 
-## � Development Practices
+## 🔧 Development Practices
 
 ### Feature Flags
 
@@ -344,6 +365,69 @@ v-if="$can('read', 'user')"
 </Can>
 ```
 
+### API Versioning
+
+The application uses versioned APIs to ensure backward compatibility and future evolution:
+
+#### V1 API Structure
+
+```ruby
+# Controllers namespaced under Admin::Api::V1
+module Admin
+  module Api
+    module V1
+      class UsersController < BaseController
+        # V1 API methods
+      end
+    end
+  end
+end
+
+# Serializers namespaced under Admin::Api::V1
+module Admin
+  module Api
+    module V1
+      class UserSerializer < ApplicationSerializer
+        # V1 serialization logic
+      end
+    end
+  end
+end
+```
+
+#### API Endpoints
+
+```bash
+# All V1 endpoints use the /api/v1 prefix
+GET    /admin/api/v1/users
+POST   /admin/api/v1/users
+PATCH  /admin/api/v1/users/:id
+DELETE /admin/api/v1/users/:id
+
+GET    /admin/api/v1/companies
+POST   /admin/api/v1/companies
+PATCH  /admin/api/v1/companies/:id
+DELETE /admin/api/v1/companies/:id
+
+GET    /admin/api/v1/products
+POST   /admin/api/v1/products
+PATCH  /admin/api/v1/products/:id
+DELETE /admin/api/v1/products/:id
+PATCH  /admin/api/v1/products/:id/status
+```
+
+#### Frontend API Client
+
+```javascript
+// Updated to use V1 endpoints
+export default {
+  getUsers: () => axiosApiInstance.get('/api/v1/users'),
+  getCompanies: () => axiosApiInstance.get('/api/v1/companies'),
+  getProducts: () => axiosApiInstance.get('/api/v1/products'),
+  // ... other V1 endpoints
+};
+```
+
 ### Code Quality
 
 #### Pre-commit Hooks
@@ -382,14 +466,82 @@ bundle exec annotaterb models
 
 All API endpoints require authentication via Devise tokens.
 
-### Admin API Endpoints
+### V1 API Endpoints
+
+#### Users API
 
 ```bash
 # Get current user
-GET /admin/api/users/me
+GET /admin/api/v1/users/me
+
+# Get user statistics
+GET /admin/api/v1/users/me/stats
 
 # List users
-GET /admin/api/users
+GET /admin/api/v1/users
+
+# Create user
+POST /admin/api/v1/users
+
+# Update user
+PATCH /admin/api/v1/users/:id
+
+# Update user password
+PATCH /admin/api/v1/users/:id/password
+
+# Delete user
+DELETE /admin/api/v1/users/:id
+```
+
+#### Companies API
+
+```bash
+# List companies
+GET /admin/api/v1/companies
+
+# Create company
+POST /admin/api/v1/companies
+
+# Update company
+PATCH /admin/api/v1/companies/:id
+
+# Delete company
+DELETE /admin/api/v1/companies/:id
+```
+
+#### Products API
+
+```bash
+# List products
+GET /admin/api/v1/products
+
+# Create product
+POST /admin/api/v1/products
+
+# Update product
+PATCH /admin/api/v1/products/:id
+
+# Update product status
+PATCH /admin/api/v1/products/:id/status
+
+# Delete product
+DELETE /admin/api/v1/products/:id
+```
+
+#### Roles API
+
+```bash
+# List roles
+GET /admin/api/v1/roles
+
+# Create role
+POST /admin/api/v1/roles
+
+# Update role
+PATCH /admin/api/v1/roles/:id
+
+# Delete role
+DELETE /admin/api/v1/roles/:id
 ```
 
 ### Response Format
@@ -398,8 +550,26 @@ All APIs return JSON with consistent structure:
 
 ```json
 {
-  "data": { ... },
-  "meta": { ... }
+  "id": 1,
+  "name": "Company Name",
+  "created_at": "2024-01-01T00:00:00Z",
+  "updated_at": "2024-01-01T00:00:00Z",
+  "user_count": 5,
+  "products_by_status": {
+    "pending": 2,
+    "confirmed": 3,
+    "shipped": 1,
+    "completed": 4,
+    "delivered": 0
+  }
+}
+```
+
+### Error Response Format
+
+```json
+{
+  "error": "Validation failed: Email has already been taken"
 }
 ```
 
@@ -477,6 +647,7 @@ bin/rails assets:precompile
 1. Check logs: `tail -f log/development.log`
 2. Run health check: `curl http://localhost:3000/up`
 3. Verify database: `bin/rails db:migrate:status`
+4. Test API endpoints: `curl -H "Accept: application/json" http://admin.follow.local:5000/api/v1/users`
 
 ---
 
