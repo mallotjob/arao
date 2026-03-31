@@ -1,7 +1,7 @@
 class Beneficiary < ApplicationRecord
   include ::CompanyScoped
 
-  belongs_to :company_id
+  belongs_to :company
 
   has_many :products, dependent: :restrict_with_error
 end

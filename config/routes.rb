@@ -24,19 +24,21 @@ Rails.application.routes.draw do
   constraints(subdomain: "admin") do
     scope module: "admin", as: :admin do
       namespace :api do
-        resources :users, only: %i[index show create update destroy], defaults: { format: "json" } do
-          get :me, on: :collection, defaults: { format: "json" }
-          get :stats, on: :collection, controller: "users", action: "stats", defaults: { format: "json" }
-          patch :me, on: :collection, controller: "users", action: "update_me", defaults: { format: "json" }
-          patch :password, on: :member, controller: "users", action: "update_password", defaults: { format: "json" }
-          post :roles, on: :member, defaults: { format: "json" }
-          delete :roles, on: :member, defaults: { format: "json" }
+        namespace :v1 do
+          resources :users, only: %i[index show create update destroy], defaults: { format: "json" } do
+            get :me, on: :collection, defaults: { format: "json" }
+            get :stats, on: :collection, controller: "users", action: "stats", defaults: { format: "json" }
+            patch :me, on: :collection, controller: "users", action: "update_me", defaults: { format: "json" }
+            patch :password, on: :member, controller: "users", action: "update_password", defaults: { format: "json" }
+            post :roles, on: :member, defaults: { format: "json" }
+            delete :roles, on: :member, defaults: { format: "json" }
+          end
+          resources :companies, defaults: { format: "json" }
+          resources :products, only: %i[index show create update destroy], defaults: { format: "json" } do
+            patch :status, on: :member, defaults: { format: "json" }
+          end
+          resources :roles, only: [:index, :show, :create, :update, :destroy], defaults: { format: "json" }
         end
-        resources :companies, defaults: { format: "json" }
-        resources :products, only: %i[index show create update destroy], defaults: { format: "json" } do
-          patch :status, on: :member, defaults: { format: "json" }
-        end
-        resources :roles, only: [:index], defaults: { format: "json" }
       end
       root "admin#home"
       get "*path", to: "admin#home", constraints: ->(request) { request.format.html? }

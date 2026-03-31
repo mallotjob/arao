@@ -5,12 +5,12 @@ axiosApiInstance.interceptors.response.use(camelizeResponseInterceptor);
 axiosApiInstance.interceptors.request.use(snakifyRequestInterceptor);
 
 export default {
-  getMyStats: () => axiosApiInstance.get('/api/users/stats'),
-  getUser: (id) => axiosApiInstance.get(`/api/users/${id}`),
-  getWhoAmI: () => axiosApiInstance.get('/api/users/me'),
-  getCompanies: () => axiosApiInstance.get('/api/companies'),
-  getProducts: () => axiosApiInstance.get('/api/products'),
-  getUsers: () => axiosApiInstance.get('/api/users'),
+  getMyStats: () => axiosApiInstance.get('/api/v1/users/stats'),
+  getUser: (id) => axiosApiInstance.get(`/api/v1/users/${id}`),
+  getWhoAmI: () => axiosApiInstance.get('/api/v1/users/me'),
+  getCompanies: () => axiosApiInstance.get('/api/v1/companies'),
+  getProducts: () => axiosApiInstance.get('/api/v1/products'),
+  getUsers: () => axiosApiInstance.get('/api/v1/users'),
   logOut: () => axiosApiInstance.delete('/users/sign_out'),
-  updatePassword: (id, data) => axiosApiInstance.patch(`/api/users/${id}/password`, data)
+  updatePassword: (id, data) => axiosApiInstance.patch(`/api/v1/users/${id}/password`, data)
 };

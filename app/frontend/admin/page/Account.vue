@@ -1,5 +1,8 @@
 <template>
-  <div class="space-y-6">
+  <div
+    v-if="currentUser"
+    class="space-y-6"
+  >
     <UserHeader />
     <Profile :current-user="currentUser" />
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
