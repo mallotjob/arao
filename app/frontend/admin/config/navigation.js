@@ -20,7 +20,7 @@ export const managementNav = [
   },
   {
     name: 'users',
-    route: 'companies',
+    route: 'users',
     icon: 'users',
     permission: { action: 'read', subject: 'User' }
   },

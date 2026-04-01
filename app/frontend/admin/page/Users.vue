@@ -333,7 +333,7 @@ const filteredUsers = computed(() => {
 
 const loadUsers = async () => {
   try {
-    const response = await api.get('/admin/api/users');
+    const response = await api.getUsers();
     users.value = response.data;
   } catch (error) {
     console.error('Error loading users:', error);
@@ -342,7 +342,7 @@ const loadUsers = async () => {
 
 const loadCompanies = async () => {
   try {
-    const response = await api.get('/admin/api/companies');
+    const response = await api.getCompanies();
     companies.value = response.data;
   } catch (error) {
     console.error('Error loading companies:', error);
