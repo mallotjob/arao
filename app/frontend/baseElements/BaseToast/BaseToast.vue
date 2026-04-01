@@ -58,7 +58,7 @@
           class="absolute top-2 right-2"
           icon-position="center"
           size="sm"
-          :icon="['fas', 'xmark']"
+          icon="xmark"
           :aria-label="closeAriaLabel"
           @click="close()"
         />

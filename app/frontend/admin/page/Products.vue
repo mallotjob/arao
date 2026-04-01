@@ -291,7 +291,9 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import { end, start } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
+import waitKeys from '@/shared/utils/wait-keys';
 
 const products = ref([]);
 const searchQuery = ref('');
@@ -329,10 +331,13 @@ const filteredProducts = computed(() => {
 
 const loadProducts = async () => {
   try {
-    const response = await api.get('/admin/api/products');
+    start(waitKeys.FETCH_PRODUCTS_WAIT_KEY);
+    const response = await api.getProducts();
     products.value = response.data;
   } catch (error) {
     console.error('Error loading products:', error);
+  } finally {
+    end(waitKeys.FETCH_PRODUCTS_WAIT_KEY);
   }
 };
 
@@ -344,24 +349,32 @@ const editProduct = (product) => {
 const saveProduct = async () => {
   try {
     if (editingProduct.value) {
+      start(waitKeys.SAVE_PRODUCT_WAIT_KEY);
       await api.put(`/admin/api/products/${editingProduct.value.id}`, { product: formData.value });
     } else {
+      start(waitKeys.CREATE_PRODUCT_WAIT_KEY);
       await api.post('/admin/api/products', { product: formData.value });
     }
     await loadProducts();
     closeModal();
   } catch (error) {
     console.error('Error saving product:', error);
+  } finally {
+    end(waitKeys.SAVE_PRODUCT_WAIT_KEY);
+    end(waitKeys.CREATE_PRODUCT_WAIT_KEY);
   }
 };
 
 const deleteProduct = async (product) => {
   if (confirm('Are you sure you want to delete this product?')) {
     try {
+      start(waitKeys.DELETE_PRODUCT_WAIT_KEY);
       await api.delete(`/admin/api/products/${product.id}`);
       await loadProducts();
     } catch (error) {
       console.error('Error deleting product:', error);
+    } finally {
+      end(waitKeys.DELETE_PRODUCT_WAIT_KEY);
     }
   }
 };
@@ -373,11 +386,14 @@ const updateStatus = (product) => {
 
 const performStatusUpdate = async (newStatus) => {
   try {
+    start(waitKeys.UPDATE_PRODUCT_STATUS_WAIT_KEY);
     await api.patch(`/admin/api/products/${selectedProduct.value.id}/status`, { status: newStatus });
     await loadProducts();
     showStatusModal.value = false;
   } catch (error) {
-    console.error('Error updating product status:', error);
+    console.error('Error updating status:', error);
+  } finally {
+    end(waitKeys.UPDATE_PRODUCT_STATUS_WAIT_KEY);
   }
 };
 

@@ -68,30 +68,31 @@
         <BaseButton
           type="button"
           color="light"
+          :label="t('cancel')"
           @click="showPasswordModal = false"
-        >
-          {{ t('cancel') }}
-        </BaseButton>
+        />
         <BaseButton
           type="submit"
+          :label="t('change_password')"
+          :loading="isChangingPassword"
           :disabled="isChangingPassword"
-        >
-          {{ isChangingPassword ? t('changing') : t('change_password') }}
-        </BaseButton>
+        />
       </div>
     </form>
   </BaseModal>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 import { showErrorToast, showSuccessToast } from '@/composables/useNotificationSystem';
 import { useI18n } from 'vue-i18n';
+import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 import BaseCard from '@/baseElements/BaseCard/BaseCard.vue';
 import BaseInput from '@/baseElements/BaseInput/BaseInput.vue';
 import BaseModal from '@/baseElements/BaseModal/BaseModal.vue';
 import BaseTitle from '@/baseElements/BaseTitle/BaseTitle.vue';
+import waitKeys from '@/shared/utils/wait-keys';
 
 const { userId } = defineProps({
   userId: {
@@ -100,19 +101,24 @@ const { userId } = defineProps({
   }
 });
 
+const { is, start, end } = useLoaderStatus();
 const { t } = useI18n();
+
 const showPasswordModal = ref(false);
 const passwordForm = ref({
   current_password: '',
   password: '',
   password_confirmation: ''
 });
-const isChangingPassword = ref(false);
+
+const isChangingPassword = computed(() => {
+  return is.value[waitKeys.UPDATE_USERS_PASSWORD_WAIT_KEY];
+});
 
 
 const handleUpdatePassword = async () => {
   try {
-    isChangingPassword.value = true;
+    start(waitKeys.UPDATE_USERS_PASSWORD_WAIT_KEY);
     await api.updatePassword(userId, { user: passwordForm.value });
     showSuccessToast(t('password_updated_successfully'));
     showPasswordModal.value = false;
@@ -122,14 +128,13 @@ const handleUpdatePassword = async () => {
       password_confirmation: ''
     };
   } catch (e) {
-    console.error(e.error);
     if (e.error === 'incorrect_current_password') {
       showErrorToast(t('incorrect_current_password'));
     } else {
       showErrorToast(t('password_update_failed'));
     }
   } finally {
-    isChangingPassword.value = false;
+    end(waitKeys.UPDATE_USERS_PASSWORD_WAIT_KEY);
   }
 };
 
@@ -142,7 +147,6 @@ const handleUpdatePassword = async () => {
     new_password: New Password
     confirm_new_password: Confirm New Password
     cancel: Cancel
-    changing: Changing...
     update_password: Update Password
     password_updated_successfully: Password updated successfully!
     password_update_failed: Failed to update password
@@ -155,7 +159,6 @@ const handleUpdatePassword = async () => {
     new_password: Nouveau mot de passe
     confirm_new_password: Confirmer le nouveau mot de passe
     cancel: Annuler
-    changing: Changement en cours...
     update_password: Mettre à jour le mot de passe
     password_updated_successfully: Mot de passe mis à jour avec succès!
     password_update_failed: Échec de la mise à jour du mot de passe
@@ -168,7 +171,6 @@ const handleUpdatePassword = async () => {
     new_password: Teny miafina vaovao
     confirm_new_password: Hamarino ny teny miafina vaovao
     cancel: Fanafoana
-    changing: Ovay...
     update_password: Ovay ny teny miafina
     password_updated_successfully: Tena miafina novaina!
     password_update_failed: Tsy hadisoana ny fiovana
@@ -181,7 +183,6 @@ const handleUpdatePassword = async () => {
     new_password: 新密码
     confirm_new_password: 确认新密码
     cancel: 取消
-    changing: 更改中...
     update_password: 更新密码
     password_updated_successfully: 密码更新成功！
     password_update_failed: 密码更新失败

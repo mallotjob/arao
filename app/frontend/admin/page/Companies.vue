@@ -173,7 +173,9 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import { end, start } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
+import waitKeys from '@/shared/utils/wait-keys';
 
 const companies = ref([]);
 const searchQuery = ref('');
@@ -195,10 +197,13 @@ const filteredCompanies = computed(() => {
 
 const loadCompanies = async () => {
   try {
-    const response = await api.get('/admin/api/companies');
+    start(waitKeys.FETCH_COMPANIES_WAIT_KEY);
+    const response = await api.getCompanies();
     companies.value = response.data;
   } catch (error) {
     console.error('Error loading companies:', error);
+  } finally {
+    end(waitKeys.FETCH_COMPANIES_WAIT_KEY);
   }
 };
 
@@ -210,24 +215,32 @@ const editCompany = (company) => {
 const saveCompany = async () => {
   try {
     if (editingCompany.value) {
+      start(waitKeys.SAVE_COMPANY_WAIT_KEY);
       await api.put(`/admin/api/companies/${editingCompany.value.id}`, formData.value);
     } else {
+      start(waitKeys.CREATE_COMPANY_WAIT_KEY);
       await api.post('/admin/api/companies', formData.value);
     }
     await loadCompanies();
     closeModal();
   } catch (error) {
     console.error('Error saving company:', error);
+  } finally {
+    end(waitKeys.SAVE_COMPANY_WAIT_KEY);
+    end(waitKeys.CREATE_COMPANY_WAIT_KEY);
   }
 };
 
 const deleteCompany = async (company) => {
   if (confirm('Are you sure you want to delete this company?')) {
     try {
+      start(waitKeys.DELETE_COMPANY_WAIT_KEY);
       await api.delete(`/admin/api/companies/${company.id}`);
       await loadCompanies();
     } catch (error) {
       console.error('Error deleting company:', error);
+    } finally {
+      end(waitKeys.DELETE_COMPANY_WAIT_KEY);
     }
   }
 };

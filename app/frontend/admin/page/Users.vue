@@ -300,7 +300,9 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
+import { end, start } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
+import waitKeys from '@/shared/utils/wait-keys';
 
 const users = ref([]);
 const companies = ref([]);
@@ -333,19 +335,25 @@ const filteredUsers = computed(() => {
 
 const loadUsers = async () => {
   try {
+    start(waitKeys.FETCH_USERS_WAIT_KEY);
     const response = await api.getUsers();
     users.value = response.data;
   } catch (error) {
     console.error('Error loading users:', error);
+  } finally {
+    end(waitKeys.FETCH_USERS_WAIT_KEY);
   }
 };
 
 const loadCompanies = async () => {
   try {
+    start(waitKeys.FETCH_COMPANIES_WAIT_KEY);
     const response = await api.getCompanies();
     companies.value = response.data;
   } catch (error) {
     console.error('Error loading companies:', error);
+  } finally {
+    end(waitKeys.FETCH_COMPANIES_WAIT_KEY);
   }
 };
 
@@ -366,24 +374,32 @@ const editUser = (user) => {
 const saveUser = async () => {
   try {
     if (editingUser.value) {
+      start(waitKeys.SAVE_USER_WAIT_KEY);
       await api.put(`/admin/api/users/${editingUser.value.id}`, formData.value);
     } else {
+      start(waitKeys.CREATE_USER_WAIT_KEY);
       await api.post('/admin/api/users', formData.value);
     }
     await loadUsers();
     closeModal();
   } catch (error) {
     console.error('Error saving user:', error);
+  } finally {
+    end(waitKeys.SAVE_USER_WAIT_KEY);
+    end(waitKeys.CREATE_USER_WAIT_KEY);
   }
 };
 
 const deleteUser = async (user) => {
   if (confirm('Are you sure you want to delete this user?')) {
     try {
+      start(waitKeys.DELETE_USER_WAIT_KEY);
       await api.delete(`/admin/api/users/${user.id}`);
       await loadUsers();
     } catch (error) {
       console.error('Error deleting user:', error);
+    } finally {
+      end(waitKeys.DELETE_USER_WAIT_KEY);
     }
   }
 };
@@ -399,6 +415,7 @@ const hasRole = (user, roleName) => {
 
 const toggleRole = async (user, roleName) => {
   try {
+    start(waitKeys.TOGGLE_USER_ROLE_WAIT_KEY);
     if (hasRole(user, roleName)) {
       await api.delete(`/admin/api/users/${user.id}/roles/${roleName}`);
     } else {
@@ -407,6 +424,8 @@ const toggleRole = async (user, roleName) => {
     await loadUsers();
   } catch (error) {
     console.error('Error toggling role:', error);
+  } finally {
+    end(waitKeys.TOGGLE_USER_ROLE_WAIT_KEY);
   }
 };
 

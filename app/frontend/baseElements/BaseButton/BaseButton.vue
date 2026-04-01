@@ -35,9 +35,9 @@
           ['icon-size-' + size]: !label
         }"
       >
-        <font-awesome-icon
+        <FontAwesomeIcon
           v-if="!loading"
-          :icon="icon"
+          :icon="['fas', icon]"
         />
         <BaseSpinner
           v-if="loading"
@@ -77,7 +77,7 @@ const props = defineProps({
   },
   icon: {
     default: null,
-    type: Array
+    type: String
   },
   iconPosition: {
     default: 'right',
