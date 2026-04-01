@@ -18,6 +18,7 @@ import piniaPersistedstate from 'pinia-plugin-persistedstate';
 import PrimeVue from 'primevue/config';
 import router from './router';
 import Tooltip from 'primevue/tooltip';
+import waitKeys from '@/shared/plugins/wait-keys';
 
 const app = createApp(App);
 
@@ -44,6 +45,7 @@ app.use(router);
 app.use(PrimeVue, {
   theme: { preset: Lara }
 });
+app.use(waitKeys);
 
 app.mount('#app');
 
