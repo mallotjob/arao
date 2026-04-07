@@ -1,69 +1,36 @@
 <template>
   <div class="space-y-6">
-    <!-- Header -->
-    <div class="flex items-center justify-between">
-      <div>
-        <h1 class="text-2xl font-semibold text-slate-900">
-          Users
-        </h1>
-        <p class="mt-1 text-sm text-slate-600">
-          Manage user accounts and permissions
-        </p>
-      </div>
-      <button
-        class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
-        @click="showCreateModal = true"
-      >
-        Add User
-      </button>
-    </div>
+    <IndexHeader
+      title="Users"
+      description="Manage user accounts and permissions"
+      button-text="Add User"
+      @create="showCreateModal = true"
+    />
 
     <!-- Search and Filter -->
-    <div class="bg-white p-4 rounded-lg shadow border border-slate-200">
-      <div class="flex flex-col sm:flex-row gap-4">
-        <div class="flex-1">
-          <input
-            v-model="searchQuery"
-            type="text"
-            placeholder="Search users..."
-            class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-            focus:border-blue-500"
-          >
-        </div>
-        <select
-          v-model="roleFilter"
-          class="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">
-            All Roles
-          </option>
-          <option value="admin">
-            Admin
-          </option>
-          <option value="manager">
-            Manager
-          </option>
-          <option value="user">
-            User
-          </option>
-        </select>
-        <select
-          v-model="companyFilter"
-          class="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option value="">
-            All Companies
-          </option>
-          <option
-            v-for="company in companies"
-            :key="company.id"
-            :value="company.id"
-          >
-            {{ company.name }}
-          </option>
-        </select>
-      </div>
-    </div>
+    <SearchFilter
+      search-placeholder="Search users..."
+      :filters="[
+        {
+          label: 'Role',
+          model: roleFilter,
+          options: [
+            { value: '', label: 'All Roles' },
+            { value: 'admin', label: 'Admin' },
+            { value: 'manager', label: 'Manager' },
+            { value: 'user', label: 'User' }
+          ]
+        },
+        {
+          label: 'Company',
+          model: companyFilter,
+          options: [
+            { value: '', label: 'All Companies' },
+            ...companies.map(company => ({ value: company.id, label: company.name }))
+          ]
+        }
+      ]"
+    />
 
     <!-- Users Table -->
     <div class="bg-white rounded-lg shadow border border-slate-200 overflow-hidden">
@@ -156,6 +123,68 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+
+    <!-- test / -->
+
+    <div class="card">
+      <DataTable
+        v-model:filters="filters"
+        :value="users"
+        paginator
+        :rows="10"
+        data-key="id"
+        filter-display="row"
+        :loading="loading"
+        :global-filter-fields="['name', 'country.name', 'representative.name', 'status']"
+      >
+        <template #header>
+          <div class="flex justify-end">
+            <IconField>
+              <InputIcon>
+                <i class="pi pi-search" />
+              </InputIcon>
+              <InputText
+                v-model="filters['global'].value"
+                placeholder="Keyword Search"
+              />
+            </IconField>
+          </div>
+        </template>
+        <template #empty>
+          No customers found.
+        </template>
+        <template #loading>
+          Loading customers data. Please wait.
+        </template>
+        <Column
+          field="email"
+          header="Name"
+          style="min-width: 12rem"
+        >
+          <template #body="{ data }">
+            {{ data.email }}
+          </template>
+        </Column>
+        <Column
+          header="Country"
+          filter-field="company.name"
+          style="min-width: 12rem"
+        >
+          <template #body="{ data }">
+            <div class="flex items-center gap-2">
+              <img
+                alt="flag"
+                src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
+                :class="`flag flag-${data.company?.createdAt}`"
+                style="width: 24px"
+              >
+              <span>{{ data.company?.name }}</span>
+            </div>
+          </template>
+        </Column>
+      </DataTable>
     </div>
 
     <!-- Create/Edit Modal -->
@@ -302,7 +331,24 @@
 import { computed, onMounted, ref } from 'vue';
 import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
+import IndexHeader from '@/admin/component/shared/IndexHeader.vue';
+import SearchFilter from '@/admin/component/shared/SearchFilter.vue';
 import waitKeys from '@/shared/utils/wait-keys';
+
+// new
+import { FilterMatchMode } from '@primevue/core/api';
+
+const filters = ref({
+  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
+  name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  'country.name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
+  representative: { value: null, matchMode: FilterMatchMode.IN },
+  status: { value: null, matchMode: FilterMatchMode.EQUALS },
+  verified: { value: null, matchMode: FilterMatchMode.EQUALS }
+});
+const loading = ref(true);
+
+// new
 
 const { start, end } = useLoaderStatus();
 
@@ -461,5 +507,7 @@ onMounted(() => {
   loadUsers();
   loadCompanies();
   loadRoles();
+  loading.value = false;
+
 });
 </script>

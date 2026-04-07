@@ -10,10 +10,14 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { setupAxios } from '@/shared/axios-setup';
 import App from '@/admin/App.vue';
+import Aura from '@primeuix/themes/aura';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
 import i18n from '@/shared/i18n';
-import Lara from '@primevue/themes/lara';
+import IconField from 'primevue/iconfield';
+import InputIcon from 'primevue/inputicon';
+import InputText from 'primevue/inputtext';
+// import Lara from '@primevue/themes/lara';
 import piniaPersistedstate from 'pinia-plugin-persistedstate';
 import PrimeVue from 'primevue/config';
 import router from './router';
@@ -28,6 +32,9 @@ library.add(fab, far, fas);
 app.component('Column', Column);
 app.component('DataTable', DataTable);
 app.component('FontAwesomeIcon', FontAwesomeIcon);
+app.component('IconField', IconField);
+app.component('InputIcon', InputIcon);
+app.component('InputText', InputText);
 
 app.directive('tooltip', Tooltip);
 
@@ -43,7 +50,14 @@ app.use(pinia);
 app.use(i18n);
 app.use(router);
 app.use(PrimeVue, {
-  theme: { preset: Lara }
+  theme: {
+    preset: Aura,
+    options: {
+      prefix: 'p',
+      darkModeSelector: '.dark',
+      cssLayer: false
+    }
+  }
 });
 app.use(waitKeys);
 
