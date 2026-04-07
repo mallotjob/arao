@@ -169,7 +169,7 @@
         color="purple-blue"
         color-type="gradient"
         label="label"
-        :icon="['fa', 'plus']"
+        icon="plus"
       />
 
       <BaseButton
@@ -177,7 +177,7 @@
         color-type="gradient"
         label="label"
         icon-position="left"
-        :icon="['fas', 'check']"
+        icon="check"
       />
     </Variant>
 
@@ -187,14 +187,14 @@
         color-type="gradient"
         size="xs"
         icon-position="center"
-        :icon="['fas', 'heart']"
+        icon="heart"
       />
       <BaseButton
         color="dark"
         color-type="outline"
         size="sm"
         icon-position="center"
-        :icon="['fas', 'heart']"
+        icon="heart"
       />
 
       <BaseButton
@@ -203,49 +203,49 @@
         :round="true"
         size="sm"
         icon-position="center"
-        :icon="['fas', 'xmark']"
+        icon="xmark"
       />
 
       <BaseButton
         color="danger"
         :round="true"
         icon-position="center"
-        :icon="['fas', 'xmark']"
+        icon="xmark"
       />
 
       <BaseButton
         color="success"
         icon-position="center"
-        :icon="['fas', 'xmark']"
+        icon="xmark"
       />
 
       <BaseButton
         icon-position="center"
         size="xs"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
         icon-position="center"
         size="sm"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
         icon-position="center"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
         icon-position="center"
         size="lg"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
         icon-position="center"
         size="xl"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
@@ -254,7 +254,7 @@
         color="pink-orange"
         icon-position="center"
         size="xs"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
@@ -263,7 +263,7 @@
         color="pink-orange"
         icon-position="center"
         size="sm"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
@@ -271,7 +271,7 @@
         color-type="gradient"
         color="pink-orange"
         icon-position="center"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
@@ -280,7 +280,7 @@
         color="pink-orange"
         icon-position="center"
         size="lg"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
 
       <BaseButton
@@ -289,7 +289,7 @@
         color="pink-orange"
         icon-position="center"
         size="xl"
-        :icon="['fas', 'arrow-right']"
+        icon="arrow-right"
       />
     </Variant>
 
@@ -297,28 +297,28 @@
       <BaseButton
         color-type="no-border"
         icon-position="center"
-        :icon="['fas', 'heart']"
+        icon="heart"
       />
 
       <BaseButton
         color="dark"
         color-type="no-border"
         icon-position="center"
-        :icon="['fas', 'heart']"
+        icon="heart"
       />
 
       <BaseButton
         color="secondary"
         color-type="no-border"
         icon-position="center"
-        :icon="['fas', 'heart']"
+        icon="heart"
       />
 
       <BaseButton
         color="success"
         color-type="no-border"
         icon-position="center"
-        :icon="['fas', 'xmark']"
+        icon="xmark"
       />
 
       <BaseButton
@@ -326,7 +326,7 @@
         color-type="no-border"
         :round="true"
         icon-position="center"
-        :icon="['fas', 'xmark']"
+        icon="xmark"
       />
 
       <BaseButton
@@ -334,7 +334,7 @@
         color-type="no-border"
         :round="true"
         icon-position="center"
-        :icon="['fas', 'xmark']"
+        icon="xmark"
       />
 
       <BaseButton
@@ -342,7 +342,7 @@
         color-type="no-border"
         :round="true"
         icon-position="center"
-        :icon="['fas', 'xmark']"
+        icon="xmark"
       />
 
       <BaseButton
@@ -359,7 +359,7 @@
         color-type="gradient"
         :disabled="true"
         label="label"
-        :icon="['fa', 'plus']"
+        icon="plus"
       />
 
       <BaseButton
@@ -368,7 +368,7 @@
         label="label"
         :disabled="true"
         icon-position="left"
-        :icon="['fas', 'check']"
+        icon="check"
       />
 
       <BaseButton
@@ -377,7 +377,7 @@
         color-type="gradient"
         label="label"
         icon-position="left"
-        :icon="['fas', 'check']"
+        icon="check"
       />
 
       <BaseButton

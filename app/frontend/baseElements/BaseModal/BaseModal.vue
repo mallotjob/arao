@@ -10,7 +10,7 @@
         color="secondary"
         color-type="no-border"
         icon-position="center"
-        :icon="['fas', 'fa-xmark']"
+        icon="fa-xmark"
         class="absolute top-3 right-3"
         @handle-click="closeModal"
       />

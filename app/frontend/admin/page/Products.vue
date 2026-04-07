@@ -291,7 +291,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { end, start } from '@/shared/composables/loaderStatus';
+import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
 import waitKeys from '@/shared/utils/wait-keys';
 
@@ -312,6 +312,7 @@ const formData = ref({
   heigth: 0
 });
 
+const { start, end } = useLoaderStatus();
 const availableStatuses = [
   { value: 'pending', label: 'Pending', description: 'Product is pending confirmation' },
   { value: 'confirmed', label: 'Confirmed', description: 'Product has been confirmed' },

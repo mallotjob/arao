@@ -173,7 +173,7 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { end, start } from '@/shared/composables/loaderStatus';
+import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
 import waitKeys from '@/shared/utils/wait-keys';
 
@@ -186,6 +186,7 @@ const formData = ref({
   name: '',
   status: 'active'
 });
+const { start, end } = useLoaderStatus();
 
 const filteredCompanies = computed(() => {
   return companies.value.filter(company => {

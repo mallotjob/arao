@@ -300,9 +300,11 @@
 
 <script setup>
 import { computed, onMounted, ref } from 'vue';
-import { end, start } from '@/shared/composables/loaderStatus';
+import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
 import waitKeys from '@/shared/utils/wait-keys';
+
+const { start, end } = useLoaderStatus();
 
 const users = ref([]);
 const companies = ref([]);
