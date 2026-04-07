@@ -38,19 +38,19 @@ module Admin
         end
 
         # PATCH /admin/api/v1/products/:id/status
-        def update_status
-          event = params[:event]&.to_sym
+        # def update_status
+        #   event = params[:event]&.to_sym
 
-          if event && @product.send("may_#{event}?")
-            if @product.send(event)
-              render_resource(@product, Admin::Api::V1::ProductSerializer)
-            else
-              render_error("Cannot transition from #{@product.aasm_state} to #{event}")
-            end
-          else
-            render_error("Invalid event: #{event}")
-          end
-        end
+        #   if event && @product.send("may_#{event}?")
+        #     if @product.send(event)
+        #       render_resource(@product, Admin::Api::V1::ProductSerializer)
+        #     else
+        #       render_error("Cannot transition from #{@product.aasm_state} to #{event}")
+        #     end
+        #   else
+        #     render_error("Invalid event: #{event}")
+        #   end
+        # end
 
         # DELETE /admin/api/v1/products/:id
         def destroy
