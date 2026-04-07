@@ -83,7 +83,7 @@
 </template>
 <script setup>
 import { computed, ref } from 'vue';
-import { showErrorToast, showSuccessToast } from '@/composables/useNotificationSystem';
+import { showErrorToast, showSuccessToast } from '@/shared/composables/useNotificationSystem';
 import { useI18n } from 'vue-i18n';
 import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';

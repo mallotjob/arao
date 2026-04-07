@@ -12,7 +12,7 @@ import { setupAxios } from '@/shared/axios-setup';
 import App from '@/admin/App.vue';
 import Column from 'primevue/column';
 import DataTable from 'primevue/datatable';
-import i18n from '../i18n';
+import i18n from '@/shared/i18n';
 import Lara from '@primevue/themes/lara';
 import piniaPersistedstate from 'pinia-plugin-persistedstate';
 import PrimeVue from 'primevue/config';

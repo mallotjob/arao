@@ -121,7 +121,7 @@
 
 <script setup>
 import { computed } from 'vue';
-import { useNotificationSystem } from '@/composables/useNotificationSystem';
+import { useNotificationSystem } from '@/shared/composables/useNotificationSystem';
 import BaseToast from '@/baseElements/BaseToast/BaseToast.vue';
 
 const { notifications, removeNotification } = useNotificationSystem();

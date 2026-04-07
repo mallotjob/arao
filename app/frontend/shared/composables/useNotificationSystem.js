@@ -1,5 +1,5 @@
 import { computed, reactive, ref } from 'vue';
-import { getNotificationType } from '@/config/notificationConfig';
+import { getNotificationType } from '@/shared/config/notificationConfig';
 
 // Global notification state
 const notifications = reactive(new Map());

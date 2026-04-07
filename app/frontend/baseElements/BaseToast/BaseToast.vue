@@ -69,7 +69,7 @@
 
 <script setup>
 import { computed, onMounted, onUnmounted, ref, watch } from 'vue';
-import { getColorClasses, getNotificationType } from '@/config/notificationConfig';
+import { getColorClasses, getNotificationType } from '@/shared/config/notificationConfig';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 
 const props = defineProps({
