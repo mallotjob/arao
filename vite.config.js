@@ -14,7 +14,7 @@ export default defineConfig({
     !isTesting ? RubyPlugin() : null,
     VueI18nPlugin({
       runtimeOnly: true,
-      include: [resolve(__dirname, 'app/frontend/i18n/*.json')],
+      include: [resolve(__dirname, 'app/frontend/shared/i18n/*.json')],
     }),
   ],
   server: {

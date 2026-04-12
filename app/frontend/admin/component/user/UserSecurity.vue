@@ -34,35 +34,54 @@
     >
       {{ t('change_password') }}
     </BaseTitle>
-    <form @submit.prevent="handleUpdatePassword">
+    <Form
+      :validation-schema="validationSchema"
+      @submit="handleUpdatePassword"
+    >
       <div class="space-y-4">
-        <BaseInput
-          v-model="passwordForm.current_password"
-          type="password"
-          :label="t('current_password')"
-          :placeholder="t('current_password')"
-          required
-          autocomplete="current-password"
-        />
-        <BaseInput
-          v-model="passwordForm.password"
-          type="password"
-          :label="t('new_password')"
-          :placeholder="t('new_password')"
-          :minlength="8"
-          autocomplete="new-password"
-          required
-          :help-text="t('password_min_length')"
-        />
-        <BaseInput
-          v-model="passwordForm.password_confirmation"
-          type="password"
-          :label="t('confirm_new_password')"
-          :placeholder="t('confirm_new_password')"
-          :minlength="8"
-          required
-          autocomplete="new-password"
-        />
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="current_password"
+        >
+          <BaseInput
+            :model-value="field.value"
+            type="password"
+            :label="t('current_password')"
+            :placeholder="t('current_password')"
+            :error="errorMessage"
+            autocomplete="current-password"
+            @update:model-value="field.onChange($event)"
+          />
+        </Field>
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="password"
+        >
+          <BaseInput
+            :model-value="field.value"
+            type="password"
+            :label="t('new_password')"
+            :placeholder="t('new_password')"
+            :error="errorMessage"
+            autocomplete="new-password"
+            :help-text="t('password_min_length')"
+            @update:model-value="field.onChange($event)"
+          />
+        </Field>
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="password_confirmation"
+        >
+          <BaseInput
+            :model-value="field.value"
+            type="password"
+            :label="t('confirm_new_password')"
+            :placeholder="t('confirm_new_password')"
+            :error="errorMessage"
+            autocomplete="new-password"
+            @update:model-value="field.onChange($event)"
+          />
+        </Field>
       </div>
       <div class="mt-6 flex justify-end space-x-3">
         <BaseButton
@@ -78,14 +97,16 @@
           :disabled="isChangingPassword"
         />
       </div>
-    </form>
+    </Form>
   </BaseModal>
 </template>
 <script setup>
 import { computed, ref } from 'vue';
+import { Field, Form } from 'vee-validate';
 import { showErrorToast, showSuccessToast } from '@/shared/composables/useNotificationSystem';
 import { useI18n } from 'vue-i18n';
 import { useLoaderStatus } from '@/shared/composables/loaderStatus';
+import { usePasswordValidationSchema } from '@/composables/useValidationSchemas';
 import api from '@/admin/api';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 import BaseCard from '@/baseElements/BaseCard/BaseCard.vue';
@@ -103,30 +124,20 @@ const { userId } = defineProps({
 
 const { is, start, end } = useLoaderStatus();
 const { t } = useI18n();
+const validationSchema = usePasswordValidationSchema(t);
 
 const showPasswordModal = ref(false);
-const passwordForm = ref({
-  current_password: '',
-  password: '',
-  password_confirmation: ''
-});
 
 const isChangingPassword = computed(() => {
   return is.value[waitKeys.UPDATE_USERS_PASSWORD_WAIT_KEY];
 });
 
-
-const handleUpdatePassword = async () => {
+const handleUpdatePassword = async (values) => {
   try {
     start(waitKeys.UPDATE_USERS_PASSWORD_WAIT_KEY);
-    await api.updatePassword(userId, { user: passwordForm.value });
+    await api.updatePassword(userId, { user: values });
     showSuccessToast(t('password_updated_successfully'));
     showPasswordModal.value = false;
-    passwordForm.value = {
-      current_password: '',
-      password: '',
-      password_confirmation: ''
-    };
   } catch (e) {
     if (e.error === 'incorrect_current_password') {
       showErrorToast(t('incorrect_current_password'));

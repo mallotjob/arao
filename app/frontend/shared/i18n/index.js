@@ -1,11 +1,11 @@
 import { createI18n } from 'vue-i18n';
-
 // Import translation files
 import en from './en.json';
 import fr from './fr.json';
 import mg from './mg.json';
 import zhCN from './zh-CN.json';
 
+const isDev = import.meta.env.DEV;
 const messages = { en, fr, mg, 'zh-CN': zhCN };
 const savedLocale = localStorage.getItem('locale') || 'en';
 
@@ -15,6 +15,8 @@ const i18n = createI18n({
   locale: savedLocale, // default locale
   fallbackLocale: 'en', // fallback locale
   messages, // set locale messages
+  missingWarn: isDev,
+  fallbackWarn: isDev
 });
 
 export default i18n;
