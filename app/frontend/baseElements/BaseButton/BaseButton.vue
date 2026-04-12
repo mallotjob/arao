@@ -152,12 +152,13 @@ const computedType = computed(() => {
   return 'button';
 });
 
-const emit = defineEmits(['handle-click']);
+const emit = defineEmits(['handle-click', 'click']);
 const handleClick = (e) => {
   if (props.preventDefault) {
     e.preventDefault();
   }
   emit('handle-click');
+  emit('click', e);
 };
 
 </script>

@@ -13,7 +13,14 @@ config.global.plugins.push([i18n]);
 
 // Global configuration for Vue Test Utils
 config.global.stubs = {
-  // Add any global component stubs here if needed
+  FontAwesomeIcon: {
+    template: '<span class="fa-icon"></span>'
+  }
+};
+
+// Mock tooltip directive
+config.global.directives = {
+  tooltip: {}
 };
 
 // Mock window functions if needed

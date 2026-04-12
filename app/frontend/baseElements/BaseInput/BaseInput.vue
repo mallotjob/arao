@@ -310,7 +310,7 @@ const props = defineProps({
   }
 });
 
-const emit = defineEmits(['update:modelValue', 'blur', 'focus', 'change']);
+const emit = defineEmits(['update:modelValue', 'update:model-value', 'blur', 'focus', 'change']);
 
 const slots = useSlots();
 const inputId = computed(() => `input-${Math.random().toString(36).substr(2, 9)}`);
