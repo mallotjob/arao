@@ -170,314 +170,82 @@
     </DataTable>
 
     <!-- Create/Edit Modal -->
-    <div
-      v-if="showCreateModal || editingUser"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 class="text-xl font-semibold mb-4">
-          {{ editingUser ? t('edit_user') : t('create_user') }}
-        </h2>
-        <form @submit.prevent="saveUser">
-          <div class="space-y-4">
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('first_name') }}</label>
-              <input
-                v-model="formData.firstName"
-                type="text"
-                required
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-                focus:border-blue-500"
-              >
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('last_name') }}</label>
-              <input
-                v-model="formData.lastName"
-                type="text"
-                required
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-                focus:border-blue-500"
-              >
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('email') }}</label>
-              <input
-                v-model="formData.email"
-                type="email"
-                required
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-                focus:border-blue-500"
-              >
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('username') }}</label>
-              <input
-                v-model="formData.username"
-                type="text"
-                required
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-                 focus:border-blue-500"
-              >
-            </div>
-            <div>
-              <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('company') }}</label>
-              <select
-                v-model="formData.company_id"
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-                focus:border-blue-500"
-              >
-                <option value="">
-                  {{ t('select_company') }}
-                </option>
-                <option
-                  v-for="company in companies"
-                  :key="company.id"
-                  :value="company.id"
-                >
-                  {{ company.name }}
-                </option>
-              </select>
-            </div>
-            <div v-if="!editingUser">
-              <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('password') }}</label>
-              <input
-                v-model="formData.password"
-                type="password"
-                required
-                class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-                focus:border-blue-500"
-              >
-            </div>
-          </div>
-          <div class="mt-6 flex justify-end space-x-3">
-            <button
-              type="button"
-              class="px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50"
-              @click="closeModal"
-            >
-              {{ t('cancel') }}
-            </button>
-            <button
-              type="submit"
-              class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-            >
-              {{ editingUser ? t('update') : t('create') }}
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
+    <UserModal
+      :visible="showCreateModal || !!editingUser"
+      :user="editingUser"
+      :companies="companies"
+      @close="closeModal"
+      @submit="handleSaveUser"
+    />
 
     <!-- Role Management Modal -->
-    <div
-      v-if="showRoleModal"
-      class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-    >
-      <div class="bg-white rounded-lg p-6 w-full max-w-md">
-        <h2 class="text-xl font-semibold mb-4">
-          {{ t('manage_roles') }} - {{ selectedUser?.firstName }} {{ selectedUser?.lastName }}
-        </h2>
-        <div class="space-y-3">
-          <label
-            v-for="role in availableRoles"
-            :key="role.id"
-            class="flex items-center"
-          >
-            <input
-              type="checkbox"
-              :checked="hasRole(selectedUser, role.name)"
-              class="mr-3 h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-300 rounded"
-              @change="toggleRole(selectedUser, role.name)"
-            >
-            <div>
-              <div class="font-medium">{{ role.name }}</div>
-              <div class="text-sm text-slate-500">{{ role.description }}</div>
-            </div>
-          </label>
-        </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button
-            class="px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50"
-            @click="showRoleModal = false"
-          >
-            {{ t('close') }}
-          </button>
-        </div>
-      </div>
-    </div>
+    <RoleModal
+      :visible="showRoleModal"
+      :selected-user="selectedUser"
+      :available-roles="availableRoles"
+      @close="showRoleModal = false"
+      @toggle-role="handleToggleRole"
+    />
   </div>
 </template>
 
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
-import { useLoaderStatus } from '@/shared/composables/loaderStatus';
-import api from '@/admin/api';
+import { useUsers } from '@/admin/composables/useUsers';
 import IndexHeader from '@/admin/component/shared/IndexHeader.vue';
+import RoleModal from '@/admin/component/user/RoleModal.vue';
 import SearchFilter from '@/admin/component/shared/SearchFilter.vue';
-import waitKeys from '@/shared/utils/wait-keys';
+import UserModal from '@/admin/component/user/UserModal.vue';
 
 const { t } = useI18n();
-const { start, end } = useLoaderStatus();
 
-const users = ref([]);
-const companies = ref([]);
-const availableRoles = ref([]);
-const loading = ref(false);
-const totalRecords = ref(0);
-const rows = ref(10);
+const {
+  users,
+  companies,
+  availableRoles,
+  loading,
+  totalRecords,
+  rows,
+  roleFilter,
+  companyFilter,
+  loadUsers,
+  loadCompanies,
+  loadRoles,
+  onPage,
+  onSort,
+  onFilter,
+  onSearch,
+  onFilterChange,
+  resetFilters,
+  saveUser,
+  deleteUser,
+  toggleRole,
+  userInitials,
+  getRoleClass
+} = useUsers();
+
 const showCreateModal = ref(false);
 const editingUser = ref(null);
 const showRoleModal = ref(false);
 const selectedUser = ref(null);
-const formData = ref({
-  firstName: '',
-  lastName: '',
-  email: '',
-  username: '',
-  company_id: '',
-  password: ''
-});
-
-// Filter state
-const roleFilter = ref('');
-const companyFilter = ref('');
-const searchQuery = ref('');
-
-// Lazy loading state
-const lazyParams = ref({
-  first: 0,
-  rows: 10,
-  page: 1,
-  sortField: null,
-  sortOrder: null
-});
-
-const loadUsers = async (event = null) => {
-  loading.value = true;
-  try {
-    if (event) {
-      lazyParams.value = event;
-    }
-
-    const params = {
-      page: lazyParams.value.page,
-      per_page: lazyParams.value.rows,
-      search: searchQuery.value || null,
-      role: roleFilter.value || null,
-      companyId: companyFilter.value || null
-    };
-
-    start(waitKeys.FETCH_USERS_WAIT_KEY);
-    const response = await api.getUsers(params);
-    users.value = response.data.users || [];
-    totalRecords.value = response.data.meta.totalCount || 0;
-  } catch (error) {
-    console.error('Error loading users:', error);
-  } finally {
-    end(waitKeys.FETCH_USERS_WAIT_KEY);
-    loading.value = false;
-  }
-};
-
-const loadCompanies = async () => {
-  try {
-    start(waitKeys.FETCH_COMPANIES_WAIT_KEY);
-    const response = await api.getCompanies();
-    companies.value = response.data.companies;
-  } catch (error) {
-    console.error('Error loading companies:', error);
-  } finally {
-    end(waitKeys.FETCH_COMPANIES_WAIT_KEY);
-  }
-};
-
-const loadRoles = async () => {
-  try {
-    const response = await api.get('/admin/api/roles');
-    availableRoles.value = response.data;
-  } catch (error) {
-    console.error('Error loading roles:', error);
-  }
-};
-
-// Lazy loading event handlers
-const onPage = (event) => {
-  lazyParams.value.page = event.page + 1;
-  lazyParams.value.rows = event.rows;
-  loadUsers();
-};
-
-const onSort = (event) => {
-  lazyParams.value.sortField = event.sortField;
-  lazyParams.value.sortOrder = event.sortOrder;
-  loadUsers();
-};
-
-const onFilter = (event) => {
-  lazyParams.value.filters = event.filters;
-  loadUsers();
-};
-
-// SearchFilter event handlers
-const onSearch = (value) => {
-  searchQuery.value = value;
-  loadUsers();
-};
-
-const onFilterChange = (allFilters) => {
-  if (allFilters.role !== undefined) {
-    roleFilter.value = allFilters.role;
-  }
-  if (allFilters.company !== undefined) {
-    companyFilter.value = allFilters.company;
-  }
-  loadUsers();
-};
-
-const resetFilters = () => {
-  searchQuery.value = '';
-  roleFilter.value = '';
-  companyFilter.value = '';
-  loadUsers();
-};
 
 const editUser = (user) => {
   editingUser.value = user;
-  formData.value = { ...user, password: '' };
 };
 
-const saveUser = async () => {
+const closeModal = () => {
+  showCreateModal.value = false;
+  editingUser.value = null;
+};
+
+const handleSaveUser = async (userData) => {
   try {
-    if (editingUser.value) {
-      start(waitKeys.SAVE_USER_WAIT_KEY);
-      await api.put(`/admin/api/users/${editingUser.value.id}`, formData.value);
-    } else {
-      start(waitKeys.CREATE_USER_WAIT_KEY);
-      await api.post('/admin/api/users', formData.value);
-    }
-    await loadUsers();
+    await saveUser(userData, editingUser.value);
     closeModal();
   } catch (error) {
     console.error('Error saving user:', error);
-  } finally {
-    end(waitKeys.SAVE_USER_WAIT_KEY);
-    end(waitKeys.CREATE_USER_WAIT_KEY);
-  }
-};
-
-const deleteUser = async (user) => {
-  if (confirm(t('delete_user_confirmation'))) {
-    try {
-      start(waitKeys.DELETE_USER_WAIT_KEY);
-      await api.delete(`/admin/api/users/${user.id}`);
-      await loadUsers();
-    } catch (error) {
-      console.error('Error deleting user:', error);
-    } finally {
-      end(waitKeys.DELETE_USER_WAIT_KEY);
-    }
+    // Error is already handled in the composable
   }
 };
 
@@ -486,50 +254,13 @@ const manageRoles = (user) => {
   showRoleModal.value = true;
 };
 
-const hasRole = (user, roleName) => {
-  return user.roles.some(role => role.name === roleName);
-};
-
-const toggleRole = async (user, roleName) => {
+const handleToggleRole = async (user, roleName) => {
   try {
-    start(waitKeys.TOGGLE_USER_ROLE_WAIT_KEY);
-    if (hasRole(user, roleName)) {
-      await api.delete(`/admin/api/users/${user.id}/roles/${roleName}`);
-    } else {
-      await api.post(`/admin/api/users/${user.id}/roles`, { roleName: roleName });
-    }
-    await loadUsers();
+    await toggleRole(user, roleName);
   } catch (error) {
     console.error('Error toggling role:', error);
-  } finally {
-    end(waitKeys.TOGGLE_USER_ROLE_WAIT_KEY);
+    // Error is already handled in the composable
   }
-};
-
-const closeModal = () => {
-  showCreateModal.value = false;
-  editingUser.value = null;
-  formData.value = {
-    firstName: '',
-    lastName: '',
-    email: '',
-    username: '',
-    company_id: '',
-    password: ''
-  };
-};
-
-const userInitials = (user) => {
-  return `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase();
-};
-
-const getRoleClass = (roleName) => {
-  const roleClasses = {
-    admin: 'bg-red-100 text-red-800',
-    manager: 'bg-purple-100 text-purple-800',
-    user: 'bg-blue-100 text-blue-800'
-  };
-  return roleClasses[roleName] || 'bg-gray-100 text-gray-800';
 };
 
 onMounted(() => {
@@ -562,19 +293,6 @@ onMounted(() => {
     active: Active
     edit: Edit
     delete: Delete
-    edit_user: Edit User
-    create_user: Create User
-    first_name: First Name
-    last_name: Last Name
-    username: Username
-    select_company: Select Company
-    password: Password
-    cancel: Cancel
-    update: Update
-    create: Create
-    manage_roles: Manage Roles
-    close: Close
-    delete_user_confirmation: Are you sure you want to delete this user?
   fr:
     users: Utilisateurs
     manage_users_description: Gérer les comptes utilisateurs et les permissions
@@ -597,19 +315,6 @@ onMounted(() => {
     active: Actif
     edit: Modifier
     delete: Supprimer
-    edit_user: Modifier l'utilisateur
-    create_user: Créer un utilisateur
-    first_name: Prénom
-    last_name: Nom
-    username: Nom d'utilisateur
-    select_company: Sélectionner une entreprise
-    password: Mot de passe
-    cancel: Annuler
-    update: Mettre à jour
-    create: Créer
-    manage_roles: Gérer les rôles
-    close: Fermer
-    delete_user_confirmation: Êtes-vous sûr de vouloir supprimer cet utilisateur?
   mg:
     users: Mpampiasa
     manage_users_description: Hanoy ny kaonty mpampiasa sy ny alalana
@@ -632,19 +337,6 @@ onMounted(() => {
     active: Miasa
     edit: Hanova
     delete: Fafao
-    edit_user: Hanova ny mpampiasa
-    create_user: Mamorona mpampiasa
-    first_name: Anaran'ny lehibe
-    last_name: Anarana faharoa
-    username: Anarana fampiasa
-    select_company: Misafidy orinasa
-    password: Tenimiafina
-    cancel: Atsaharo
-    update: Havaozy
-    create: Mamorona
-    manage_roles: Hanoy ny anjara asa
-    close: Hidio
-    delete_user_confirmation: Tena tianao fafana ity mpampiasa ity?
   zh-CN:
     users: 用户
     manage_users_description: 管理用户账户和权限
@@ -667,17 +359,4 @@ onMounted(() => {
     active: 活跃
     edit: 编辑
     delete: 删除
-    edit_user: 编辑用户
-    create_user: 创建用户
-    first_name: 名
-    last_name: 姓
-    username: 用户名
-    select_company: 选择公司
-    password: 密码
-    cancel: 取消
-    update: 更新
-    create: 创建
-    manage_roles: 管理角色
-    close: 关闭
-    delete_user_confirmation: 您确定要删除此用户吗？
 </i18n>

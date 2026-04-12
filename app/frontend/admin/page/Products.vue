@@ -217,7 +217,7 @@
                   class="px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 >
                 <input
-                  v-model.number="formData.heigth"
+                  v-model.number="formData.height"
                   type="number"
                   placeholder="Height"
                   min="0"
@@ -309,7 +309,7 @@ const formData = ref({
   weight: 0,
   length: 0,
   width: 0,
-  heigth: 0
+  height: 0
 });
 
 const { start, end } = useLoaderStatus();
@@ -408,7 +408,7 @@ const closeModal = () => {
     weight: 0,
     length: 0,
     width: 0,
-    heigth: 0
+    height: 0
   };
 };
 

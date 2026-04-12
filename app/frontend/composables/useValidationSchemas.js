@@ -101,7 +101,7 @@ export function useProductValidationSchema(t) {
       .number()
       .required(() => t('validation.width_required'))
       .min(0, () => t('validation.width_min')),
-    heigth: yup
+    height: yup
       .number()
       .required(() => t('validation.height_required'))
       .min(0, () => t('validation.height_min'))
