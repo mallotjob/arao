@@ -2,7 +2,7 @@ module Admin
   module Api
     module V1
       class TypeConfigSerializer < ApplicationSerializer
-        attributes :id, :name, :description, :created_at, :updated_at
+        attributes :id, :name, :created_at, :updated_at
 
         # Include associated data
         has_many :products, serializer: Admin::Api::V1::ProductSerializer

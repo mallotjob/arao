@@ -1,6 +1,10 @@
 FactoryBot.define do
   factory :balance do
     company { create(:company) }
+    from_date { Faker::Date.between(from: 30.days.ago, to: Date.today) }
+    currency { Faker::Currency.code }
+    beneficiary_currency { Faker::Currency.code }
+    diff { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
   end
 end
 

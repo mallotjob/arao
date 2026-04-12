@@ -1,10 +1,9 @@
-class ShippingTime < ApplicationRecord
-  include ::CompanyScoped
-
-  belongs_to :company
-  belongs_to :type
-
-  has_many :products
+FactoryBot.define do
+  factory :shipping_time do
+    company { create(:company) }
+    type { create(:type) }
+    given_date { Faker::Date.between(from: Date.today, to: 30.days.from_now) }
+  end
 end
 
 # == Schema Information

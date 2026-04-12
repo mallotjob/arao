@@ -12,10 +12,10 @@ export default defineConfig({
   plugins: [
     vue(),
     !isTesting ? RubyPlugin() : null,
-    VueI18nPlugin({
+    ...(isTesting ? [] : [VueI18nPlugin({
       runtimeOnly: true,
-      include: [resolve(__dirname, 'app/frontend/shared/i18n/*.json')],
-    }),
+      include: [resolve(__dirname, './app/frontend/shared/i18n/*.json')],
+    })]),
   ],
   server: {
     watch: {

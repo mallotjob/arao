@@ -1,8 +1,12 @@
-class TypeConfig < ApplicationRecord
-  belongs_to :type
-  belongs_to :unit
-
-  has_many :products
+FactoryBot.define do
+  factory :type_config do
+    type { create(:type) }
+    unit { create(:unit) }
+    from_date { Faker::Date.between(from: 30.days.ago, to: Date.today) }
+    name { Faker::Commerce.product_name }
+    price { Faker::Number.number(digits: 4) }
+    datetime { Faker::Date.between(from: 30.days.ago, to: Date.today) }
+  end
 end
 
 # == Schema Information

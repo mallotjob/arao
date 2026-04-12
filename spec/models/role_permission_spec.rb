@@ -1,7 +1,10 @@
 require 'rails_helper'
 
 RSpec.describe RolePermission, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  describe 'associations' do
+    it { should belong_to(:role) }
+    it { should belong_to(:permission) }
+  end
 end
 
 # == Schema Information

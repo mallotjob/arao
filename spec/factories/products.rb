@@ -1,40 +1,17 @@
-class Product < ApplicationRecord
-  include AASM
-  include ::CompanyScoped
-
-  aasm do
-    state :pending, initial: true
-    state :confirmed
-    state :shipped
-    state :completed
-    state :delivered
-
-    event :confirm do
-      transitions from: :pending, to: :confirmed
-    end
-
-    event :ship do
-      transitions from: :confirmed, to: :shipped
-    end
-
-    event :complete do
-      transitions from: :shipped, to: :completed
-    end
-
-    event :deliver do
-      transitions from: :completed, to: :delivered
-    end
-  end
-
-  belongs_to :shipping_time
-  belongs_to :type_config
-  belongs_to :beneficiary
-  belongs_to :balance
-
-  def volume
-  end
-
-  def weight_per_volume
+FactoryBot.define do
+  factory :product do
+    balance { create(:balance) }
+    beneficiary { create(:beneficiary) }
+    shipping_time { create(:shipping_time) }
+    type_config { create(:type_config) }
+    aasm_state { 'pending' }
+    commodity { Faker::Commerce.product_name }
+    height { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
+    length { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
+    quantity { Faker::Number.number(digits: 2) }
+    tracking_number { Faker::Alphanumeric.alphanumeric(number: 10) }
+    weight { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
+    width { Faker::Number.decimal(l_digits: 2, r_digits: 2) }
   end
 end
 

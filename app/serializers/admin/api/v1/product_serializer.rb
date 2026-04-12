@@ -5,7 +5,6 @@ module Admin
         attributes :id, :commodity, :height, :length, :width, :quantity, :weight, :aasm_state, :created_at, :updated_at
 
         # Include associated data
-        belongs_to :shipping_time, serializer: Admin::Api::V1::ShippingTimeSerializer
         belongs_to :type_config, serializer: Admin::Api::V1::TypeConfigSerializer
         belongs_to :beneficiary, serializer: Admin::Api::V1::UserSerializer
         belongs_to :balance, serializer: Admin::Api::V1::BalanceSerializer
@@ -13,6 +12,10 @@ module Admin
         # Custom attributes
         attribute :volume do
           object.height * object.length * object.width if object.height && object.length && object.width
+        end
+
+        attribute :shipping_time do
+          object.shipping_time.given_date if object.shipping_time
         end
 
         attribute :weight_per_volume do
@@ -28,20 +31,12 @@ module Admin
           object.aasm.states(permitted: true).map(&:name)
         end
 
-        attribute :beneficiary_name do
-          "#{object.beneficiary&.first_name} #{object.beneficiary&.last_name}".strip if object.beneficiary
-        end
-
-        attribute :beneficiary_email do
-          object.beneficiary&.email
+        attribute :beneficiary_shipping_mark do
+          object.beneficiary&.shipping_mark
         end
 
         attribute :beneficiary_company do
           object.beneficiary&.company&.name
-        end
-
-        attribute :shipping_time_display do
-          object.shipping_time&.name
         end
 
         attribute :type_config_display do

@@ -107,7 +107,7 @@ CREATE TABLE public.products (
     quantity integer,
     length double precision,
     width double precision,
-    heigth double precision,
+    height double precision,
     weight double precision,
     commodity character varying,
     tracking_number character varying,
@@ -653,6 +653,7 @@ ALTER TABLE ONLY public.products
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260412164612'),
 ('20260312161937'),
 ('20260312144731'),
 ('20260306153052'),
