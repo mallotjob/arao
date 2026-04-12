@@ -21,6 +21,7 @@
           v-model="filter.model"
           type="select"
           :options="filter.options"
+          @update:model-value="(value) => emitAllFilters(filter.label, value)"
         />
       </template>
     </div>
@@ -28,7 +29,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import BaseInput from '@/baseElements/BaseInput/BaseInput.vue';
 
 const emit = defineEmits(['update:search', 'update:filters']);
@@ -45,22 +46,16 @@ const { filters, searchPlaceholder } = defineProps({
 });
 
 const searchQuery = ref('');
+const allFilters = ref({});
 
 watch(searchQuery, (val) => {
   emit('update:search', val);
 });
 
-onMounted(() => {
-  filters.forEach(filter => {
-    if (filter.model) {
-      watch(
-        () => filter.model.value,   // watch the ref’s value
-        (val) => {
-          emit('update:filters', { name: filter.label, value: val });
-        }
-      );
-    }
-  });
-});
+
+const emitAllFilters = (filterLabel, value) => {
+  allFilters.value[filterLabel] = value;
+  emit('update:filters', allFilters.value);
+};
 </script>
 

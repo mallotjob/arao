@@ -26,20 +26,35 @@
       @filter="onFilter($event)"
     >
       <template #header>
-        <div class="flex justify-between items-center">
+        <div class="flex flex-col gap-4">
           <h5 class="text-lg font-semibold text-slate-700">
             Users
           </h5>
-          <IconField>
-            <InputIcon>
-              <FontAwesomeIcon :icon="['fas', 'magnifying-glass']" />
-            </InputIcon>
-            <InputText
-              v-model="lazyParams.filters['global'].value"
-              placeholder="Search users..."
-              @input="onGlobalFilter"
-            />
-          </IconField>
+          <SearchFilter
+            search-placeholder="Search users..."
+            :filters="[
+              {
+                label: 'role',
+                model: roleFilter,
+                options: [
+                  { value: '', label: 'All Roles' },
+                  { value: 'admin', label: 'Admin' },
+                  { value: 'manager', label: 'Manager' },
+                  { value: 'viewer', label: 'Viewer' }
+                ]
+              },
+              {
+                label: 'company',
+                model: companyFilter,
+                options: [
+                  { value: '', label: 'All Companies' },
+                  ...companies.map(company => ({ value: company.id, label: company.name }))
+                ]
+              }
+            ]"
+            @update:search="onSearch"
+            @update:filters="onFilterChange"
+          />
         </div>
       </template>
 
@@ -294,11 +309,11 @@
 </template>
 
 <script setup>
-import { FilterMatchMode } from '@primevue/core/api';
 import { onMounted, ref } from 'vue';
 import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
 import IndexHeader from '@/admin/component/shared/IndexHeader.vue';
+import SearchFilter from '@/admin/component/shared/SearchFilter.vue';
 import waitKeys from '@/shared/utils/wait-keys';
 
 const { start, end } = useLoaderStatus();
@@ -322,16 +337,18 @@ const formData = ref({
   password: ''
 });
 
+// Filter state
+const roleFilter = ref('');
+const companyFilter = ref('');
+const searchQuery = ref('');
+
 // Lazy loading state
 const lazyParams = ref({
   first: 0,
   rows: 10,
   page: 1,
   sortField: null,
-  sortOrder: null,
-  filters: {
-    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
-  }
+  sortOrder: null
 });
 
 const loadUsers = async (event = null) => {
@@ -344,7 +361,9 @@ const loadUsers = async (event = null) => {
     const params = {
       page: lazyParams.value.page,
       per_page: lazyParams.value.rows,
-      search: lazyParams.value.filters?.global?.value || null
+      search: searchQuery.value || null,
+      role: roleFilter.value || null,
+      companyId: companyFilter.value || null
     };
 
     start(waitKeys.FETCH_USERS_WAIT_KEY);
@@ -363,7 +382,7 @@ const loadCompanies = async () => {
   try {
     start(waitKeys.FETCH_COMPANIES_WAIT_KEY);
     const response = await api.getCompanies();
-    companies.value = response.data;
+    companies.value = response.data.companies;
   } catch (error) {
     console.error('Error loading companies:', error);
   } finally {
@@ -398,7 +417,19 @@ const onFilter = (event) => {
   loadUsers();
 };
 
-const onGlobalFilter = () => {
+// SearchFilter event handlers
+const onSearch = (value) => {
+  searchQuery.value = value;
+  loadUsers();
+};
+
+const onFilterChange = (allFilters) => {
+  if (allFilters.role !== undefined) {
+    roleFilter.value = allFilters.role;
+  }
+  if (allFilters.company !== undefined) {
+    companyFilter.value = allFilters.company;
+  }
   loadUsers();
 };
 

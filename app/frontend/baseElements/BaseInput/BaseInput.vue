@@ -65,6 +65,7 @@
         :required="required"
         :class="inputClasses"
         class="base-input base-select"
+        @input="handleInput"
         @change="handleInput"
         @blur="handleBlur"
         @focus="handleFocus"
