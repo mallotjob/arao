@@ -8,8 +8,33 @@ module Admin
 
         # GET /admin/api/v1/users
         def index
-          @users = User.includes(:roles, :company).all
-          render_collection(@users, Admin::Api::V1::UserSerializer)
+          @users = User.includes(:roles, :company).order(:created_at)
+
+          # Apply search filter
+          if params[:search].present?
+            search_term = "%#{params[:search]}%"
+            @users = @users.where(
+              "first_name ILIKE ? OR last_name ILIKE ? OR email ILIKE ? OR username ILIKE ?",
+              search_term, search_term, search_term, search_term
+            )
+          end
+
+          # Apply role filter
+          if params[:role].present?
+            @users = @users.joins(:roles).where(roles: { name: params[:role] })
+          end
+
+          # Apply company filter
+          if params[:company_id].present?
+            @users = @users.where(company_id: params[:company_id])
+          end
+
+          # Pagination
+          page = params[:page] || 1
+          per_page = params[:per_page] || 10
+          @users = @users.page(page).per(per_page)
+
+          render_collection(@users, Admin::Api::V1::UserSerializer, meta: meta_attributes(@users))
         end
 
         # GET /admin/api/v1/users/me

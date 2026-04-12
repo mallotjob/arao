@@ -10,7 +10,7 @@ export default {
   getWhoAmI: () => axiosApiInstance.get('/api/v1/users/me'),
   getCompanies: () => axiosApiInstance.get('/api/v1/companies'),
   getProducts: () => axiosApiInstance.get('/api/v1/products'),
-  getUsers: () => axiosApiInstance.get('/api/v1/users'),
+  getUsers: (params) => axiosApiInstance.get('/api/v1/users', { params }),
   logOut: () => axiosApiInstance.delete('/users/sign_out'),
   updatePassword: (id, data) => axiosApiInstance.patch(`/api/v1/users/${id}/password`, data)
 };

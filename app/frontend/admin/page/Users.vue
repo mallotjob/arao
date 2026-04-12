@@ -7,185 +7,151 @@
       @create="showCreateModal = true"
     />
 
-    <!-- Search and Filter -->
-    <SearchFilter
-      search-placeholder="Search users..."
-      :filters="[
-        {
-          label: 'Role',
-          model: roleFilter,
-          options: [
-            { value: '', label: 'All Roles' },
-            { value: 'admin', label: 'Admin' },
-            { value: 'manager', label: 'Manager' },
-            { value: 'user', label: 'User' }
-          ]
-        },
-        {
-          label: 'Company',
-          model: companyFilter,
-          options: [
-            { value: '', label: 'All Companies' },
-            ...companies.map(company => ({ value: company.id, label: company.name }))
-          ]
-        }
-      ]"
-    />
+    <!-- Users DataTable -->
+    <DataTable
+      :value="users"
+      :lazy="true"
+      :paginator="true"
+      :rows="rows"
+      :total-records="totalRecords"
+      :loading="loading"
+      data-key="id"
+      filter-display="row"
+      paginator-template="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink
+          CurrentPageReport RowsPerPageDropdown"
+      :rows-per-page-options="[10, 20, 50]"
+      current-page-report-template="Showing {first} to {last} of {totalRecords} users"
+      @page="onPage($event)"
+      @sort="onSort($event)"
+      @filter="onFilter($event)"
+    >
+      <template #header>
+        <div class="flex justify-between items-center">
+          <h5 class="text-lg font-semibold text-slate-700">
+            Users
+          </h5>
+          <IconField>
+            <InputIcon>
+              <FontAwesomeIcon :icon="['fas', 'magnifying-glass']" />
+            </InputIcon>
+            <InputText
+              v-model="lazyParams.filters['global'].value"
+              placeholder="Search users..."
+              @input="onGlobalFilter"
+            />
+          </IconField>
+        </div>
+      </template>
 
-    <!-- Users Table -->
-    <div class="bg-white rounded-lg shadow border border-slate-200 overflow-hidden">
-      <table class="min-w-full divide-y divide-slate-200">
-        <thead class="bg-slate-50">
-          <tr>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-              User
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-              Email
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-              Company
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-              Roles
-            </th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-slate-500 uppercase tracking-wider">
-              Status
-            </th>
-            <th class="px-6 py-3 text-right text-xs font-medium text-slate-500 uppercase tracking-wider">
-              Actions
-            </th>
-          </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-slate-200">
-          <tr
-            v-for="user in filteredUsers"
-            :key="user.id"
-          >
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex items-center">
-                <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                  <span class="text-sm font-medium text-white">{{ userInitials(user) }}</span>
-                </div>
-                <div class="ml-3">
-                  <div class="text-sm font-medium text-slate-900">
-                    {{ user.first_name }} {{ user.last_name }}
-                  </div>
-                  <div class="text-sm text-slate-500">
-                    @{{ user.username }}
-                  </div>
-                </div>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-              {{ user.email }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-sm text-slate-500">
-              {{ user.company?.name || 'No Company' }}
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <div class="flex flex-wrap gap-1">
-                <span
-                  v-for="role in user.roles"
-                  :key="role.id"
-                  class="px-2 py-1 text-xs rounded-full"
-                  :class="getRoleClass(role.name)"
-                >
-                  {{ role.name }}
-                </span>
-              </div>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap">
-              <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
-                Active
-              </span>
-            </td>
-            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-              <button
-                class="text-blue-600 hover:text-blue-900 mr-3"
-                @click="editUser(user)"
-              >
-                Edit
-              </button>
-              <button
-                class="text-purple-600 hover:text-purple-900 mr-3"
-                @click="manageRoles(user)"
-              >
-                Roles
-              </button>
-              <button
-                class="text-red-600 hover:text-red-900"
-                @click="deleteUser(user)"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
+      <template #empty>
+        <div class="text-center py-8 text-slate-500">
+          No users found.
+        </div>
+      </template>
 
+      <template #loading>
+        <div class="text-center py-8 text-slate-500">
+          Loading users data. Please wait.
+        </div>
+      </template>
 
-    <!-- test / -->
-
-    <div class="card">
-      <DataTable
-        v-model:filters="filters"
-        :value="users"
-        paginator
-        :rows="10"
-        data-key="id"
-        filter-display="row"
-        :loading="loading"
-        :global-filter-fields="['name', 'country.name', 'representative.name', 'status']"
+      <Column
+        field="firstName"
+        header="User"
+        style="min-width: 16rem"
       >
-        <template #header>
-          <div class="flex justify-end">
-            <IconField>
-              <InputIcon>
-                <i class="pi pi-search" />
-              </InputIcon>
-              <InputText
-                v-model="filters['global'].value"
-                placeholder="Keyword Search"
-              />
-            </IconField>
+        <template #body="{ data }">
+          <div class="flex items-center">
+            <div class="w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
+              <span class="text-sm font-medium text-white">{{ userInitials(data) }}</span>
+            </div>
+            <div class="ml-3">
+              <div class="text-sm font-medium text-slate-900">
+                {{ data.firstName }} {{ data.lastName }}
+              </div>
+              <div class="text-sm text-slate-500">
+                @{{ data.username }}
+              </div>
+            </div>
           </div>
         </template>
-        <template #empty>
-          No customers found.
+      </Column>
+
+      <Column
+        field="email"
+        header="Email"
+        style="min-width: 14rem"
+      />
+
+      <Column
+        field="company.name"
+        header="Company"
+        style="min-width: 12rem"
+      >
+        <template #body="{ data }">
+          {{ data.company?.name || 'No Company' }}
         </template>
-        <template #loading>
-          Loading customers data. Please wait.
+      </Column>
+
+      <Column
+        field="roles"
+        header="Roles"
+        style="min-width: 12rem"
+      >
+        <template #body="{ data }">
+          <div class="flex flex-wrap gap-1">
+            <span
+              v-for="role in data.roles"
+              :key="role.id"
+              class="px-2 py-1 text-xs rounded-full"
+              :class="getRoleClass(role.name)"
+            >
+              {{ role.name }}
+            </span>
+          </div>
         </template>
-        <Column
-          field="email"
-          header="Name"
-          style="min-width: 12rem"
-        >
-          <template #body="{ data }">
-            {{ data.email }}
-          </template>
-        </Column>
-        <Column
-          header="Country"
-          filter-field="company.name"
-          style="min-width: 12rem"
-        >
-          <template #body="{ data }">
-            <div class="flex items-center gap-2">
-              <img
-                alt="flag"
-                src="https://primefaces.org/cdn/primevue/images/flag/flag_placeholder.png"
-                :class="`flag flag-${data.company?.createdAt}`"
-                style="width: 24px"
-              >
-              <span>{{ data.company?.name }}</span>
-            </div>
-          </template>
-        </Column>
-      </DataTable>
-    </div>
+      </Column>
+
+      <Column
+        field="status"
+        header="Status"
+        style="min-width: 8rem"
+      >
+        <template #body>
+          <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
+            Active
+          </span>
+        </template>
+      </Column>
+
+      <Column
+        header="Actions"
+        style="min-width: 12rem"
+      >
+        <template #body="{ data }">
+          <div class="flex gap-2">
+            <button
+              class="text-blue-600 hover:text-blue-900"
+              @click="editUser(data)"
+            >
+              Edit
+            </button>
+            <button
+              class="text-purple-600 hover:text-purple-900"
+              @click="manageRoles(data)"
+            >
+              Roles
+            </button>
+            <button
+              class="text-red-600 hover:text-red-900"
+              @click="deleteUser(data)"
+            >
+              Delete
+            </button>
+          </div>
+        </template>
+      </Column>
+    </DataTable>
 
     <!-- Create/Edit Modal -->
     <div
@@ -201,7 +167,7 @@
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1">First Name</label>
               <input
-                v-model="formData.first_name"
+                v-model="formData.firstName"
                 type="text"
                 required
                 class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
@@ -211,7 +177,7 @@
             <div>
               <label class="block text-sm font-medium text-slate-700 mb-1">Last Name</label>
               <input
-                v-model="formData.last_name"
+                v-model="formData.lastName"
                 type="text"
                 required
                 class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
@@ -294,7 +260,7 @@
     >
       <div class="bg-white rounded-lg p-6 w-full max-w-md">
         <h2 class="text-xl font-semibold mb-4">
-          Manage Roles - {{ selectedUser?.first_name }} {{ selectedUser?.last_name }}
+          Manage Roles - {{ selectedUser?.firstName }} {{ selectedUser?.lastName }}
         </h2>
         <div class="space-y-3">
           <label
@@ -328,68 +294,68 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { FilterMatchMode } from '@primevue/core/api';
+import { onMounted, ref } from 'vue';
 import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import api from '@/admin/api';
 import IndexHeader from '@/admin/component/shared/IndexHeader.vue';
-import SearchFilter from '@/admin/component/shared/SearchFilter.vue';
 import waitKeys from '@/shared/utils/wait-keys';
-
-// new
-import { FilterMatchMode } from '@primevue/core/api';
-
-const filters = ref({
-  global: { value: null, matchMode: FilterMatchMode.CONTAINS },
-  name: { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  'country.name': { value: null, matchMode: FilterMatchMode.STARTS_WITH },
-  representative: { value: null, matchMode: FilterMatchMode.IN },
-  status: { value: null, matchMode: FilterMatchMode.EQUALS },
-  verified: { value: null, matchMode: FilterMatchMode.EQUALS }
-});
-const loading = ref(true);
-
-// new
 
 const { start, end } = useLoaderStatus();
 
 const users = ref([]);
 const companies = ref([]);
 const availableRoles = ref([]);
-const searchQuery = ref('');
-const roleFilter = ref('');
-const companyFilter = ref('');
+const loading = ref(false);
+const totalRecords = ref(0);
+const rows = ref(10);
 const showCreateModal = ref(false);
 const editingUser = ref(null);
 const showRoleModal = ref(false);
 const selectedUser = ref(null);
 const formData = ref({
-  first_name: '',
-  last_name: '',
+  firstName: '',
+  lastName: '',
   email: '',
   username: '',
   company_id: '',
   password: ''
 });
 
-const filteredUsers = computed(() => {
-  return users.value.filter(user => {
-    const matchesSearch = `${user.first_name} ${user.last_name} ${user.email} ${user.username}`
-      .toLowerCase().includes(searchQuery.value.toLowerCase());
-    const matchesRole = !roleFilter.value || user.roles.some(role => role.name === roleFilter.value);
-    const matchesCompany = !companyFilter.value || user.company_id === companyFilter.value;
-    return matchesSearch && matchesRole && matchesCompany;
-  });
+// Lazy loading state
+const lazyParams = ref({
+  first: 0,
+  rows: 10,
+  page: 1,
+  sortField: null,
+  sortOrder: null,
+  filters: {
+    global: { value: null, matchMode: FilterMatchMode.CONTAINS }
+  }
 });
 
-const loadUsers = async () => {
+const loadUsers = async (event = null) => {
+  loading.value = true;
   try {
+    if (event) {
+      lazyParams.value = event;
+    }
+
+    const params = {
+      page: lazyParams.value.page,
+      per_page: lazyParams.value.rows,
+      search: lazyParams.value.filters?.global?.value || null
+    };
+
     start(waitKeys.FETCH_USERS_WAIT_KEY);
-    const response = await api.getUsers();
-    users.value = response.data;
+    const response = await api.getUsers(params);
+    users.value = response.data.users || [];
+    totalRecords.value = response.data.meta.totalCount || 0;
   } catch (error) {
     console.error('Error loading users:', error);
   } finally {
     end(waitKeys.FETCH_USERS_WAIT_KEY);
+    loading.value = false;
   }
 };
 
@@ -412,6 +378,28 @@ const loadRoles = async () => {
   } catch (error) {
     console.error('Error loading roles:', error);
   }
+};
+
+// Lazy loading event handlers
+const onPage = (event) => {
+  lazyParams.value.page = event.page + 1;
+  lazyParams.value.rows = event.rows;
+  loadUsers();
+};
+
+const onSort = (event) => {
+  lazyParams.value.sortField = event.sortField;
+  lazyParams.value.sortOrder = event.sortOrder;
+  loadUsers();
+};
+
+const onFilter = (event) => {
+  lazyParams.value.filters = event.filters;
+  loadUsers();
+};
+
+const onGlobalFilter = () => {
+  loadUsers();
 };
 
 const editUser = (user) => {
@@ -467,7 +455,7 @@ const toggleRole = async (user, roleName) => {
     if (hasRole(user, roleName)) {
       await api.delete(`/admin/api/users/${user.id}/roles/${roleName}`);
     } else {
-      await api.post(`/admin/api/users/${user.id}/roles`, { role_name: roleName });
+      await api.post(`/admin/api/users/${user.id}/roles`, { roleName: roleName });
     }
     await loadUsers();
   } catch (error) {
@@ -481,8 +469,8 @@ const closeModal = () => {
   showCreateModal.value = false;
   editingUser.value = null;
   formData.value = {
-    first_name: '',
-    last_name: '',
+    firstName: '',
+    lastName: '',
     email: '',
     username: '',
     company_id: '',
@@ -491,7 +479,7 @@ const closeModal = () => {
 };
 
 const userInitials = (user) => {
-  return `${user.first_name?.[0] || ''}${user.last_name?.[0] || ''}`.toUpperCase();
+  return `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase();
 };
 
 const getRoleClass = (roleName) => {
@@ -507,7 +495,5 @@ onMounted(() => {
   loadUsers();
   loadCompanies();
   loadRoles();
-  loading.value = false;
-
 });
 </script>

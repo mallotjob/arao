@@ -4,7 +4,7 @@
     <Sidebar :sidebar-open="sidebarOpen" />
 
     <!-- Main Content -->
-    <div class="w-full">
+    <div class="w-full lg:w-[calc(100%-15rem)]">
       <Header @toggle-sidebar="toggleSidebar" />
 
       <!-- Page Content -->
