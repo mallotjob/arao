@@ -54,6 +54,7 @@
             ]"
             @update:search="onSearch"
             @update:filters="onFilterChange"
+            @reset="resetFilters"
           />
         </div>
       </template>
@@ -432,6 +433,13 @@ const onFilterChange = (allFilters) => {
   if (allFilters.company !== undefined) {
     companyFilter.value = allFilters.company;
   }
+  loadUsers();
+};
+
+const resetFilters = () => {
+  searchQuery.value = '';
+  roleFilter.value = '';
+  companyFilter.value = '';
   loadUsers();
 };
 
