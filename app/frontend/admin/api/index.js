@@ -6,6 +6,7 @@ axiosApiInstance.interceptors.request.use(snakifyRequestInterceptor);
 
 export default {
   getMyStats: () => axiosApiInstance.get('/api/v1/users/stats'),
+  getRoles: () => axiosApiInstance.get('/api/v1/roles'),
   getUser: (id) => axiosApiInstance.get(`/api/v1/users/${id}`),
   getWhoAmI: () => axiosApiInstance.get('/api/v1/users/me'),
   getCompanies: () => axiosApiInstance.get('/api/v1/companies'),

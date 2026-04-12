@@ -236,7 +236,7 @@ const handleClick = (e) => {
     }
 
     &-danger {
-      @apply bg-red-600 hover:bg-red-700 focus:ring-red-300;
+      @apply bg-red-600 hover:bg-red-700 focus:ring-red-300 text-white;
       @apply dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-500;
 
       &.button-outline {

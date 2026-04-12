@@ -38,9 +38,7 @@
                 model: roleFilter,
                 options: [
                   { value: '', label: t('all_roles') },
-                  { value: 'admin', label: t('admin') },
-                  { value: 'manager', label: t('manager') },
-                  { value: 'viewer', label: t('viewer') }
+                  ...availableRoles.map(role => ({ value: role.name, label: t(role.name)}))
                 ]
               },
               {
@@ -146,24 +144,17 @@
       >
         <template #body="{ data }">
           <div class="flex gap-2">
-            <button
-              class="text-blue-600 hover:text-blue-900"
+            <BaseButton
+              :label="t('edit')"
+              size="sm"
               @click="editUser(data)"
-            >
-              {{ t('edit') }}
-            </button>
-            <button
-              class="text-purple-600 hover:text-purple-900"
-              @click="manageRoles(data)"
-            >
-              {{ t('roles') }}
-            </button>
-            <button
-              class="text-red-600 hover:text-red-900"
+            />
+            <BaseButton
+              color="danger"
+              size="sm"
+              :label="t('delete')"
               @click="deleteUser(data)"
-            >
-              {{ t('delete') }}
-            </button>
+            />
           </div>
         </template>
       </Column>
@@ -177,15 +168,6 @@
       @close="closeModal"
       @submit="handleSaveUser"
     />
-
-    <!-- Role Management Modal -->
-    <RoleModal
-      :visible="showRoleModal"
-      :selected-user="selectedUser"
-      :available-roles="availableRoles"
-      @close="showRoleModal = false"
-      @toggle-role="handleToggleRole"
-    />
   </div>
 </template>
 
@@ -193,8 +175,8 @@
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { useUsers } from '@/admin/composables/useUsers';
+import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 import IndexHeader from '@/admin/component/shared/IndexHeader.vue';
-import RoleModal from '@/admin/component/user/RoleModal.vue';
 import SearchFilter from '@/admin/component/shared/SearchFilter.vue';
 import UserModal from '@/admin/component/user/UserModal.vue';
 
@@ -220,15 +202,12 @@ const {
   resetFilters,
   saveUser,
   deleteUser,
-  toggleRole,
   userInitials,
   getRoleClass
 } = useUsers();
 
 const showCreateModal = ref(false);
 const editingUser = ref(null);
-const showRoleModal = ref(false);
-const selectedUser = ref(null);
 
 const editUser = (user) => {
   editingUser.value = user;
@@ -245,20 +224,6 @@ const handleSaveUser = async (userData) => {
     closeModal();
   } catch (error) {
     console.error('Error saving user:', error);
-    // Error is already handled in the composable
-  }
-};
-
-const manageRoles = (user) => {
-  selectedUser.value = user;
-  showRoleModal.value = true;
-};
-
-const handleToggleRole = async (user, roleName) => {
-  try {
-    await toggleRole(user, roleName);
-  } catch (error) {
-    console.error('Error toggling role:', error);
     // Error is already handled in the composable
   }
 };

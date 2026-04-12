@@ -1,13 +1,18 @@
 import { defineConfig } from 'vitest/config';
 import { resolve } from 'path';
 import vue from '@vitejs/plugin-vue';
+import VueI18nPlugin from '@intlify/unplugin-vue-i18n/vite';
 
 export default defineConfig({
   plugins: [
     vue({
       script: {
-        defineModel: true
-      }
+        defineModel: true,
+      },
+    }),
+    VueI18nPlugin({
+      runtimeOnly: false,
+      include: [resolve(__dirname, 'app/frontend/**/*.{json,yaml,yml}')]
     })
   ],
   test: {
@@ -18,7 +23,7 @@ export default defineConfig({
   },
   resolve: {
     alias: {
-      '@': resolve(__dirname, 'app/frontend')
-    }
+      '@': resolve(__dirname, 'app/frontend'),
+    },
   },
 });

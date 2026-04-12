@@ -16,7 +16,6 @@ const UPDATE_USERS_PASSWORD_WAIT_KEY = 'wait.update.users.password';
 const SAVE_USER_WAIT_KEY = 'wait.save.user';
 const CREATE_USER_WAIT_KEY = 'wait.create.user';
 const DELETE_USER_WAIT_KEY = 'wait.delete.user';
-const TOGGLE_USER_ROLE_WAIT_KEY = 'wait.toggle.user.role';
 const SAVE_PRODUCT_WAIT_KEY = 'wait.save.product';
 const CREATE_PRODUCT_WAIT_KEY = 'wait.create.product';
 const DELETE_PRODUCT_WAIT_KEY = 'wait.delete.product';
@@ -37,7 +36,6 @@ export default {
   SAVE_USER_WAIT_KEY,
   CREATE_USER_WAIT_KEY,
   DELETE_USER_WAIT_KEY,
-  TOGGLE_USER_ROLE_WAIT_KEY,
   SAVE_PRODUCT_WAIT_KEY,
   CREATE_PRODUCT_WAIT_KEY,
   DELETE_PRODUCT_WAIT_KEY,

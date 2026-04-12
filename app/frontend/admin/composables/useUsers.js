@@ -68,8 +68,8 @@ export function useUsers() {
 
   const loadRoles = async () => {
     try {
-      const response = await api.get('/admin/api/roles');
-      availableRoles.value = response.data;
+      const response = await api.getRoles();
+      availableRoles.value = response.data.roles;
     } catch (error) {
       console.error('Error loading roles:', error);
     }
@@ -151,23 +151,6 @@ export function useUsers() {
     }
   };
 
-  const toggleRole = async (user, roleName) => {
-    try {
-      start(waitKeys.TOGGLE_USER_ROLE_WAIT_KEY);
-      if (hasRole(user, roleName)) {
-        await api.delete(`/admin/api/users/${user.id}/roles/${roleName}`);
-      } else {
-        await api.post(`/admin/api/users/${user.id}/roles`, { roleName: roleName });
-      }
-      await loadUsers();
-    } catch (error) {
-      console.error('Error toggling role:', error);
-      throw error;
-    } finally {
-      end(waitKeys.TOGGLE_USER_ROLE_WAIT_KEY);
-    }
-  };
-
   const hasRole = (user, roleName) => {
     return user.roles.some(role => role.name === roleName);
   };
@@ -210,7 +193,6 @@ export function useUsers() {
     resetFilters,
     saveUser,
     deleteUser,
-    toggleRole,
     hasRole,
     userInitials,
     getRoleClass

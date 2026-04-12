@@ -27,7 +27,6 @@ vi.mock('@/shared/utils/wait-keys', () => ({
     SAVE_USER_WAIT_KEY: 'save_user',
     CREATE_USER_WAIT_KEY: 'create_user',
     DELETE_USER_WAIT_KEY: 'delete_user',
-    TOGGLE_USER_ROLE_WAIT_KEY: 'toggle_user_role'
   }
 }));
 
@@ -41,11 +40,6 @@ describe('useUsers', () => {
     it('initializes with empty companies array', () => {
       const { companies } = useUsers();
       expect(companies.value).toEqual([]);
-    });
-
-    it('initializes with empty availableRoles array', () => {
-      const { availableRoles } = useUsers();
-      expect(availableRoles.value).toEqual([]);
     });
 
     it('initializes with loading as false', () => {

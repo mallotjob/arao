@@ -1,21 +1,15 @@
 // Global test setup for BaseInput component tests
 import { config } from '@vue/test-utils';
-import { vi } from 'vitest';
+import { createI18n } from 'vue-i18n';
 
-// Mock vue-i18n
-vi.mock('vue-i18n', () => ({
-  useI18n: () => ({
-    t: (key) => key,
-    locale: { value: 'en' },
-    availableLocales: ['en', 'fr', 'mg', 'zh-CN']
-  }),
-  createI18n: () => ({
-    install: () => {},
-    global: {
-      t: (key) => key
-    }
-  })
-}));
+// Create real i18n instance
+const i18n = createI18n({
+  locale: 'en',
+  fallbackLocale: 'en',
+  messages: {}
+});
+
+config.global.plugins.push([i18n]);
 
 // Global configuration for Vue Test Utils
 config.global.stubs = {
