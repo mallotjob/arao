@@ -49,7 +49,7 @@ group :development, :test do
   gem "factory_bot_rails", "~> 6.5.1"
   gem "shoulda-matchers", "~> 7.0"
   gem "capybara", "~> 3.40"
-  gem "selenium-webdriver", "~> 4.25"
+  gem "selenium-webdriver", "~> 4.43"
 end
 
 gem "tailwindcss-rails", "~> 4.4"
