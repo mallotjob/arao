@@ -139,6 +139,58 @@
       </Column>
 
       <Column
+        field="created_by_info"
+        :header="t('created_by')"
+        style="min-width: 14rem"
+      >
+        <template #body="{ data }">
+          <div
+            v-if="data.created_by_info"
+            class="text-sm"
+          >
+            <div class="font-medium text-slate-900">
+              {{ data.created_by_info.user_name }}
+            </div>
+            <div class="text-xs text-slate-500">
+              {{ formatDate(data.created_by_info.created_at) }}
+            </div>
+          </div>
+          <div
+            v-else
+            class="text-sm text-slate-400"
+          >
+            {{ t('not_available') }}
+          </div>
+        </template>
+      </Column>
+
+      <Column
+        field="updated_by_info"
+        :header="t('updated_by')"
+        style="min-width: 14rem"
+      >
+        <template #body="{ data }">
+          <div
+            v-if="data.updated_by_info"
+            class="text-sm"
+          >
+            <div class="font-medium text-slate-900">
+              {{ data.updated_by_info.user_name }}
+            </div>
+            <div class="text-xs text-slate-500">
+              {{ formatDate(data.updated_by_info.updated_at) }}
+            </div>
+          </div>
+          <div
+            v-else
+            class="text-sm text-slate-400"
+          >
+            {{ t('not_available') }}
+          </div>
+        </template>
+      </Column>
+
+      <Column
         :header="t('actions')"
         style="min-width: 12rem"
       >
@@ -228,6 +280,18 @@ const handleSaveUser = async (userData) => {
   }
 };
 
+const formatDate = (dateString) => {
+  if (!dateString) return '';
+  const date = new Date(dateString);
+  return date.toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+};
+
 onMounted(() => {
   loadUsers();
   loadCompanies();
@@ -258,6 +322,9 @@ onMounted(() => {
     active: Active
     edit: Edit
     delete: Delete
+    created_by: Created By
+    updated_by: Updated By
+    not_available: N/A
   fr:
     users: Utilisateurs
     manage_users_description: Gérer les comptes utilisateurs et les permissions
@@ -280,6 +347,9 @@ onMounted(() => {
     active: Actif
     edit: Modifier
     delete: Supprimer
+    created_by: Créé par
+    updated_by: Mis à jour par
+    not_available: N/A
   mg:
     users: Mpampiasa
     manage_users_description: Hanoy ny kaonty mpampiasa sy ny alalana
@@ -302,6 +372,9 @@ onMounted(() => {
     active: Miasa
     edit: Hanova
     delete: Fafao
+    created_by: Noforonan'i
+    updated_by: Novan'i
+    not_available: Tsy misy
   zh-CN:
     users: 用户
     manage_users_description: 管理用户账户和权限
@@ -324,4 +397,7 @@ onMounted(() => {
     active: 活跃
     edit: 编辑
     delete: 删除
+    created_by: 创建者
+    updated_by: 更新者
+    not_available: 不可用
 </i18n>

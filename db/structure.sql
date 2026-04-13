@@ -247,7 +247,9 @@ CREATE TABLE public.users (
     current_sign_in_ip character varying,
     last_sign_in_ip character varying,
     all_access boolean DEFAULT false NOT NULL,
-    deleted_at timestamp(6) without time zone
+    deleted_at timestamp(6) without time zone,
+    created_by uuid,
+    updated_by uuid
 );
 
 
@@ -615,6 +617,14 @@ ALTER TABLE ONLY public.products
 
 
 --
+-- Name: users fk_rails_755543ca4d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_755543ca4d FOREIGN KEY (created_by) REFERENCES public.users(id);
+
+
+--
 -- Name: users fk_rails_7682a3bdfe; Type: FK CONSTRAINT; Schema: public; Owner: -
 --
 
@@ -628,6 +638,14 @@ ALTER TABLE ONLY public.users
 
 ALTER TABLE ONLY public.shipping_times
     ADD CONSTRAINT fk_rails_787a818726 FOREIGN KEY (company_id) REFERENCES public.companies(id);
+
+
+--
+-- Name: users fk_rails_8c1436a35d; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY public.users
+    ADD CONSTRAINT fk_rails_8c1436a35d FOREIGN KEY (updated_by) REFERENCES public.users(id);
 
 
 --
@@ -653,6 +671,7 @@ ALTER TABLE ONLY public.products
 SET search_path TO "$user", public;
 
 INSERT INTO "schema_migrations" (version) VALUES
+('20260413104007'),
 ('20260412164612'),
 ('20260312161937'),
 ('20260312144731'),

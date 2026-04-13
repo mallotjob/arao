@@ -7,6 +7,8 @@ module Admin
         # Include associated data
         has_many :roles, serializer: Admin::Api::V1::RoleSerializer
         belongs_to :company, serializer: Admin::Api::V1::CompanySerializer
+        belongs_to :creator, serializer: Admin::Api::V1::SimpleUserSerializer
+        belongs_to :updater, serializer: Admin::Api::V1::SimpleUserSerializer
 
         # Custom attributes
         attribute :full_name do
@@ -29,6 +31,23 @@ module Admin
 
         def updated_at
           object.updated_at.iso8601 if object.updated_at
+        end
+
+        # Include created_by and updated_by with dates
+        attribute :created_by_info do
+          {
+            user_id: object.created_by,
+            user_name: object.creator&.full_name,
+            created_at: object.created_at&.iso8601
+          } if object.created_by
+        end
+
+        attribute :updated_by_info do
+          {
+            user_id: object.updated_by,
+            user_name: object.updater&.full_name,
+            updated_at: object.updated_at&.iso8601
+          } if object.updated_by
         end
 
         # Exclude sensitive data

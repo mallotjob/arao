@@ -6,7 +6,7 @@ module Admin
 
         # Include associated data
         belongs_to :type_config, serializer: Admin::Api::V1::TypeConfigSerializer
-        belongs_to :beneficiary, serializer: Admin::Api::V1::UserSerializer
+        belongs_to :beneficiary, serializer: Admin::Api::V1::SimpleUserSerializer
         belongs_to :balance, serializer: Admin::Api::V1::BalanceSerializer
 
         # Custom attributes

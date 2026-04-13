@@ -62,6 +62,7 @@ module Admin
         # POST /admin/api/v1/users
         def create
           @user = User.new(user_params)
+          @user.created_by = current_user.id
 
           if @user.save
             render_resource(@user, Admin::Api::V1::UserSerializer, status: :created)
@@ -72,6 +73,8 @@ module Admin
 
         # PATCH/PUT /admin/api/v1/users/:id
         def update
+          @user.updated_by = current_user.id
+
           if @user.update(user_params)
             render_resource(@user, Admin::Api::V1::UserSerializer)
           else

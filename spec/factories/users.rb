@@ -5,6 +5,13 @@ FactoryBot.define do
     email      { Faker::Internet.email }
     password   { Faker::Internet.password }
     all_access { false }
+    created_by { nil }
+    updated_by { nil }
+
+    trait :admin do
+      all_access { true }
+      created_by { nil }
+    end
   end
 end
 
@@ -14,6 +21,7 @@ end
 #
 #  id                     :uuid             not null, primary key
 #  all_access             :boolean          default(FALSE), not null
+#  created_by             :uuid
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
 #  deleted_at             :datetime
@@ -28,6 +36,7 @@ end
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  sign_in_count          :integer          default(0), not null
+#  updated_by             :uuid
 #  username               :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -44,4 +53,6 @@ end
 # Foreign Keys
 #
 #  fk_rails_...  (company_id => companies.id)
+#  fk_rails_...  (created_by => users.id)
+#  fk_rails_...  (updated_by => users.id)
 #

@@ -7,11 +7,15 @@ class User < ApplicationRecord
   include Devisable
 
   belongs_to :company, optional: true
+  belongs_to :creator, class_name: "User", foreign_key: :created_by, optional: true
+  belongs_to :updater, class_name: "User", foreign_key: :updated_by, optional: true
 
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
 
   attr_accessor :login
+
+  validate :created_by_required_unless_all_access, on: :create
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -22,6 +26,15 @@ class User < ApplicationRecord
   def all_access?
     all_access
   end
+
+  private
+
+  def created_by_required_unless_all_access
+    return if all_access?
+    return if created_by.present?
+
+    errors.add(:created_by, "is required unless user has all access")
+  end
 end
 
 # == Schema Information
@@ -30,6 +43,7 @@ end
 #
 #  id                     :uuid             not null, primary key
 #  all_access             :boolean          default(FALSE), not null
+#  created_by             :uuid
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
 #  deleted_at             :datetime
@@ -44,6 +58,7 @@ end
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  sign_in_count          :integer          default(0), not null
+#  updated_by             :uuid
 #  username               :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -60,4 +75,6 @@ end
 # Foreign Keys
 #
 #  fk_rails_...  (company_id => companies.id)
+#  fk_rails_...  (created_by => users.id)
+#  fk_rails_...  (updated_by => users.id)
 #

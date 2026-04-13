@@ -13,27 +13,50 @@ RSpec.describe User, type: :model do
 
   describe '#associations' do
     it { is_expected.to belong_to(:company).optional }
+    it { is_expected.to belong_to(:creator).class_name('User').optional }
+    it { is_expected.to belong_to(:updater).class_name('User').optional }
     it { is_expected.to have_many(:user_roles) }
     it { is_expected.to have_many(:roles).through(:user_roles) }
+  end
+
+  describe '#validations' do
+    context 'created_by_required_unless_all_access' do
+      let(:creator) { create(:user, :admin) }
+
+      it 'is valid when user has all_access without created_by' do
+        user = build(:user, :admin, created_by: nil)
+        expect(user).to be_valid
+      end
+
+      it 'is valid when user does not have all_access but has created_by' do
+        user = build(:user, created_by: creator.id)
+        expect(user).to be_valid
+      end
+
+      it 'is invalid when user does not have all_access and no created_by' do
+        user = build(:user, all_access: false, created_by: nil)
+        expect(user).to be_invalid
+        expect(user.errors[:created_by]).to include('is required unless user has all access')
+      end
+    end
   end
 
   describe ".for_actor scoped" do
     let(:company1) { create(:company) }
     let(:company2) { create(:company) }
 
-    let(:user1) { create(:user, company: company1) }
-    let(:user2) { create(:user, company: company2) }
+    let(:user_admin) { create(:user, :admin) }
+    let(:user1) { create(:user, created_by: user_admin.id, company: company1) }
+    let(:user2) { create(:user, created_by: user_admin.id, company: company2) }
 
     context "when user has all_access" do
-      let(:user) { create(:user, all_access: true) }
-
       it "returns all users" do
-        expect(User.for_actor(user)).to include(user1, user2)
+        expect(User.for_actor(user_admin)).to include(user1, user2)
       end
     end
 
     context "when user has limited access" do
-      let(:user) { create(:user, company: create(:company)) }
+      let(:user) { create(:user, created_by: user_admin.id, company: create(:company)) }
 
       it "returns only company products" do
         expect(User.for_actor(user).count).to eq(1)
@@ -49,6 +72,7 @@ end
 #
 #  id                     :uuid             not null, primary key
 #  all_access             :boolean          default(FALSE), not null
+#  created_by             :uuid
 #  current_sign_in_at     :datetime
 #  current_sign_in_ip     :string
 #  deleted_at             :datetime
@@ -63,6 +87,7 @@ end
 #  reset_password_sent_at :datetime
 #  reset_password_token   :string
 #  sign_in_count          :integer          default(0), not null
+#  updated_by             :uuid
 #  username               :string
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
@@ -79,4 +104,6 @@ end
 # Foreign Keys
 #
 #  fk_rails_...  (company_id => companies.id)
+#  fk_rails_...  (created_by => users.id)
+#  fk_rails_...  (updated_by => users.id)
 #

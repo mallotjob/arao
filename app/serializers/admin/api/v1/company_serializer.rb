@@ -5,7 +5,7 @@ module Admin
         attributes :id, :name, :created_at, :updated_at
 
         # Include associated data
-        has_many :beneficiaries, serializer: Admin::Api::V1::UserSerializer
+        has_many :beneficiaries, serializer: Admin::Api::V1::SimpleUserSerializer
         has_many :balances, serializer: Admin::Api::V1::BalanceSerializer
         has_many :products, serializer: Admin::Api::V1::ProductSerializer
 
