@@ -4,6 +4,7 @@ import Config from '@/admin/page/Config.vue';
 import Home from '@/admin/page/Home.vue';
 import Products from '@/admin/page/Products.vue';
 import ShippingType from '@/admin/page/ShippingType.vue';
+import User from '@/admin/page/User.vue';
 import Users from '@/admin/page/Users.vue';
 
 export const routes = [
@@ -41,6 +42,12 @@ export const routes = [
     path: '/shipping-type',
     name: 'shippingType',
     component: ShippingType
+  },
+  {
+    path: '/user/:id',
+    name: 'user',
+    component: User,
+    props: true
   },
   {
     name: 'notFound',

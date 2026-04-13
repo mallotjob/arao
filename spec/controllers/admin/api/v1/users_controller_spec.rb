@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe Admin::Api::V1::UsersController, type: :request do
   let(:admin_user) { create(:user, all_access: true) }
   let(:company) { create(:company) }
-  let(:user) { create(:user, company: company) }
+  let(:user) { create(:user, company: company, created_by: admin_user) }
 
   before do
     sign_in admin_user
   end
 
   describe 'GET #index' do
-    let!(:users) { create_list(:user, 3) }
+    let!(:users) { create_list(:user, 3, created_by: admin_user) }
 
     context 'without filters' do
       it 'returns all users' do
@@ -28,7 +28,7 @@ RSpec.describe Admin::Api::V1::UsersController, type: :request do
 
     context 'with role filter' do
       let(:role) { create(:role, name: 'admin') }
-      let(:user_with_role) { create(:user) }
+      let(:user_with_role) { create(:user, created_by: admin_user) }
 
       before do
         user_with_role.roles << role
@@ -141,9 +141,14 @@ RSpec.describe Admin::Api::V1::UsersController, type: :request do
     end
   end
 
-  describe 'GET #stats' do
-    it 'returns user stats' do
-      get stats_admin_api_v1_users_url
+  describe 'GET #user_stats' do
+    it 'returns user stats for current user' do
+      get stats_admin_api_v1_user_url(admin_user.id)
+      expect(response).to have_http_status(:success)
+    end
+
+    it 'returns user stats for other user when admin' do
+      get stats_admin_api_v1_user_url(user.id)
       expect(response).to have_http_status(:success)
     end
   end

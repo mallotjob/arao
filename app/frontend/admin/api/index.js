@@ -5,7 +5,7 @@ axiosApiInstance.interceptors.response.use(camelizeResponseInterceptor);
 axiosApiInstance.interceptors.request.use(snakifyRequestInterceptor);
 
 export default {
-  getMyStats: () => axiosApiInstance.get('/api/v1/users/stats'),
+  getUserStats: (id) => axiosApiInstance.get(`/api/v1/users/${id}/stats`),
   getRoles: () => axiosApiInstance.get('/api/v1/roles'),
   getUser: (id) => axiosApiInstance.get(`/api/v1/users/${id}`),
   getWhoAmI: () => axiosApiInstance.get('/api/v1/users/me'),

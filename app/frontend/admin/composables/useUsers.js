@@ -157,7 +157,8 @@ export function useUsers() {
 
   // Helper functions
   const userInitials = (user) => {
-    return `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase();
+    const fullName = user.fullName || `${user.firstName || ''} ${user.lastName || ''}`.trim();
+    return fullName.split(' ').map(name => name[0]).join('').toUpperCase();
   };
 
   const getRoleClass = (roleName) => {

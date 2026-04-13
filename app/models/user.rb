@@ -15,8 +15,6 @@ class User < ApplicationRecord
 
   attr_accessor :login
 
-  validate :created_by_required_unless_all_access, on: :create
-
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)
@@ -25,6 +23,10 @@ class User < ApplicationRecord
 
   def all_access?
     all_access
+  end
+
+  def full_name
+    "#{first_name} #{last_name}".strip
   end
 
   private

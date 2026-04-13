@@ -128,7 +128,7 @@
               </div>
               <div class="ml-3">
                 <p class="text-sm font-medium text-slate-900 dark:text-white">
-                  {{ user.firstName }} {{ user.lastName }}
+                  {{ user.fullName || `${user.firstName} ${user.lastName}` }}
                 </p>
                 <p class="text-sm text-slate-500 dark:text-slate-300">
                   {{ user.email }}
@@ -300,7 +300,8 @@ const loadDashboardData = async () => {
 };
 
 const userInitials = (user) => {
-  return `${user.firstName?.[0] || ''}${user.lastName?.[0] || ''}`.toUpperCase();
+  const fullName = user.full_name || `${user.firstName || ''} ${user.lastName || ''}`.trim();
+  return fullName.split(' ').map(name => name[0]).join('').toUpperCase();
 };
 
 const getStatusClass = (status) => {

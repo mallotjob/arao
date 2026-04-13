@@ -124,7 +124,8 @@ const handleLogout = async () => {
 };
 
 const userInitials = computed(() => {
-  return `${currentUser.firstName?.[0] || ''}${currentUser.lastName?.[0] || ''}`.toUpperCase();
+  const fullName = currentUser.fullName || `${currentUser.firstName || ''} ${currentUser.lastName || ''}`.trim();
+  return fullName.split(' ').map(name => name[0]).join('').toUpperCase();
 });
 
 const currentLanguage = () => {

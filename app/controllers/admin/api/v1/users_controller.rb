@@ -3,8 +3,8 @@ module Admin
     module V1
       class UsersController < BaseController
         before_action :authenticate_user!
+        before_action :set_user, only: [:show, :update, :destroy, :user_stats]
         before_action :authorize_user!
-        before_action :set_user, only: [:show, :update, :destroy]
 
         # GET /admin/api/v1/users
         def index
@@ -17,9 +17,9 @@ module Admin
           render_resource(current_user, Admin::Api::V1::UserSerializer)
         end
 
-        # GET /admin/api/v1/users/me/stats
-        def stats
-          user_products = Product.where(beneficiary_id: current_user.id)
+        # GET /admin/api/v1/users/:id/stats
+        def user_stats
+          user_products = Product.where(beneficiary_id: @user.id)
 
           stats = {
             total_products: user_products.count,
@@ -105,9 +105,16 @@ module Admin
 
         def authorize_user!
           case action_name
-          when "me", "stats", "update_me", "update_password"
+          when "me", "update_me", "update_password"
             # Users can always view and update their own profile
             nil
+          when "user_stats"
+            # Users can view their own stats, or others if they have manage permissions
+            if @user.id == current_user.id
+              nil
+            else
+              authorize! :manage, User
+            end
           else
             authorize! :manage, User
           end

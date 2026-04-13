@@ -81,7 +81,7 @@
             </div>
             <div class="ml-3">
               <div class="text-sm font-medium text-slate-900">
-                {{ data.firstName }} {{ data.lastName }}
+                {{ data.fullName || `${data.firstName} ${data.lastName}` }}
               </div>
               <div class="text-sm text-slate-500">
                 @{{ data.username }}
@@ -197,8 +197,15 @@
         <template #body="{ data }">
           <div class="flex gap-2">
             <BaseButton
+              :label="t('view')"
+              size="sm"
+              color="light"
+              @click="viewUser(data)"
+            />
+            <BaseButton
               :label="t('edit')"
               size="sm"
+              color="secondary"
               @click="editUser(data)"
             />
             <BaseButton
@@ -226,6 +233,7 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import { useI18n } from 'vue-i18n';
+import { useRouter } from 'vue-router';
 import { useUsers } from '@/admin/composables/useUsers';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 import IndexHeader from '@/admin/component/shared/IndexHeader.vue';
@@ -233,7 +241,7 @@ import SearchFilter from '@/admin/component/shared/SearchFilter.vue';
 import UserModal from '@/admin/component/user/UserModal.vue';
 
 const { t } = useI18n();
-
+const router = useRouter();
 const {
   users,
   companies,
@@ -263,6 +271,14 @@ const editingUser = ref(null);
 
 const editUser = (user) => {
   editingUser.value = user;
+};
+
+const viewUser = async (user) => {
+  router.push({
+    name: 'user',
+    params: { id: user.id },
+  });
+
 };
 
 const closeModal = () => {
@@ -322,6 +338,7 @@ onMounted(() => {
     active: Active
     edit: Edit
     delete: Delete
+    view: View
     created_by: Created By
     updated_by: Updated By
     not_available: N/A
@@ -347,6 +364,7 @@ onMounted(() => {
     active: Actif
     edit: Modifier
     delete: Supprimer
+    view: Voir
     created_by: Créé par
     updated_by: Mis à jour par
     not_available: N/A
@@ -373,6 +391,7 @@ onMounted(() => {
     edit: Hanova
     delete: Fafao
     created_by: Noforonan'i
+    view: Hijery
     updated_by: Novan'i
     not_available: Tsy misy
   zh-CN:
@@ -398,6 +417,7 @@ onMounted(() => {
     edit: 编辑
     delete: 删除
     created_by: 创建者
+    view: 查看
     updated_by: 更新者
     not_available: 不可用
 </i18n>
