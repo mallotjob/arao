@@ -43,7 +43,8 @@ export function useUsers() {
       };
 
       start(waitKeys.FETCH_USERS_WAIT_KEY);
-      const response = await api.getUsers(params);
+      const response = await api.users.getAll(params);
+
       users.value = response.data.users || [];
       totalRecords.value = response.data.meta.totalCount || 0;
     } catch (error) {
@@ -57,7 +58,7 @@ export function useUsers() {
   const loadCompanies = async () => {
     try {
       start(waitKeys.FETCH_COMPANIES_WAIT_KEY);
-      const response = await api.getCompanies();
+      const response = await api.companies.getAll();
       companies.value = response.data.companies;
     } catch (error) {
       console.error('Error loading companies:', error);
@@ -68,7 +69,7 @@ export function useUsers() {
 
   const loadRoles = async () => {
     try {
-      const response = await api.getRoles();
+      const response = await api.roles.getAll();
       availableRoles.value = response.data.roles;
     } catch (error) {
       console.error('Error loading roles:', error);
@@ -140,7 +141,7 @@ export function useUsers() {
     if (confirm(t('delete_user_confirmation'))) {
       try {
         start(waitKeys.DELETE_USER_WAIT_KEY);
-        await api.delete(`/admin/api/users/${user.id}`);
+        await api.users.delete(user.id);
         await loadUsers();
       } catch (error) {
         console.error('Error deleting user:', error);

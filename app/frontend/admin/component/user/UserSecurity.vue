@@ -135,7 +135,7 @@ const isChangingPassword = computed(() => {
 const handleUpdatePassword = async (values) => {
   try {
     start(waitKeys.UPDATE_USERS_PASSWORD_WAIT_KEY);
-    await api.updatePassword(userId, { user: values });
+    await api.users.updatePassword(userId, { user: values });
     showSuccessToast(t('password_updated_successfully'));
     showPasswordModal.value = false;
   } catch (e) {

@@ -80,10 +80,10 @@
               <span class="text-sm font-medium text-white">{{ userInitials(data) }}</span>
             </div>
             <div class="ml-3">
-              <div class="text-sm font-medium text-slate-900">
+              <div class="text-sm font-medium text-slate-900 dark:text-white">
                 {{ data.fullName || `${data.firstName} ${data.lastName}` }}
               </div>
-              <div class="text-sm text-slate-500">
+              <div class="text-sm text-slate-500 dark:text-slate-400">
                 @{{ data.username }}
               </div>
             </div>
@@ -212,7 +212,7 @@
               color="danger"
               size="sm"
               :label="t('delete')"
-              @click="deleteUser(data)"
+              @click="deleteUser(data,t)"
             />
           </div>
         </template>

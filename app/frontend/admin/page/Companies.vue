@@ -199,7 +199,7 @@ const filteredCompanies = computed(() => {
 const loadCompanies = async () => {
   try {
     start(waitKeys.FETCH_COMPANIES_WAIT_KEY);
-    const response = await api.getCompanies();
+    const response = await api.companies.getAll();
     companies.value = response.data;
   } catch (error) {
     console.error('Error loading companies:', error);

@@ -333,7 +333,7 @@ const filteredProducts = computed(() => {
 const loadProducts = async () => {
   try {
     start(waitKeys.FETCH_PRODUCTS_WAIT_KEY);
-    const response = await api.getProducts();
+    const response = await api.products.getAll();
     products.value = response.data;
   } catch (error) {
     console.error('Error loading products:', error);

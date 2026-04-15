@@ -119,7 +119,7 @@ const changeLanguage = (newLocale) => {
 };
 
 const handleLogout = async () => {
-  await api.logOut();
+  await api.auth.logout();
   window.location.href = '/users/sign_out';
 };
 

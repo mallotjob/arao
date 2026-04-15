@@ -31,7 +31,7 @@ const userStats = ref({});
 
 const loadAccountData = async () => {
   try {
-    const stats = await api.getUserStats(currentUser.id);
+    const stats = await api.users.getStats(currentUser.id);
     userStats.value = stats;
   } catch (error) {
     console.error('Error loading account data:', error);

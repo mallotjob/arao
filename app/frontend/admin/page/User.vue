@@ -39,7 +39,7 @@ const user = ref(null);
 
 const loadAccountData = async () => {
   try {
-    const statsRes = await api.getUserStats(id);
+    const statsRes = await api.users.getStats(id);
     userStats.value = statsRes;
   } catch (error) {
     console.error('Error loading account data:', error);
@@ -48,7 +48,7 @@ const loadAccountData = async () => {
 
 const loadUser = async () => {
   try {
-    const userRes = await api.getUser(id);
+    const userRes = await api.users.getById(id);
     return userRes.data;
   } catch (error) {
     console.error('Error loading user:', error);

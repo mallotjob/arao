@@ -12,7 +12,7 @@ const userStore = useUserStore();
 const loading = ref(true);
 
 (async () => {
-  const res = await api.getWhoAmI();
+  const res = await api.auth.me();
   userStore.setUser(res.data);
   loading.value = false;
 })();

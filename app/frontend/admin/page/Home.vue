@@ -279,9 +279,9 @@ const loadDashboardData = async () => {
   try {
     // Load stats
     const [companiesRes, usersRes, productsRes] = await Promise.all([
-      api.getCompanies(),
-      api.getUsers(),
-      api.getProducts()
+      api.companies.getAll(),
+      api.users.getAll(),
+      api.products.getAll()
     ]);
 
     stats.value = {
