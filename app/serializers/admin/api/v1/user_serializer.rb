@@ -2,7 +2,7 @@ module Admin
   module Api
     module V1
       class UserSerializer < ApplicationSerializer
-        attributes :id, :email, :first_name, :last_name, :username
+        attributes :id, :email, :first_name, :last_name, :username, :all_access
 
         # Include associated data
         has_many :roles, serializer: Admin::Api::V1::RoleSerializer
