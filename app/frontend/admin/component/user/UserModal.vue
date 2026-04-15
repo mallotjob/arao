@@ -1,112 +1,213 @@
 <template>
-  <div
+  <BaseModal
     v-if="visible"
-    class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+    :large="true"
+    @on-close="handleClose"
   >
-    <div class="bg-white rounded-lg p-6 w-full max-w-md">
-      <h2 class="text-xl font-semibold mb-4">
-        {{ isEditing ? t('edit_user') : t('create_user') }}
-      </h2>
-      <form @submit.prevent="handleSubmit">
-        <div class="space-y-4">
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('first_name') }}</label>
-            <input
-              v-model="formData.firstName"
-              type="text"
-              required
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-              focus:border-blue-500"
+    <template #title>
+      {{ isEditing ? t('edit_user') : t('create_user') }}
+    </template>
+
+    <Form
+      :validation-schema="validationSchema"
+      :initial-values="formData"
+      @submit="handleSubmit"
+    >
+      <div class="space-y-4">
+        <!-- Basic Information -->
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="firstName"
+        >
+          <BaseInput
+            :label="$t('first_name')"
+            type="text"
+            :model-value="field.value"
+            :error="errorMessage"
+            required
+            @update:model-value="field.onChange"
+          />
+        </Field>
+
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="lastName"
+        >
+          <BaseInput
+            :label="$t('last_name')"
+            type="text"
+            :model-value="field.value"
+            :error="errorMessage"
+            required
+            @update:model-value="field.onChange"
+          />
+        </Field>
+
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="email"
+        >
+          <BaseInput
+            :label="$t('email')"
+            type="email"
+            :model-value="field.value"
+            :error="errorMessage"
+            required
+            @update:model-value="field.onChange"
+          />
+        </Field>
+
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="username"
+        >
+          <BaseInput
+            :label="$t('username')"
+            type="text"
+            :model-value="field.value"
+            :error="errorMessage"
+            required
+            @update:model-value="field.onChange"
+          />
+        </Field>
+
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="phoneNumber"
+        >
+          <BaseInput
+            :label="$t('phone_number')"
+            type="tel"
+            :model-value="field.value"
+            :error="errorMessage"
+            @update:model-value="field.onChange"
+          />
+        </Field>
+
+        <!-- Company Selection -->
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="company_id"
+        >
+          <BaseInput
+            :label="$t('company')"
+            type="select"
+            :model-value="field.value"
+            :error="errorMessage"
+            :placeholder="$t('select_company')"
+            :options="companyOptions"
+            @update:model-value="field.onChange"
+          />
+        </Field>
+
+        <!-- Roles Selection -->
+        <div>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{{ $t('roles') }}</label>
+          <div class="space-y-2">
+            <div
+              v-for="role in availableRoles"
+              :key="role.id"
+              class="flex items-center"
             >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('last_name') }}</label>
-            <input
-              v-model="formData.lastName"
-              type="text"
-              required
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-              focus:border-blue-500"
-            >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('email') }}</label>
-            <input
-              v-model="formData.email"
-              type="email"
-              required
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-              focus:border-blue-500"
-            >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('username') }}</label>
-            <input
-              v-model="formData.username"
-              type="text"
-              required
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-               focus:border-blue-500"
-            >
-          </div>
-          <div>
-            <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('company') }}</label>
-            <select
-              v-model="formData.company_id"
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-              focus:border-blue-500"
-            >
-              <option value="">
-                {{ t('select_company') }}
-              </option>
-              <option
-                v-for="company in companies"
-                :key="company.id"
-                :value="company.id"
+              <Field
+                v-slot="{ field, errorMessage }"
+                :name="`roleIds[${role.id}]`"
+                :value="role.id"
               >
-                {{ company.name }}
-              </option>
-            </select>
-          </div>
-          <div v-if="!isEditing">
-            <label class="block text-sm font-medium text-slate-700 mb-1">{{ t('password') }}</label>
-            <input
-              v-model="formData.password"
-              type="password"
-              required
-              class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500
-              focus:border-blue-500"
-            >
+                <BaseInput
+                  type="checkbox"
+                  :model-value="field.checked"
+                  :checkbox-label="role.name"
+                  :error="errorMessage"
+                  @update:model-value="(value) => field.handleChange({ target: { checked: value } })"
+                />
+              </Field>
+            </div>
           </div>
         </div>
-        <div class="mt-6 flex justify-end space-x-3">
-          <button
-            type="button"
-            class="px-4 py-2 text-slate-700 border border-slate-300 rounded-lg hover:bg-slate-50"
-            @click="handleClose"
-          >
-            {{ t('cancel') }}
-          </button>
-          <button
-            type="submit"
-            class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-          >
-            {{ isEditing ? t('update') : t('create') }}
-          </button>
-        </div>
-      </form>
-    </div>
-  </div>
+
+        <!-- Password (only for create) -->
+        <Field
+          v-if="!isEditing"
+          v-slot="{ field, errorMessage }"
+          name="password"
+        >
+          <BaseInput
+            :label="$t('password')"
+            type="password"
+            :model-value="field.value"
+            :error="errorMessage"
+            required
+            @update:model-value="field.onChange"
+          />
+        </Field>
+
+        <!-- Confirm Password (only for create) -->
+        <Field
+          v-if="!isEditing"
+          v-slot="{ field, errorMessage }"
+          name="confirmPassword"
+        >
+          <BaseInput
+            :label="$t('confirm_password')"
+            type="password"
+            :model-value="field.value"
+            :error="errorMessage"
+            required
+            @update:model-value="field.onChange"
+          />
+        </Field>
+
+        <!-- All Access Checkbox -->
+        <Field
+          v-slot="{ field, errorMessage }"
+          name="allAccess"
+        >
+          <BaseInput
+            type="checkbox"
+            :model-value="field.value"
+            :checkbox-label="$t('all_access')"
+            :error="errorMessage"
+            @update:model-value="field.onChange"
+          />
+        </Field>
+      </div>
+      <div class="mt-6 pt-4 border-t border-slate-200 dark:border-slate-700 flex justify-end gap-3">
+        <BaseButton
+          type="button"
+          color="secondary"
+          color-type="no-border"
+          :label="$t('cancel')"
+          @click="handleClose"
+        />
+
+        <BaseButton
+          type="submit"
+          color="primary"
+          :label="isEditing ? $t('update') : $t('create')"
+        />
+      </div>
+    </Form>
+  </BaseModal>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
+import { computed, ref, watch } from 'vue';
+import { Field, Form } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
+import { useUserValidationSchema } from '@/composables/useValidationSchemas';
+import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
+import BaseInput from '@/baseElements/BaseInput/BaseInput.vue';
+import BaseModal from '@/baseElements/BaseModal/BaseModal.vue';
 
 const { t } = useI18n();
 
 const props = defineProps({
   companies: {
+    default: () => [],
+    type: Array
+  },
+  availableRoles: {
     default: () => [],
     type: Array
   },
@@ -123,19 +224,43 @@ const props = defineProps({
 const emit = defineEmits(['close', 'submit']);
 
 const isEditing = ref(false);
+
+// Computed properties for select options
+const companyOptions = computed(() => [
+  ...props.companies.map(company => ({
+    value: company.id,
+    label: company.name
+  }))
+]);
+
 const formData = ref({
   firstName: '',
   lastName: '',
   email: '',
   username: '',
+  phoneNumber: '',
   company_id: '',
-  password: ''
+  roleIds: [],
+  password: '',
+  confirmPassword: '',
+  allAccess: false
 });
+
+const validationSchema = computed(() => useUserValidationSchema(t, isEditing.value));
 
 watch(() => props.user, (newUser) => {
   if (newUser) {
     isEditing.value = true;
-    formData.value = { ...newUser, password: '' };
+    formData.value = {
+      ...newUser,
+      password: '',
+      confirmPassword: '',
+      roleIds: newUser.roles?.map(role => role.id) || [],
+      company_id: newUser.company?.id || '',
+      allAccess: newUser.allAccess || false,
+      firstName: newUser.firstName || '',
+      lastName: newUser.lastName || ''
+    };
   } else {
     isEditing.value = false;
     formData.value = {
@@ -143,8 +268,12 @@ watch(() => props.user, (newUser) => {
       lastName: '',
       email: '',
       username: '',
+      phoneNumber: '',
       company_id: '',
-      password: ''
+      roleIds: [],
+      password: '',
+      confirmPassword: '',
+      allAccess: false
     };
   }
 }, { immediate: true });
@@ -153,8 +282,8 @@ const handleClose = () => {
   emit('close');
 };
 
-const handleSubmit = () => {
-  emit('submit', formData.value);
+const handleSubmit = (values) => {
+  emit('submit', values);
 };
 </script>
 
@@ -162,53 +291,13 @@ const handleSubmit = () => {
   en:
     edit_user: Edit User
     create_user: Create User
-    first_name: First Name
-    last_name: Last Name
-    email: Email
-    username: Username
-    company: Company
-    select_company: Select Company
-    password: Password
-    cancel: Cancel
-    update: Update
-    create: Create
   fr:
     edit_user: Modifier l'utilisateur
     create_user: Créer un utilisateur
-    first_name: Prénom
-    last_name: Nom
-    email: Email
-    username: Nom d'utilisateur
-    company: Entreprise
-    select_company: Sélectionner une entreprise
-    password: Mot de passe
-    cancel: Annuler
-    update: Mettre à jour
-    create: Créer
   mg:
     edit_user: Hanova ny mpampiasa
     create_user: Mamorona mpampiasa
-    first_name: Anaran'ny lehibe
-    last_name: Anarana faharoa
-    email: Email
-    username: Anarana fampiasa
-    company: Orinasa
-    select_company: Misafidy orinasa
-    password: Tenimiafina
-    cancel: Atsaharo
-    update: Havaozy
-    create: Mamorona
   zh-CN:
     edit_user: 编辑用户
     create_user: 创建用户
-    first_name: 名
-    last_name: 姓
-    email: 邮箱
-    username: 用户名
-    company: 公司
-    select_company: 选择公司
-    password: 密码
-    cancel: 取消
-    update: 更新
-    create: 创建
 </i18n>

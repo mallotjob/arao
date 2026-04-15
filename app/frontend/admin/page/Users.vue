@@ -224,6 +224,7 @@
       :visible="showCreateModal || !!editingUser"
       :user="editingUser"
       :companies="companies"
+      :available-roles="availableRoles"
       @close="closeModal"
       @submit="handleSaveUser"
     />

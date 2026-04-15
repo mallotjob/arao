@@ -122,10 +122,10 @@ export function useUsers() {
     try {
       if (editingUser) {
         start(waitKeys.SAVE_USER_WAIT_KEY);
-        await api.put(`/admin/api/users/${editingUser.id}`, userData);
+        await api.users.update(editingUser.id, userData);
       } else {
         start(waitKeys.CREATE_USER_WAIT_KEY);
-        await api.post('/admin/api/users', userData);
+        await api.users.create(userData);
       }
       await loadUsers();
     } catch (error) {
