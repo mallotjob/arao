@@ -42,5 +42,6 @@
     "width_min": "宽度必须至少0",
     "height_required": "高度是必需的",
     "height_min": "高度必须至少0"
-  }
+  },
+  "delete_user_confirmation": "您确定要删除此用户吗？此操作无法撤销。"
 }

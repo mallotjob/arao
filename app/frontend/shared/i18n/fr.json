@@ -42,5 +42,6 @@
     "width_min": "La largeur doit être au moins 0",
     "height_required": "La hauteur est requise",
     "height_min": "La hauteur doit être au moins 0"
-  }
+  },
+  "delete_user_confirmation": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action ne peut pas être annulée."
 }

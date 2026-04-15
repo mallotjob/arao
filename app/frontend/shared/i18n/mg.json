@@ -42,5 +42,6 @@
     "width_min": "Ny sakany dia tsy maintsy 0",
     "height_required": "Ny haavony dia ilaina",
     "height_min": "Ny haavony dia tsy maintsy 0"
-  }
+  },
+  "delete_user_confirmation": "Tena tianao fafana ve io mpampiasa io? Tsy afaka averina intsony izay voafafa."
 }
