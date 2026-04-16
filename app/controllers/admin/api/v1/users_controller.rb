@@ -64,11 +64,8 @@ module Admin
           @user = User.new(user_params)
           @user.created_by = current_user.id
 
-          # Handle roles assignment
-          if user_params[:role_ids].present?
-            role_ids = user_params[:role_ids].reject(&:blank?)
-            @user.role_ids = role_ids unless role_ids.empty?
-          end
+          role_ids = user_params[:role_ids].reject(&:blank?) if user_params[:role_ids]
+          @user.role_ids = role_ids || []
 
           if @user.save
             render_resource(@user, Admin::Api::V1::UserSerializer, status: :created)
@@ -81,13 +78,12 @@ module Admin
         def update
           @user.updated_by = current_user.id
 
-          # Handle roles assignment
-          if user_params[:role_ids].present?
-            role_ids = user_params[:role_ids].reject(&:blank?)
-            @user.role_ids = role_ids unless role_ids.empty?
-          end
+          role_ids = user_params[:role_ids]&.reject(&:blank?) || []
 
-          if @user.update(user_params)
+          @user.assign_attributes(user_params.except(:role_ids))
+          @user.role_ids = role_ids
+
+          if @user.save
             render_resource(@user, Admin::Api::V1::UserSerializer)
           else
             render_error(@user.errors.full_messages.join(", "))

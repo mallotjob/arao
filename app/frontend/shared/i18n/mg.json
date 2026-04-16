@@ -13,7 +13,7 @@
   "update": "Havaozy",
   "create": "Mamorona",
   "password": "Tenimiafina",
-  "confirm_password": "Avereno ny tenimiafina",
+  "password_confirmation": "Avereno ny tenimiafina",
   "all_access": "Fandraisana an-tanana",
   "phone_number": "Laharan'ny finday",
   "company": "Orinasa",

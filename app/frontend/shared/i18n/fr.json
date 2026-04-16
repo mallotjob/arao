@@ -13,7 +13,7 @@
   "update": "Mettre à jour",
   "create": "Créer",
   "password": "Mot de passe",
-  "confirm_password": "Confirmer le mot de passe",
+  "password_confirmation": "Confirmer le mot de passe",
   "all_access": "Accès total",
   "phone_number": "Numéro de téléphone",
   "company": "Entreprise",

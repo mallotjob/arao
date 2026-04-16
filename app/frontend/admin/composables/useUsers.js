@@ -118,14 +118,17 @@ export function useUsers() {
   };
 
   // CRUD operations
-  const saveUser = async (userData, editingUser) => {
+  const saveUser = async (payload, editingUser) => {
     try {
       if (editingUser) {
         start(waitKeys.SAVE_USER_WAIT_KEY);
-        await api.users.update(editingUser.id, userData);
+        delete payload.user.password;
+        delete payload.user.passwordConfirmation;
+
+        await api.users.update(editingUser.id, payload);
       } else {
         start(waitKeys.CREATE_USER_WAIT_KEY);
-        await api.users.create(userData);
+        await api.users.create(payload);
       }
       await loadUsers();
     } catch (error) {

@@ -3,7 +3,7 @@ import * as yup from 'yup';
 // Password validation schema with translation support
 export function usePasswordValidationSchema(t) {
   return yup.object().shape({
-    current_password: yup
+    currentPassword: yup
       .string()
       .required(() => t('validation.required')),
     password: yup
@@ -14,7 +14,7 @@ export function usePasswordValidationSchema(t) {
         /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)/,
         () => t('validation.password_complexity')
       ),
-    password_confirmation: yup
+    passwordConfirmation: yup
       .string()
       .required(() => t('validation.required'))
       .oneOf([yup.ref('password')], () => t('validation.password_mismatch'))
@@ -24,11 +24,11 @@ export function usePasswordValidationSchema(t) {
 // User Form validation schema
 export function useUserValidationSchema(t, isEditing = false) {
   return yup.object().shape({
-    first_name: yup
+    firstName: yup
       .string()
       .required(() => t('validation.required'))
       .min(2, ({ min }) => t('validation.min', { min })),
-    last_name: yup
+    lastName: yup
       .string()
       .required(() => t('validation.required'))
       .min(2, ({ min }) => t('validation.min', { min })),
@@ -65,7 +65,7 @@ export function useUserValidationSchema(t, isEditing = false) {
             (value) => !value || value.length >= 8
           )
     }),
-    confirmPassword: yup.string().when('isEditing', {
+    passwordConfirmation: yup.string().when('isEditing', {
       is: () => !isEditing,
       then: (schema) =>
         schema

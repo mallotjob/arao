@@ -41,7 +41,7 @@
       <div class="space-y-4">
         <Field
           v-slot="{ field, errorMessage }"
-          name="current_password"
+          name="currentPassword"
         >
           <BaseInput
             :model-value="field.value"
@@ -70,7 +70,7 @@
         </Field>
         <Field
           v-slot="{ field, errorMessage }"
-          name="password_confirmation"
+          name="passwordConfirmation"
         >
           <BaseInput
             :model-value="field.value"

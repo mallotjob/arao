@@ -127,18 +127,6 @@
       </Column>
 
       <Column
-        field="status"
-        :header="t('status')"
-        style="min-width: 8rem"
-      >
-        <template #body>
-          <span class="px-2 py-1 text-xs rounded-full bg-green-100 text-green-800">
-            {{ t('active') }}
-          </span>
-        </template>
-      </Column>
-
-      <Column
         field="created_by_info"
         :header="t('created_by')"
         style="min-width: 14rem"
@@ -289,7 +277,7 @@ const closeModal = () => {
 
 const handleSaveUser = async (userData) => {
   try {
-    await saveUser(userData, editingUser.value);
+    await saveUser({ user: userData }, editingUser.value);
     closeModal();
   } catch (error) {
     console.error('Error saving user:', error);
@@ -333,7 +321,6 @@ onMounted(() => {
     email: Email
     company: Company
     roles: Roles
-    status: Status
     actions: Actions
     no_company: No Company
     active: Active
@@ -359,7 +346,6 @@ onMounted(() => {
     email: Email
     company: Entreprise
     roles: Rôles
-    status: Statut
     actions: Actions
     no_company: Aucune entreprise
     active: Actif
@@ -385,7 +371,6 @@ onMounted(() => {
     email: Email
     company: Orinasa
     roles: Anjara asa
-    status: Toerana
     actions: Asa
     no_company: Tsy misy orinasa
     active: Miasa
@@ -411,7 +396,6 @@ onMounted(() => {
     email: 邮箱
     company: 公司
     roles: 角色
-    status: 状态
     actions: 操作
     no_company: 无公司
     active: 活跃

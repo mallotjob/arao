@@ -111,7 +111,8 @@
             >
               <Field
                 v-slot="{ field, errorMessage }"
-                :name="`roleIds[${role.id}]`"
+                name="roleIds"
+                type="checkbox"
                 :value="role.id"
               >
                 <BaseInput
@@ -119,7 +120,7 @@
                   :model-value="field.checked"
                   :checkbox-label="role.name"
                   :error="errorMessage"
-                  @update:model-value="(value) => field.handleChange({ target: { checked: value } })"
+                  @update:model-value="field.onChange"
                 />
               </Field>
             </div>
@@ -146,10 +147,10 @@
         <Field
           v-if="!isEditing"
           v-slot="{ field, errorMessage }"
-          name="confirmPassword"
+          name="passwordConfirmation"
         >
           <BaseInput
-            :label="$t('confirm_password')"
+            :label="$t('password_confirmation')"
             type="password"
             :model-value="field.value"
             :error="errorMessage"
@@ -242,7 +243,7 @@ const formData = ref({
   company_id: '',
   roleIds: [],
   password: '',
-  confirmPassword: '',
+  passwordConfirmation: '',
   allAccess: false
 });
 
@@ -254,7 +255,7 @@ watch(() => props.user, (newUser) => {
     formData.value = {
       ...newUser,
       password: '',
-      confirmPassword: '',
+      passwordConfirmation: '',
       roleIds: newUser.roles?.map(role => role.id) || [],
       company_id: newUser.company?.id || '',
       allAccess: newUser.allAccess || false,
@@ -272,7 +273,7 @@ watch(() => props.user, (newUser) => {
       company_id: '',
       roleIds: [],
       password: '',
-      confirmPassword: '',
+      passwordConfirmation: '',
       allAccess: false
     };
   }

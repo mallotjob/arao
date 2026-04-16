@@ -13,7 +13,7 @@
   "update": "更新",
   "create": "创建",
   "password": "密码",
-  "confirm_password": "确认密码",
+  "password_confirmation": "确认密码",
   "all_access": "全部访问权限",
   "phone_number": "电话号码",
   "company": "公司",

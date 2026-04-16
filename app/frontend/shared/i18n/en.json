@@ -13,7 +13,7 @@
   "update": "Update",
   "create": "Create",
   "password": "Password",
-  "confirm_password": "Confirm Password",
+  "password_confirmation": "Confirm Password",
   "all_access": "All Access",
   "phone_number": "Phone Number",
   "company": "Company",
