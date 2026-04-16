@@ -102,7 +102,9 @@
 
         <!-- Roles Selection -->
         <div>
-          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">{{ $t('roles') }}</label>
+          <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">
+            {{ $t('roles') }} <span class="text-red-500">*</span>
+          </label>
           <div class="space-y-2">
             <div
               v-for="role in availableRoles"

@@ -13,7 +13,7 @@ class User < ApplicationRecord
   has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
 
-  attr_accessor :login, :role_ids
+  attr_accessor :login
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup

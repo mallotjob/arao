@@ -64,9 +64,6 @@ module Admin
           @user = User.new(user_params)
           @user.created_by = current_user.id
 
-          role_ids = user_params[:role_ids].reject(&:blank?) if user_params[:role_ids]
-          @user.role_ids = role_ids || []
-
           if @user.save
             render_resource(@user, Admin::Api::V1::UserSerializer, status: :created)
           else
@@ -78,12 +75,7 @@ module Admin
         def update
           @user.updated_by = current_user.id
 
-          role_ids = user_params[:role_ids]&.reject(&:blank?) || []
-
-          @user.assign_attributes(user_params.except(:role_ids))
-          @user.role_ids = role_ids
-
-          if @user.save
+          if @user.update(user_params)
             render_resource(@user, Admin::Api::V1::UserSerializer)
           else
             render_error(@user.errors.full_messages.join(", "))
@@ -103,8 +95,11 @@ module Admin
         end
 
         def user_params
-          params.require(:user).permit(:first_name, :last_name, :email, :username, :phone_number, :company_id,
+          permitted = params.require(:user).permit(:first_name, :last_name, :email, :username, :phone_number, :company_id,
           :all_access, :password, :password_confirmation, role_ids: [])
+
+          permitted[:role_ids]&.reject!(&:blank?)
+          permitted
         end
 
         def password_params

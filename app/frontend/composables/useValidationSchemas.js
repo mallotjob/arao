@@ -44,7 +44,7 @@ export function useUserValidationSchema(t, isEditing = false) {
       .string()
       .nullable()
       .notRequired(),
-    roleIds: yup.array().of(yup.string()).optional(),
+    roleIds: yup.array().of(yup.string()).min(1, () => t('validation.required')),
     password: yup.string().when('isEditing', {
       is: () => !isEditing,
       then: (schema) =>
