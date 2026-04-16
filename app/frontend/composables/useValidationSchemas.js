@@ -1,4 +1,5 @@
 import * as yup from 'yup';
+import { isValidPhoneNumber } from '@/shared/helpers/parse-phone-number-helper';
 
 // Password validation schema with translation support
 export function usePasswordValidationSchema(t) {
@@ -73,6 +74,12 @@ export function useUserValidationSchema(t, isEditing = false) {
           .oneOf([yup.ref('password')], () => t('validation.password_mismatch')),
       otherwise: (schema) => schema.optional()
     }),
+    phoneNumber: yup.string()
+      .optional()
+      .test('phone_format', () => t('validation.phone_format'), function(value) {
+        if (!value) return true; // Optional field, so empty is valid
+        return isValidPhoneNumber(value);
+      }),
     allAccess: yup.string().optional()
   });
 }

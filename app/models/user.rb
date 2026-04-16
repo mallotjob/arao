@@ -15,6 +15,8 @@ class User < ApplicationRecord
 
   attr_accessor :login
 
+  validates :phone_number, phone_number: true, allow_blank: true
+
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     login = conditions.delete(:login)

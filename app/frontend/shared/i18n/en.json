@@ -26,7 +26,8 @@
     "min": "Must be at least {min} characters",
     "email": "Please enter a valid email address",
     "password_complexity": "Password must contain at least one uppercase letter, one lowercase letter, and one number",
-    "password_mismatch": "Passwords must match"
+    "password_mismatch": "Passwords must match",
+    "phone_format": "Please enter a valid phone number"
   },
   "delete_user_confirmation": "Are you sure you want to delete this user? This action cannot be undone."
 }

@@ -185,6 +185,7 @@
         />
 
         <BaseButton
+          ref="submit"
           type="submit"
           color="primary"
           :label="isEditing ? $t('update') : $t('create')"

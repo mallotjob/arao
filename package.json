@@ -38,6 +38,7 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "humps": "^2.0.1",
+    "libphonenumber-js": "^1.12.41",
     "lucide-vue-next": "^0.577.0",
     "path": "^0.12.7",
     "pinia": "^3.0.4",

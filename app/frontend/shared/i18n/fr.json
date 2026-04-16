@@ -24,8 +24,10 @@
   "validation": {
     "required": "Ce champ est requis",
     "min": "Doit contenir au moins {min} caractères",
+    "email": "Veuillez entrer une adresse email valide",
     "password_complexity": "Le mot de passe doit contenir au moins une lettre majuscule, une lettre minuscule et un chiffre",
-    "password_mismatch": "Les mots de passe doivent correspondre"
+    "password_mismatch": "Les mots de passe doivent correspondre",
+    "phone_format": "Veuillez entrer un numéro de téléphone valide"
   },
   "delete_user_confirmation": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action ne peut pas être annulée."
 }

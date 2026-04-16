@@ -24,8 +24,10 @@
   "validation": {
     "required": "Ilaina ity saha ity",
     "min": "Tsy maintsy {min} farany kely",
+    "email": "Mampidira adiresy email valid",
     "password_complexity": "Ny teny miafina dia tsy maintsy misy litera lehibe iray, litera kely iray, ary laharana iray",
-    "password_mismatch": "Tsy mitovyy ny teny miafina"
+    "password_mismatch": "Tsy mitovyy ny teny miafina",
+    "phone_format": "Mampidira laharana finday voamarina"
   },
   "delete_user_confirmation": "Tena tianao fafana ve io mpampiasa io? Tsy afaka averina intsony izay voafafa."
 }

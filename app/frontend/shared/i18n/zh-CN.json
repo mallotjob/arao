@@ -24,8 +24,10 @@
   "validation": {
     "required": "此字段为必填项",
     "min": "必须至少{min}个字符",
+    "email": "请输入有效的电子邮件地址",
     "password_complexity": "密码必须包含至少一个大写字母、一个小写字母和一个数字",
-    "password_mismatch": "密码必须匹配"
+    "password_mismatch": "密码必须匹配",
+    "phone_format": "请输入有效的电话号码"
   },
   "delete_user_confirmation": "您确定要删除此用户吗？此操作无法撤销。"
 }
