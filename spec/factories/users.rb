@@ -8,6 +8,12 @@ FactoryBot.define do
     created_by { nil }
     updated_by { nil }
 
+    after(:build) do |user|
+      unless user.all_access?
+        user.roles << create(:role) if user.roles.empty?
+      end
+    end
+
     trait :admin do
       all_access { true }
       created_by { nil }

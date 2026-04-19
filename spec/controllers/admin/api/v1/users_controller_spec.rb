@@ -4,6 +4,7 @@ RSpec.describe Admin::Api::V1::UsersController, type: :request do
   let(:admin_user) { create(:user, all_access: true) }
   let(:company) { create(:company) }
   let(:user) { create(:user, company: company, created_by: admin_user) }
+  let(:role) { create(:role) }
 
   before do
     sign_in admin_user
@@ -27,13 +28,6 @@ RSpec.describe Admin::Api::V1::UsersController, type: :request do
     end
 
     context 'with role filter' do
-      let(:role) { create(:role, name: 'admin') }
-      let(:user_with_role) { create(:user, created_by: admin_user) }
-
-      before do
-        user_with_role.roles << role
-      end
-
       it 'filters users by role' do
         get admin_api_v1_users_url, params: { role: 'admin' }
         expect(response).to have_http_status(:success)
@@ -70,9 +64,11 @@ RSpec.describe Admin::Api::V1::UsersController, type: :request do
           last_name: 'Doe',
           email: 'john@example.com',
           username: 'johndoe',
-          password: 'password123',
-          password_confirmation: 'password123',
-          company_id: company.id
+          password: 'Password123',
+          password_confirmation: 'Password123',
+          company_id: company.id,
+          phone_number: '0373839232',
+          role_ids: [role.id]
         }
       }
     end
@@ -84,6 +80,87 @@ RSpec.describe Admin::Api::V1::UsersController, type: :request do
         }.to change(User, :count).by(1)
 
         expect(response).to have_http_status(:created)
+      end
+
+      it 'creates user with phone number' do
+        post admin_api_v1_users_url, params: valid_params
+
+        expect(User.find_by(phone_number: '0373839232').present?).to be true
+      end
+
+      it 'creates user with phone number starting with 0' do
+        params_with_zero_phone = valid_params.deep_dup
+        params_with_zero_phone[:user][:phone_number] = '0340441586'
+        post admin_api_v1_users_url, params: params_with_zero_phone
+
+        expect(User.find_by(phone_number: '0340441586').present?).to be true
+      end
+
+      it 'creates user with phone number with country code' do
+        params_with_country_phone = valid_params.deep_dup
+        params_with_country_phone[:user][:phone_number] = '+261340441586'
+        post admin_api_v1_users_url, params: params_with_country_phone
+
+        expect(User.find_by(phone_number: '+261340441586').present?).to be true
+      end
+
+      it 'creates user with China phone number' do
+        params_with_china_phone = valid_params.deep_dup
+        params_with_china_phone[:user][:phone_number] = '13812345678'
+        post admin_api_v1_users_url, params: params_with_china_phone
+
+        expect(User.find_by(phone_number: '13812345678').present?).to be true
+      end
+
+      it 'creates user with China phone number with country code' do
+        params_with_china_country_phone = valid_params.deep_dup
+        params_with_china_country_phone[:user][:phone_number] = '+8613812345678'
+        post admin_api_v1_users_url, params: params_with_china_country_phone
+
+        expect(User.find_by(phone_number: '+8613812345678').present?).to be true
+      end
+
+      it 'rejects phone number with invalid prefix' do
+        params_with_invalid_prefix = valid_params.deep_dup
+        params_with_invalid_prefix[:user][:phone_number] = '0550441586'
+        post admin_api_v1_users_url, params: params_with_invalid_prefix
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it 'rejects invalid phone number format' do
+        params_with_invalid_phone = valid_params.deep_dup
+        params_with_invalid_phone[:user][:phone_number] = 'abc123'
+        post admin_api_v1_users_url, params: params_with_invalid_phone
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it 'rejects phone number that is too short' do
+        params_with_short_phone = valid_params.deep_dup
+        params_with_short_phone[:user][:phone_number] = '123'
+        post admin_api_v1_users_url, params: params_with_short_phone
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it 'creates user with all access' do
+        params_with_access = valid_params.deep_dup
+        params_with_access[:user][:all_access] = true
+        post admin_api_v1_users_url, params: params_with_access
+        expect(User.last.all_access).to be true
+      end
+    end
+
+    context 'with roles' do
+      let(:role1) { create(:role, name: 'admin') }
+      let(:role2) { create(:role, name: 'manager') }
+
+      it 'creates user with roles' do
+        params_with_roles = valid_params.deep_dup
+        params_with_roles[:user][:role_ids] = [role1.id, role2.id]
+        post admin_api_v1_users_url, params: params_with_roles
+        user = User.find_by(email: 'john@example.com')
+
+        expect(user.roles.count).to eq(2)
+        expect(user.roles).to include(role1, role2)
       end
     end
 
@@ -101,6 +178,13 @@ RSpec.describe Admin::Api::V1::UsersController, type: :request do
         expect {
           post admin_api_v1_users_url, params: invalid_params
         }.not_to change(User, :count)
+        expect(response).to have_http_status(:unprocessable_content)
+      end
+
+      it 'does not create user without roles' do
+        params_without_roles = valid_params.deep_dup
+        params_without_roles[:user][:role_ids] = []
+        post admin_api_v1_users_url, params: params_without_roles
         expect(response).to have_http_status(:unprocessable_content)
       end
     end
@@ -121,6 +205,63 @@ RSpec.describe Admin::Api::V1::UsersController, type: :request do
       user.reload
       expect(user.first_name).to eq('Updated')
       expect(response).to have_http_status(:success)
+    end
+
+    it 'updates user phone number' do
+      params_with_phone = update_params.deep_dup
+      params_with_phone[:user][:phone_number] = '0380000000'
+      patch admin_api_v1_user_url(user.id), params: params_with_phone
+      user.reload
+      expect(user.phone_number).to eq('0380000000')
+    end
+
+    it 'rejects invalid phone number format on update' do
+      params_with_invalid_phone = update_params.deep_dup
+      params_with_invalid_phone[:user][:phone_number] = 'abc123'
+      patch admin_api_v1_user_url(user.id), params: params_with_invalid_phone
+      expect(response).to have_http_status(:unprocessable_content)
+    end
+
+    it 'updates user all access' do
+      params_with_access = update_params.deep_dup
+      params_with_access[:user][:all_access] = true
+      patch admin_api_v1_user_url(user.id), params: params_with_access
+      user.reload
+      expect(user.all_access).to be true
+    end
+
+    context 'with roles' do
+      let(:role1) { create(:role, name: 'admin') }
+      let(:role2) { create(:role, name: 'manager') }
+
+      it 'updates user roles' do
+        params_with_roles = update_params.deep_dup
+        params_with_roles[:user][:role_ids] = [role1.id, role2.id]
+        patch admin_api_v1_user_url(user.id), params: params_with_roles
+        user.reload
+        expect(user.roles.count).to eq(2)
+        expect(user.roles).to include(role1, role2)
+      end
+
+      it 'replaces existing roles with new ones' do
+        user.roles << create(:role, name: 'user')
+        params_with_roles = update_params.deep_dup
+        params_with_roles[:user][:role_ids] = [role1.id, role2.id]
+        patch admin_api_v1_user_url(user.id), params: params_with_roles
+        user.reload
+
+        expect(user.roles.count).to eq(2)
+        expect(user.roles).to include(role1, role2)
+        expect(user.roles.map(&:name)).not_to include('user')
+      end
+
+      it 'removes all roles when empty array provided' do
+        params_without_roles = update_params.deep_dup
+        params_without_roles[:user][:role_ids] = []
+        patch admin_api_v1_user_url(user.id), params: params_without_roles
+        user.reload
+        expect(user.roles.count).to eq(1)
+      end
     end
   end
 

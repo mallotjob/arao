@@ -16,6 +16,7 @@ class User < ApplicationRecord
   attr_accessor :login
 
   validates :phone_number, phone_number: true, allow_blank: true
+  validate :at_least_one_role_unless_all_access
 
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
@@ -38,6 +39,13 @@ class User < ApplicationRecord
     return if created_by.present?
 
     errors.add(:created_by, "is required unless user has all access")
+  end
+
+  def at_least_one_role_unless_all_access
+    return if all_access?
+    return if roles.present?
+
+    errors.add(:roles, "at least one role is required unless user has all access")
   end
 end
 
