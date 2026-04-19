@@ -9,7 +9,7 @@ gem "aasm", "~> 5.3"
 gem "importmap-rails", "~> 2.0"
 gem "cancancan", "~> 3.6"
 gem "paranoia", "~> 3.1.0"
-gem "faker", "~> 3.7.1", require: false
+gem "faker", "~> 3.8.0", require: false
 gem "kaminari", "~> 1.2.2"
 
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
