@@ -80,7 +80,7 @@ const props = defineProps({
     type: String
   },
   iconPosition: {
-    default: 'right',
+    default: 'left',
     type: String,
     validator: value => {
       return ['left', 'right', 'center'].includes(value);

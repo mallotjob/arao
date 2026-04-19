@@ -76,6 +76,7 @@ export function useUserValidationSchema(t, isEditing = false) {
     }),
     phoneNumber: yup.string()
       .optional()
+      .nullable(true)
       .test('phone_format', () => t('validation.phone_format'), function(value) {
         if (!value) return true; // Optional field, so empty is valid
         return isValidPhoneNumber(value);

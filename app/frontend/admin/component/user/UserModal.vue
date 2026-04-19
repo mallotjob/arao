@@ -187,6 +187,7 @@
         <BaseButton
           type="submit"
           color="primary"
+          :loading="isLoading"
           :label="isEditing ? $t('update') : $t('create')"
         />
       </div>
@@ -198,11 +199,14 @@
 import { computed, ref, watch } from 'vue';
 import { Field, Form } from 'vee-validate';
 import { useI18n } from 'vue-i18n';
+import { useLoaderStatus } from '@/shared/composables/loaderStatus';
 import { useUserValidationSchema } from '@/composables/useValidationSchemas';
 import BaseButton from '@/baseElements/BaseButton/BaseButton.vue';
 import BaseInput from '@/baseElements/BaseInput/BaseInput.vue';
 import BaseModal from '@/baseElements/BaseModal/BaseModal.vue';
+import waitKeys from '@/shared/utils/wait-keys';
 
+const { is } = useLoaderStatus();
 const { t } = useI18n();
 
 const props = defineProps({
@@ -227,6 +231,10 @@ const props = defineProps({
 const emit = defineEmits(['close', 'submit']);
 
 const isEditing = ref(false);
+
+const isLoading = computed(() => {
+  return is.value[waitKeys.CREATE_USER_WAIT_KEY] || is.value[waitKeys.SAVE_USER_WAIT_KEY];
+});
 
 // Computed properties for select options
 const companyOptions = computed(() => [
